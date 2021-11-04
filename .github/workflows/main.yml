@@ -1,5 +1,9 @@
 name: End-to-end tests
-on: [push]
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
 jobs:
   cypress-run:
     runs-on: windows-latest
@@ -14,5 +18,3 @@ jobs:
           # let's see if the Test Runner handles url in the config
           # https://github.com/cypress-io/cypress/issues/5466
           config: baseUrl=http://localhost:8888
-
-

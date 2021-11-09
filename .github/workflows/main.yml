@@ -4,6 +4,14 @@ on:
     branches:
       - master
 jobs:
+  find-out:
+    runs-on: windows-latest
+    steps:
+      - name: "step-checkout"
+        uses: actions/checkout@v1
+      - name: "step-log"
+        run: |
+          echo "[B] github.ref: ${{github.ref}}"
   cypress-run:
     if: ${{ github.ref == 'refs/heads/develop' }}
     runs-on: windows-latest

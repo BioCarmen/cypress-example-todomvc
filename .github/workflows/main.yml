@@ -47,6 +47,8 @@ jobs:
     runs-on: windows-latest
     needs: cypress-run
     steps:
+      - name: echo
+        run: echo "${{needs.cypress-run.result}} ${{needs.cypress-run.result != 'success' || needs.cypress-run.result != 'skipped' }}"
       - name: Check all cypress test matrix status
         if: ${{ needs.cypress-run.result != 'success' || needs.cypress-run.result != 'skipped' }}
         run: exit 1

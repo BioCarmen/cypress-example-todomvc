@@ -136,19 +136,19 @@ describe("TodoMVC - React", function () {
     //   cy.get("@todos").eq(2).find("label").should("contain", TODO_ITEM_THREE);
     // });
 
-    it("should trim text input", function () {
-      // this is an example of another custom command
-      // since we repeat the todo creation over and over
-      // again. It's up to you to decide when to abstract
-      // repetitive behavior and roll that up into a custom
-      // command vs explicitly writing the code.
-      cy.createTodo(`    ${TODO_ITEM_ONE}    `);
+    // it("should trim text input", function () {
+    //   // this is an example of another custom command
+    //   // since we repeat the todo creation over and over
+    //   // again. It's up to you to decide when to abstract
+    //   // repetitive behavior and roll that up into a custom
+    //   // command vs explicitly writing the code.
+    //   cy.createTodo(`    ${TODO_ITEM_ONE}    `);
 
-      // we use as explicit assertion here about the text instead of
-      // using 'contain' so we can specify the exact text of the element
-      // does not have any whitespace around it
-      cy.get(".todo-list li").eq(0).should("have.text", TODO_ITEM_ONE);
-    });
+    //   // we use as explicit assertion here about the text instead of
+    //   // using 'contain' so we can specify the exact text of the element
+    //   // does not have any whitespace around it
+    //   cy.get(".todo-list li").eq(0).should("have.text", TODO_ITEM_ONE);
+    // });
 
     it("should show #main and #footer when items added", function () {
       cy.createTodo(TODO_ITEM_ONE);

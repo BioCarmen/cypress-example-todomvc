@@ -70,20 +70,6 @@ describe("TodoMVC - React", function () {
     });
   });
 
-  context("No Todos", function () {
-    it("should hide #main and #footer", function () {
-      // Unlike the TodoMVC tests, we don't need to create
-      // a gazillion helper functions which are difficult to
-      // parse through. Instead we'll opt to use real selectors
-      // so as to make our testing intentions as clear as possible.
-      //
-      // http://on.cypress.io/get
-      cy.get(".todo-list li").should("not.exist");
-      cy.get(".main").should("not.exist");
-      cy.get(".footer").should("not.exist");
-    });
-  });
-
   context("New Todo", function () {
     // New commands used here:
     // https://on.cypress.io/type
@@ -93,7 +79,7 @@ describe("TodoMVC - React", function () {
     // https://on.cypress.io/should
     // https://on.cypress.io/as
 
-    it("should allow me to add todo items", function () {
+    it.skip("should allow me to add todo items", function () {
       // create 1st todo
       cy.get(".new-todo").type(TODO_ITEM_ONE).type("{enter}");
 
@@ -113,7 +99,7 @@ describe("TodoMVC - React", function () {
         .should("contain", TODO_ITEM_TWO);
     });
 
-    it("should clear text input field when an item is added", function () {
+    it.skip("should clear text input field when an item is added", function () {
       cy.get(".new-todo").type(TODO_ITEM_ONE).type("{enter}");
 
       cy.get(".new-todo").should("have.text", "");
@@ -136,87 +122,87 @@ describe("TodoMVC - React", function () {
     //   cy.get("@todos").eq(2).find("label").should("contain", TODO_ITEM_THREE);
     // });
 
-    it("should trim text input", function () {
-      // this is an example of another custom command
-      // since we repeat the todo creation over and over
-      // again. It's up to you to decide when to abstract
-      // repetitive behavior and roll that up into a custom
-      // command vs explicitly writing the code.
-      cy.createTodo(`    ${TODO_ITEM_ONE}    `);
+    // it("should trim text input", function () {
+    //   // this is an example of another custom command
+    //   // since we repeat the todo creation over and over
+    //   // again. It's up to you to decide when to abstract
+    //   // repetitive behavior and roll that up into a custom
+    //   // command vs explicitly writing the code.
+    //   cy.createTodo(`    ${TODO_ITEM_ONE}    `);
 
-      // we use as explicit assertion here about the text instead of
-      // using 'contain' so we can specify the exact text of the element
-      // does not have any whitespace around it
-      cy.get(".todo-list li").eq(0).should("have.text", TODO_ITEM_ONE);
-    });
+    //   // we use as explicit assertion here about the text instead of
+    //   // using 'contain' so we can specify the exact text of the element
+    //   // does not have any whitespace around it
+    //   cy.get(".todo-list li").eq(0).should("have.text", TODO_ITEM_ONE);
+    // });
 
-    it("should show #main and #footer when items added", function () {
+    it.skip("should show #main and #footer when items added", function () {
       cy.createTodo(TODO_ITEM_ONE);
       cy.get(".main").should("be.visible");
       cy.get(".footer").should("be.visible");
     });
   });
 
-  context("Mark all as completed", function () {
-    // New commands used here:
-    // - cy.check    https://on.cypress.io/api/check
-    // - cy.uncheck  https://on.cypress.io/api/uncheck
+  // context("Mark all as completed", function () {
+  //   // New commands used here:
+  //   // - cy.check    https://on.cypress.io/api/check
+  //   // - cy.uncheck  https://on.cypress.io/api/uncheck
 
-    beforeEach(function () {
-      // This is an example of aliasing
-      // within a hook (beforeEach).
-      // Aliases will automatically persist
-      // between hooks and are available
-      // in your tests below
-      cy.createDefaultTodos().as("todos");
-    });
+  //   beforeEach(function () {
+  //     // This is an example of aliasing
+  //     // within a hook (beforeEach).
+  //     // Aliases will automatically persist
+  //     // between hooks and are available
+  //     // in your tests below
+  //     cy.createDefaultTodos().as("todos");
+  //   });
 
-    it("should allow me to mark all items as completed", function () {
-      // complete all todos
-      // we use 'check' instead of 'click'
-      // because that indicates our intention much clearer
-      cy.get(".toggle-all").check();
+  //   it("should allow me to mark all items as completed", function () {
+  //     // complete all todos
+  //     // we use 'check' instead of 'click'
+  //     // because that indicates our intention much clearer
+  //     cy.get(".toggle-all").check();
 
-      // get each todo li and ensure its class is 'completed'
-      cy.get("@todos").eq(0).should("have.class", "completed");
+  //     // get each todo li and ensure its class is 'completed'
+  //     cy.get("@todos").eq(0).should("have.class", "completed");
 
-      cy.get("@todos").eq(1).should("have.class", "completed");
+  //     cy.get("@todos").eq(1).should("have.class", "completed");
 
-      cy.get("@todos").eq(2).should("have.class", "completed");
-    });
+  //     cy.get("@todos").eq(2).should("have.class", "completed");
+  //   });
 
-    it("should allow me to clear the complete state of all items", function () {
-      // check and then immediately uncheck
-      cy.get(".toggle-all").check().uncheck();
+  //   it("should allow me to clear the complete state of all items", function () {
+  //     // check and then immediately uncheck
+  //     cy.get(".toggle-all").check().uncheck();
 
-      cy.get("@todos").eq(0).should("not.have.class", "completed");
+  //     cy.get("@todos").eq(0).should("not.have.class", "completed");
 
-      cy.get("@todos").eq(1).should("not.have.class", "completed");
+  //     cy.get("@todos").eq(1).should("not.have.class", "completed");
 
-      cy.get("@todos").eq(2).should("not.have.class", "completed");
-    });
+  //     cy.get("@todos").eq(2).should("not.have.class", "completed");
+  //   });
 
-    it("complete all checkbox should update state when items are completed / cleared", function () {
-      // alias the .toggle-all for reuse later
-      cy.get(".toggle-all")
-        .as("toggleAll")
-        .check()
-        // this assertion is silly here IMO but
-        // it is what TodoMVC does
-        .should("be.checked");
+  //   it("complete all checkbox should update state when items are completed / cleared", function () {
+  //     // alias the .toggle-all for reuse later
+  //     cy.get(".toggle-all")
+  //       .as("toggleAll")
+  //       .check()
+  //       // this assertion is silly here IMO but
+  //       // it is what TodoMVC does
+  //       .should("be.checked");
 
-      // alias the first todo and then click it
-      cy.get(".todo-list li").eq(0).as("firstTodo").find(".toggle").uncheck();
+  //     // alias the first todo and then click it
+  //     cy.get(".todo-list li").eq(0).as("firstTodo").find(".toggle").uncheck();
 
-      // reference the .toggle-all element again
-      // and make sure its not checked
-      cy.get("@toggleAll").should("not.be.checked");
+  //     // reference the .toggle-all element again
+  //     // and make sure its not checked
+  //     cy.get("@toggleAll").should("not.be.checked");
 
-      // reference the first todo again and now toggle it
-      cy.get("@firstTodo").find(".toggle").check();
+  //     // reference the first todo again and now toggle it
+  //     cy.get("@firstTodo").find(".toggle").check();
 
-      // assert the toggle all is checked again
-      cy.get("@toggleAll").should("be.checked");
-    });
-  });
+  //     // assert the toggle all is checked again
+  //     cy.get("@toggleAll").should("be.checked");
+  //   });
+  // });
 });

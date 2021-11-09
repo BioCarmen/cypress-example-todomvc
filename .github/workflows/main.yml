@@ -3,7 +3,7 @@ on:
   pull_request:
     branches:
       - master
-      - develop
+      # - develop
 jobs:
   find-out:
     runs-on: windows-latest
@@ -14,7 +14,7 @@ jobs:
         run: |
           echo "[B] github.ref: ${{github.event.pull_request.head.ref}} ${{github.base_ref}}"
   cypress-run:
-    # if: github.event.pull_request.head.ref == 'develop'
+    if: github.event.pull_request.head.ref == 'develop'
     runs-on: windows-latest
     strategy:
       # when one test fails, DO NOT cancel the other

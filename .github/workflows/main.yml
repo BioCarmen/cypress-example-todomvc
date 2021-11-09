@@ -48,7 +48,7 @@ jobs:
     needs: cypress-run
     steps:
       - name: Check all cypress test matrix status
-        if: ${{ needs.cypress-run.result != 'success' }}
+        if: ${{ needs.cypress-run.result != 'success' || needs.cypress-run.result != 'skipped' }}
         run: exit 1
     # - name: Run E2E tests
     #   uses: cypress-io/github-action@v2

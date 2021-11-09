@@ -47,7 +47,9 @@ jobs:
     runs-on: windows-latest
     needs: cypress-run
     steps:
-      - run: echo Done!
+      - name: "cypress-pass"
+        run: |
+          echo "Done!"
     # - name: Run E2E tests
     #   uses: cypress-io/github-action@v2
     #   with:

@@ -13,7 +13,7 @@ jobs:
         run: |
           echo "[B] github.ref: ${{github.event.pull_request.head.ref}} ${{github.base_ref}}"
   cypress-run:
-    if: github.ref == 'refs/heads/develop' || github.event.pull_request.base.ref == 'develop'
+    if: github.event.pull_request.head.ref == 'develop'
     runs-on: windows-latest
     steps:
       - name: Checkout

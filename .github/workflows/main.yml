@@ -48,7 +48,6 @@ jobs:
     needs: cypress-run
     steps:
       - run: echo Done!
-
     # - name: Run E2E tests
     #   uses: cypress-io/github-action@v2
     #   with:

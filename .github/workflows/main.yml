@@ -42,14 +42,11 @@ jobs:
           # Recommended: pass the GitHub token lets this action correctly
           # determine the unique run id necessary to re-run the checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Cypress pass
   cypress-pass:
     runs-on: windows-latest
     needs: cypress-run
     steps:
-      - name: "cypress-pass"
-        run: |
-          echo "Done!"
+      - run: echo Done!
     # - name: Run E2E tests
     #   uses: cypress-io/github-action@v2
     #   with:

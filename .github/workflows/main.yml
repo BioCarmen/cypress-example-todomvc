@@ -34,17 +34,19 @@ jobs:
           record: true
           parallel: true
           group: "Actions example"
+          start: "npm run test:ci:record"
+          wait-on: "http://localhost:8888"
         env:
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: "be2efe05-65a6-477e-ba04-9ed19fd53a83"
           # Recommended: pass the GitHub token lets this action correctly
           # determine the unique run id necessary to re-run the checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Run E2E tests
-        uses: cypress-io/github-action@v2
-        with:
-          start: "npm run test:ci:record"
-          wait-on: "http://localhost:8888"
-          # let's see if the Test Runner handles url in the config
-          # https://github.com/cypress-io/cypress/issues/5466
-          config: baseUrl=http://localhost:8888
+      # - name: Run E2E tests
+      #   uses: cypress-io/github-action@v2
+      #   with:
+      #     start: "npm run test:ci:record"
+      #     wait-on: "http://localhost:8888"
+      #     # let's see if the Test Runner handles url in the config
+      #     # https://github.com/cypress-io/cypress/issues/5466
+      #     config: baseUrl=http://localhost:8888

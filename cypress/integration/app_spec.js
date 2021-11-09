@@ -119,22 +119,22 @@ describe("TodoMVC - React", function () {
       cy.get(".new-todo").should("have.text", "");
     });
 
-    it("should append new items to the bottom of the list", function () {
-      // this is an example of a custom command
-      // defined in cypress/support/commands.js
-      cy.createDefaultTodos().as("todos");
+    // it("should append new items to the bottom of the list", function () {
+    //   // this is an example of a custom command
+    //   // defined in cypress/support/commands.js
+    //   cy.createDefaultTodos().as("todos");
 
-      // even though the text content is split across
-      // multiple <span> and <strong> elements
-      // `cy.contains` can verify this correctly
-      cy.get(".todo-count").contains("3 items left");
+    //   // even though the text content is split across
+    //   // multiple <span> and <strong> elements
+    //   // `cy.contains` can verify this correctly
+    //   cy.get(".todo-count").contains("3 items left");
 
-      cy.get("@todos").eq(0).find("label").should("contain", TODO_ITEM_ONE);
+    //   cy.get("@todos").eq(0).find("label").should("contain", TODO_ITEM_ONE);
 
-      cy.get("@todos").eq(1).find("label").should("contain", TODO_ITEM_TWO);
+    //   cy.get("@todos").eq(1).find("label").should("contain", TODO_ITEM_TWO);
 
-      cy.get("@todos").eq(2).find("label").should("contain", TODO_ITEM_THREE);
-    });
+    //   cy.get("@todos").eq(2).find("label").should("contain", TODO_ITEM_THREE);
+    // });
 
     it("should trim text input", function () {
       // this is an example of another custom command

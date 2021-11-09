@@ -93,7 +93,7 @@ describe("TodoMVC - React", function () {
     // https://on.cypress.io/should
     // https://on.cypress.io/as
 
-    it("should allow me to add todo items", function () {
+    it.skip("should allow me to add todo items", function () {
       // create 1st todo
       cy.get(".new-todo").type(TODO_ITEM_ONE).type("{enter}");
 
@@ -113,7 +113,7 @@ describe("TodoMVC - React", function () {
         .should("contain", TODO_ITEM_TWO);
     });
 
-    it("should clear text input field when an item is added", function () {
+    it.skip("should clear text input field when an item is added", function () {
       cy.get(".new-todo").type(TODO_ITEM_ONE).type("{enter}");
 
       cy.get(".new-todo").should("have.text", "");
@@ -150,7 +150,7 @@ describe("TodoMVC - React", function () {
     //   cy.get(".todo-list li").eq(0).should("have.text", TODO_ITEM_ONE);
     // });
 
-    it("should show #main and #footer when items added", function () {
+    it.skip("should show #main and #footer when items added", function () {
       cy.createTodo(TODO_ITEM_ONE);
       cy.get(".main").should("be.visible");
       cy.get(".footer").should("be.visible");

@@ -43,10 +43,13 @@ jobs:
           # determine the unique run id necessary to re-run the checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   cypress-pass:
+    if: ${{ always() }}
     runs-on: windows-latest
     needs: cypress-run
     steps:
-      - run: echo Done!
+      - name: Check all cypress test matrix status
+        if: ${{ needs.cypress-run.result != 'success' }}
+        run: exit 1
     # - name: Run E2E tests
     #   uses: cypress-io/github-action@v2
     #   with:

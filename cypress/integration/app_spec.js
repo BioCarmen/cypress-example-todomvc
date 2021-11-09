@@ -218,5 +218,5 @@ describe("TodoMVC - React", function () {
   //     // assert the toggle all is checked again
   //     cy.get("@toggleAll").should("be.checked");
   //   });
-  });
+  // });
 });

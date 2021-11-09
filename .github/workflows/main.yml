@@ -3,7 +3,7 @@ on:
   pull_request:
     branches:
       - master
-      # - develop
+      - develop
 jobs:
   find-out:
     runs-on: windows-latest

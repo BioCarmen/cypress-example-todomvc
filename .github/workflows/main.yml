@@ -4,6 +4,7 @@ on:
     branches:
       - master
       - develop
+    types: [labeled]
 jobs:
   find-out:
     runs-on: windows-latest
@@ -14,7 +15,7 @@ jobs:
         run: |
           echo "[B] github.ref: ${{github.event.pull_request.head.ref}} ${{github.base_ref}}"
   cypress-run:
-    if: github.event.pull_request.head.ref == 'develop'
+    if: github.event.pull_request.head.ref == 'develop' || github.event.label.name == 'Run Tests'
     runs-on: windows-latest
     strategy:
       # when one test fails, DO NOT cancel the other

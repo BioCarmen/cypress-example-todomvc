@@ -55,14 +55,6 @@ jobs:
       - name: Check all cypress test matrix status
         if: ${{ needs.jest-run.result != 'success' && needs.jest-run.result != 'skipped' }}
         run: exit 1
-  cypress-pass-e2e:
-    if: ${{ always() }}
-    runs-on: windows-latest
-    needs: jest-run
-    steps:
-      - name: Check all cypress test matrix status
-        if: ${{ needs.jest-run.result != 'success' }}
-        run: exit 1
     # - name: Run E2E tests
     #   uses: cypress-io/github-action@v2
     #   with:

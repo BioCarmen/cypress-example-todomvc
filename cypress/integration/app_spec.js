@@ -65,7 +65,8 @@ describe("TodoMVC - React", function () {
       // get the currently focused element and assert
       // t
       // hat it has cla
-      // ss = "new-todo";
+      // ss
+      // = "new-todo";
       //
 
       // http://on.cypress.io/focused

@@ -63,7 +63,8 @@ describe("TodoMVC - React", function () {
   context("When page is initially opened", function () {
     it("should focus on the todo input field", function () {
       // get the currently focused element and assert
-      // that it has class='new-todo'
+      // that it has cla
+      // ss = "new-todo";
       //
 
       // http://on.cypress.io/focused

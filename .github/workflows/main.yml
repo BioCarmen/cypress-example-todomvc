@@ -16,7 +16,7 @@ jobs:
       - name: "step-log"
         run: |
           echo "[B] github.ref: ${{github.event.pull_request.head.ref}} ${{github.base_ref}}"
-  cypress-run:
+  jest-run:
     if: github.event.pull_request.head.ref == 'develop' || github.event.label.name == 'Run Tests'
     runs-on: windows-latest
     strategy:
@@ -45,15 +45,23 @@ jobs:
           # Recommended: pass the GitHub token lets this action correctly
           # determine the unique run id necessary to re-run the checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  cypress-pass:
+  jest-pass:
     if: ${{ always() }}
     runs-on: windows-latest
-    needs: cypress-run
+    needs: jest-run
     steps:
       - name: echo
-        run: echo "${{needs.cypress-run.result}} ${{needs.cypress-run.result != 'success' || needs.cypress-run.result != 'skipped' }}"
+        run: echo "${{needs.jest-run.result}} ${{needs.jest-run.result != 'success' || needs.jest-run.result != 'skipped' }}"
       - name: Check all cypress test matrix status
-        if: ${{ needs.cypress-run.result != 'success' && needs.cypress-run.result != 'skipped' }}
+        if: ${{ needs.jest-run.result != 'success' && needs.jest-run.result != 'skipped' }}
+        run: exit 1
+  cypress-pass-e2e:
+    if: ${{ always() }}
+    runs-on: windows-latest
+    needs: jest-run
+    steps:
+      - name: Check all cypress test matrix status
+        if: ${{ needs.jest-run.result != 'success' }}
         run: exit 1
     # - name: Run E2E tests
     #   uses: cypress-io/github-action@v2

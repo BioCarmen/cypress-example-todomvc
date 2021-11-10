@@ -3,6 +3,8 @@ on:
   workflow_dispatch:
   issue_comment:
     types: [created, edited]
+  pull_request:
+    types: [labeled]
 jobs:
   cypress-run-e2e:
     if: ${{ github.event_name == 'workflow_dispatch' || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' )) }}
@@ -41,7 +43,7 @@ jobs:
       - name: echo
         run: echo "${{needs.cypress-run-e2e.result}} ${{needs.cypress-run-e2e.result != 'success' || needs.cypress-run-e2e.result != 'skipped' }}"
       - name: Check all cypress test matrix status
-        if: ${{ needs.cypress-run-e2e.result != 'success' }}
+        if: ${{ needs.cypress-run-e2e.result != 'success' && needs.cypress-run-e2e.result != 'skipped' }}
         run: exit 1
     # - name: Run E2E tests
     #   uses: cypress-io/github-action@v2

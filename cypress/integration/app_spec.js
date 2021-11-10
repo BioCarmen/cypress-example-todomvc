@@ -65,6 +65,7 @@ describe("TodoMVC - React", function () {
       // get the currently focused element and assert
       // that it has class='new-todo'
       //
+
       // http://on.cypress.io/focused
       cy.focused().should("have.class", "new-todo");
     });

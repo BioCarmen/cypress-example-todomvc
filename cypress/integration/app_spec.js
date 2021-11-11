@@ -64,7 +64,8 @@ describe("TodoMVC - React", function () {
     it("should focus on the todo input field", function () {
       // get the currently focused element and assert
       // t
-      // hat it has cla
+      // hat it
+      // has cla
       // ss = "new-todo";
 
       //

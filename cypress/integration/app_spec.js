@@ -66,6 +66,7 @@ describe("TodoMVC - React", function () {
       // t
       // hat it has cla
       // ss = "new-todo";
+
       //
 
       // http://on.cypress.io/focused

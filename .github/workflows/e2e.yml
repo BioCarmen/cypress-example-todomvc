@@ -85,7 +85,7 @@ jobs:
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}
-          context: "e2e run"
+          context: "e2e run - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           description: "Passed"
           state: "success"
           sha: ${{ github.event.pull_request.head.sha || needs.cypress-run-e2e.outputs.pr_sha }}
@@ -94,7 +94,7 @@ jobs:
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}
-          context: "e2e run"
+          context: "e2e run - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           description: "Failure"
           state: "failure"
           sha: ${{ github.event.pull_request.head.sha || needs.cypress-run-e2e.outputs.pr_sha }}

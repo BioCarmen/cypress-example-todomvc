@@ -19,19 +19,27 @@ jobs:
         # run 3 copies of the current job in parallel
         containers: [1, 2, 3]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - uses: khan/pull-request-comment-trigger@master
-        id: check
+      - name: Extracting PR route
+        if: ${{ github.event.issue.pull_request }}
+        id: extracting_route
+        run: |
+          echo "::set-output name=route::$(echo ${{ github.event.issue.pull_request.url }}  | sed s-https://api.github.com--)"
+          echo0 "${{ github.event.issue.pull_request }} ${{ github.event.issue.pull_request.head.sha }}"
+      - name: Getting PR data
+        if: ${{ github.event.issue.pull_request }}
+        id: pr_data
+        uses: octokit/request-action@v2.x
         with:
-          trigger: "run cypress"
-          reaction: rocket
+          route: GET ${{ steps.extracting_route.outputs.route }}
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      # - run: 'echo Found it!'
-      #   if: steps.check.outputs.triggered == 'true'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout PRed branch
+        uses: actions/checkout@v2
+        if: ${{ github.event.issue.pull_request }}
+        with:
+          ref: ${{ fromJson(steps.pr_data.outputs.data).head.ref }}
       - name: Cypress run
-        if: steps.check.outputs.triggered == 'true'
         uses: cypress-io/github-action@v2
         with:
           record: true
@@ -54,7 +62,13 @@ jobs:
         run: echo "${{needs.cypress-run-e2e.result}} ${{needs.cypress-run-e2e.result != 'success' || needs.cypress-run-e2e.result != 'skipped' }}"
       - name: Check all cypress test matrix status
         if: ${{ needs.cypress-run-e2e.result != 'success' && needs.cypress-run-e2e.result != 'skipped' }}
-        run: exit 1
+        # run: |
+        #   curl --request POST \
+        #   --url https://api.github.com/repos/OWNER/REPO/statuses/${{ sha }} \
+        #   --header 'authorization: token ${{ secrets.PAT }}' \
+        #   --header 'content-type: application/json' \
+        #   --data '{"state": "failure","target_url": "https://example.com/build/status","description": "The tests failed!","context": "ci/tests"}'
+
     # - name: Run E2E tests
     #   uses: cypress-io/github-action@v2
     #   with:

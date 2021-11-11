@@ -75,8 +75,8 @@ jobs:
     steps:
       - name: echo
         run: echo "${{needs.cypress-run-e2e.result}} ${{needs.cypress-run-e2e.result != 'success' || needs.cypress-run-e2e.result != 'skipped' }}"
-      - name: Check all cypress test matrix status
-        # if: ${{ needs.cypress-run-e2e.result != 'success' && needs.cypress-run-e2e.result != 'skipped' }}
+      - name: Pass all cypress test matrix status
+        if: ${{ needs.cypress-run-e2e.result != 'success' && needs.cypress-run-e2e.result != 'skipped' }}
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}
@@ -84,12 +84,12 @@ jobs:
           description: "Passed / skipped"
           state: "success"
           sha: ${{ needs.cypress-run-e2e.outputs.pr_sha }}
-
-  # - name: Run E2E tests
-  #   uses: cypress-io/github-action@v2
-  #   with:
-  #     start: "npm run test:ci:record"
-  #     wait-on: "http://localhost:8888"
-  #     # let's see if the Test Runner handles url in the config
-  #     # https://github.com/cypress-io/cypress/issues/5466
-  #     config: baseUrl=http://localhost:8888
+      - name: Fail all cypress test matrix status
+        if: ${{ needs.cypress-run-e2e.result == 'failure' }}
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{secrets.GITHUB_TOKEN}}
+          context: "e2e run"
+          description: "Failure"
+          state: "failure"
+          sha: ${{ needs.cypress-run-e2e.outputs.pr_sha }}

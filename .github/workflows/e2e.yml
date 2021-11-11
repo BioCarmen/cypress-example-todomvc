@@ -17,9 +17,9 @@ jobs:
       fail-fast: false
       matrix:
         # run 3 copies of the current job in parallel
-        containers: [1, 2, 3]
+        containers: [1, 2]
     outputs:
-      pr_sha: ${{ steps.pr_sha.output.pr_sha }}
+      pr_sha: ${{ steps.pr_sha.outputs.pr_sha }}
     steps:
       - name: Extracting PR route
         if: ${{ github.event.issue.pull_request }}
@@ -76,7 +76,7 @@ jobs:
       - name: echo
         run: echo "${{needs.cypress-run-e2e.result}} ${{needs.cypress-run-e2e.result != 'success' || needs.cypress-run-e2e.result != 'skipped' }}"
       - name: Check all cypress test matrix status
-        if: ${{ needs.cypress-run-e2e.result != 'success' && needs.cypress-run-e2e.result != 'skipped' }}
+        # if: ${{ needs.cypress-run-e2e.result != 'success' && needs.cypress-run-e2e.result != 'skipped' }}
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}

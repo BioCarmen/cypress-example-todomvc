@@ -39,6 +39,11 @@ jobs:
         if: ${{ github.event.issue.pull_request }}
         with:
           ref: ${{ fromJson(steps.pr_data.outputs.data).head.ref }}
+      - name: Get PR sha
+        if: ${{ github.event.issue.pull_request }}
+        id: pr_sha
+        run: |
+          echo "sha ${{ toJSON(steps.pr_data.outputs.data) }}"
       - name: Run the action # You would run your tests before this using the output to set state/desc
         uses: Sibz/github-status-action@v1
         with:

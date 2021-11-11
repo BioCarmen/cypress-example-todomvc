@@ -6,7 +6,7 @@ on:
     types: [created, edited]
 jobs:
   cypress-run-e2e:
-    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' )) }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' )) }}
     runs-on: windows-latest
     strategy:
       # when one test fails, DO NOT cancel the other

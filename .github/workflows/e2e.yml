@@ -48,10 +48,10 @@ jobs:
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}
-          context: "Test run"
+          context: "e2e run"
           description: "Passed"
           state: "success"
-          sha: ${{ github.event.issue.pull_request.commit_id || github.sha}}
+          sha: ${{ steps.pr_data.outputs.data.head.sha }}
   #     - name: Cypress run
   #       uses: cypress-io/github-action@v2
   #       with:

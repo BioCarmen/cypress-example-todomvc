@@ -71,8 +71,15 @@ jobs:
           # Recommended: pass the GitHub token lets this action correctly
           # determine the unique run id necessary to re-run the checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  cypress-pass-e2e:
-    if: ${{ always() }}
+  cypress-pass-required:
+    if: success()
+    runs-on: ubuntu-20.04
+    needs: test_e2e
+    steps:
+      - run: |
+          echo "e2e pass"
+  cypress-pass-e2e-optional:
+    if: ${{ github.event.issue.pull_request }}
     runs-on: windows-latest
     needs: cypress-run-e2e
     steps:

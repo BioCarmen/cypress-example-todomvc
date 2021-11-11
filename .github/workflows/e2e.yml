@@ -20,8 +20,18 @@ jobs:
         containers: [1, 2, 3]
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+      - uses: khan/pull-request-comment-trigger@master
+        id: check
+        with:
+          trigger: "run cypress"
+          reaction: rocket
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      # - run: 'echo Found it!'
+      #   if: steps.check.outputs.triggered == 'true'
       - name: Cypress run
+        if: steps.check.outputs.triggered == 'true'
         uses: cypress-io/github-action@v2
         with:
           record: true

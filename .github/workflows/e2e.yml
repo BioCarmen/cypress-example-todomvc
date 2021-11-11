@@ -51,7 +51,7 @@ jobs:
           context: "e2e run"
           description: "Passed"
           state: "success"
-          sha: ${{ steps.pr_data.outputs.data.head.sha }}
+          sha: ${{ fromJson(steps.pr_data.outputs.data).head.sha }}
   #     - name: Cypress run
   #       uses: cypress-io/github-action@v2
   #       with:

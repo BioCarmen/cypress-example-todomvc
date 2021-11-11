@@ -75,8 +75,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   cypress-pass-required:
     if: success()
-    runs-on: ubuntu-20.04
-    needs: test_e2e
+    runs-on: windows-latest
+    needs: cypress-run-e2e
     steps:
       - run: |
           echo "e2e pass"

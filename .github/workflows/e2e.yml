@@ -1,11 +1,14 @@
 name: End-to-end tests
 on:
   workflow_dispatch:
+  pull_request:
+    branches:
+      - master
   issue_comment:
     types: [created, edited]
 jobs:
   cypress-run-e2e:
-    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' )) }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'develop' || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' )) }}
     runs-on: windows-latest
     strategy:
       # when one test fails, DO NOT cancel the other
@@ -39,6 +42,9 @@ jobs:
         if: ${{ github.event.issue.pull_request }}
         with:
           ref: ${{ fromJson(steps.pr_data.outputs.data).head.ref }}
+      # if trigger on pr
+      - uses: actions/checkout@v2
+        if: ${{ !github.event.issue.pull_request }}
       - name: Get PR sha
         if: ${{ github.event.issue.pull_request }}
         id: pr_sha
@@ -46,6 +52,7 @@ jobs:
           echo "::set-output name=pr_sha::${{ fromJson(steps.pr_data.outputs.data).head.sha }}"
       - name: Run the action - pending # You would run your tests before this using the output to set state/desc
         uses: Sibz/github-status-action@v1
+        if: ${{ github.event.issue.pull_request }}
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}
           context: "e2e run"
@@ -66,8 +73,15 @@ jobs:
           # Recommended: pass the GitHub token lets this action correctly
           # determine the unique run id necessary to re-run the checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  cypress-pass-e2e:
-    if: ${{ always() }}
+  cypress-pass-required:
+    if: success()
+    runs-on: windows-latest
+    needs: cypress-run-e2e
+    steps:
+      - run: |
+          echo "e2e pass"
+  cypress-pass-e2e-optional:
+    if: ${{ github.event.issue.pull_request }}
     runs-on: windows-latest
     needs: cypress-run-e2e
     steps:
@@ -81,7 +95,7 @@ jobs:
           context: "e2e run"
           description: "Passed"
           state: "success"
-          sha: ${{ needs.cypress-run-e2e.outputs.pr_sha }}
+          sha: ${{ github.event.pull_request.head.sha || needs.cypress-run-e2e.outputs.pr_sha }}
       - name: Fail all cypress test matrix status
         if: ${{ needs.cypress-run-e2e.result == 'failure' }}
         uses: Sibz/github-status-action@v1
@@ -90,4 +104,4 @@ jobs:
           context: "e2e run"
           description: "Failure"
           state: "failure"
-          sha: ${{ needs.cypress-run-e2e.outputs.pr_sha }}
+          sha: ${{ github.event.pull_request.head.sha || needs.cypress-run-e2e.outputs.pr_sha }}

@@ -18,6 +18,8 @@ jobs:
       matrix:
         # run 3 copies of the current job in parallel
         containers: [1, 2, 3]
+    outputs:
+      pr_sha: ${{ steps.pr_sha.output.pr_sha }}
     steps:
       - name: Extracting PR route
         if: ${{ github.event.issue.pull_request }}
@@ -43,44 +45,45 @@ jobs:
         if: ${{ github.event.issue.pull_request }}
         id: pr_sha
         run: |
-          echo "sha ${{ toJSON(steps.pr_data.outputs.data) }}"
-      - name: Run the action # You would run your tests before this using the output to set state/desc
+          echo "::set-output name=pr_sha::${{ fromJson(steps.pr_data.outputs.data).head.sha }}"
+      # - name: Run the action # You would run your tests before this using the output to set state/desc
+      #   uses: Sibz/github-status-action@v1
+      #   with:
+      #     authToken: ${{secrets.GITHUB_TOKEN}}
+      #     context: "e2e run"
+      #     description: "Passed"
+      #     state: "success"
+      #     sha: ${{ fromJson(steps.pr_data.outputs.data).head.sha }}
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          record: true
+          parallel: true
+          group: "Actions example"
+          start: "npm run test:ci:record"
+          wait-on: "http://localhost:8888"
+        env:
+          # pass the Dashboard record key as an environment variable
+          CYPRESS_RECORD_KEY: "9e0a0d13-a3fb-43e2-bccd-85f299345adb"
+          # Recommended: pass the GitHub token lets this action correctly
+          # determine the unique run id necessary to re-run the checks
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  cypress-pass-e2e:
+    if: ${{ always() }}
+    runs-on: windows-latest
+    needs: cypress-run-e2e
+    steps:
+      - name: echo
+        run: echo "${{needs.cypress-run-e2e.result}} ${{needs.cypress-run-e2e.result != 'success' || needs.cypress-run-e2e.result != 'skipped' }}"
+      - name: Check all cypress test matrix status
+        if: ${{ needs.cypress-run-e2e.result != 'success' && needs.cypress-run-e2e.result != 'skipped' }}
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}
           context: "e2e run"
-          description: "Passed"
+          description: "Passed / skipped"
           state: "success"
-          sha: ${{ fromJson(steps.pr_data.outputs.data).head.sha }}
-  #     - name: Cypress run
-  #       uses: cypress-io/github-action@v2
-  #       with:
-  #         record: true
-  #         parallel: true
-  #         group: "Actions example"
-  #         start: "npm run test:ci:record"
-  #         wait-on: "http://localhost:8888"
-  #       env:
-  #         # pass the Dashboard record key as an environment variable
-  #         CYPRESS_RECORD_KEY: "be2efe05-65a6-477e-ba04-9ed19fd53a83"
-  #         # Recommended: pass the GitHub token lets this action correctly
-  #         # determine the unique run id necessary to re-run the checks
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  # cypress-pass-e2e:
-  #   if: ${{ always() }}
-  #   runs-on: windows-latest
-  #   needs: cypress-run-e2e
-  #   steps:
-  #     - name: echo
-  #       run: echo "${{needs.cypress-run-e2e.result}} ${{needs.cypress-run-e2e.result != 'success' || needs.cypress-run-e2e.result != 'skipped' }}"
-  # - name: Check all cypress test matrix status
-  #   if: ${{ needs.cypress-run-e2e.result != 'success' && needs.cypress-run-e2e.result != 'skipped' }}
-  # run: |
-  #   curl --request POST \
-  #   --url https://api.github.com/repos/OWNER/REPO/statuses/${{ sha }} \
-  #   --header 'authorization: token ${{ secrets.PAT }}' \
-  #   --header 'content-type: application/json' \
-  #   --data '{"state": "failure","target_url": "https://example.com/build/status","description": "The tests failed!","context": "ci/tests"}'
+          sha: ${{ needs.cypress-run-e2e.outputs.pr_sha }}
 
   # - name: Run E2E tests
   #   uses: cypress-io/github-action@v2

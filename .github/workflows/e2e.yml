@@ -24,7 +24,7 @@ jobs:
         id: extracting_route
         run: |
           echo "::set-output name=route::$(echo ${{ github.event.issue.pull_request.url }}  | sed s-https://api.github.com--)"
-          echo "${{ github.event.issue.pull_request }} ${{ github.event.issue.pull_request.head.sha }}"
+          echo "sha ${{ github.event.issue.pull_request }}"
       - name: Getting PR data
         if: ${{ github.event.issue.pull_request }}
         id: pr_data

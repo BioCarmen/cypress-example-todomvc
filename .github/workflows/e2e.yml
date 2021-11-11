@@ -44,14 +44,14 @@ jobs:
         id: pr_sha
         run: |
           echo "::set-output name=pr_sha::${{ fromJson(steps.pr_data.outputs.data).head.sha }}"
-      # - name: Run the action # You would run your tests before this using the output to set state/desc
-      #   uses: Sibz/github-status-action@v1
-      #   with:
-      #     authToken: ${{secrets.GITHUB_TOKEN}}
-      #     context: "e2e run"
-      #     description: "Passed"
-      #     state: "success"
-      #     sha: ${{ fromJson(steps.pr_data.outputs.data).head.sha }}
+      - name: Run the action - pending # You would run your tests before this using the output to set state/desc
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{secrets.GITHUB_TOKEN}}
+          context: "e2e run"
+          description: "Pending"
+          state: "pending"
+          sha: ${{ fromJson(steps.pr_data.outputs.data).head.sha }}
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:

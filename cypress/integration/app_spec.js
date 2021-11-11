@@ -73,7 +73,7 @@ describe("TodoMVC - React", function () {
       //
 
       // http://on.cypress.io/focused
-      cy.focused().should("have.class", "new-toxdo");
+      cy.focused().should("have.class", "new-todo");
     });
   });
 

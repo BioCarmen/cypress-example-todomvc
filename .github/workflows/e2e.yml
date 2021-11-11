@@ -60,14 +60,14 @@ jobs:
     steps:
       - name: echo
         run: echo "${{needs.cypress-run-e2e.result}} ${{needs.cypress-run-e2e.result != 'success' || needs.cypress-run-e2e.result != 'skipped' }}"
-      - name: Check all cypress test matrix status
-        if: ${{ needs.cypress-run-e2e.result != 'success' && needs.cypress-run-e2e.result != 'skipped' }}
-        # run: |
-        #   curl --request POST \
-        #   --url https://api.github.com/repos/OWNER/REPO/statuses/${{ sha }} \
-        #   --header 'authorization: token ${{ secrets.PAT }}' \
-        #   --header 'content-type: application/json' \
-        #   --data '{"state": "failure","target_url": "https://example.com/build/status","description": "The tests failed!","context": "ci/tests"}'
+      # - name: Check all cypress test matrix status
+      #   if: ${{ needs.cypress-run-e2e.result != 'success' && needs.cypress-run-e2e.result != 'skipped' }}
+      # run: |
+      #   curl --request POST \
+      #   --url https://api.github.com/repos/OWNER/REPO/statuses/${{ sha }} \
+      #   --header 'authorization: token ${{ secrets.PAT }}' \
+      #   --header 'content-type: application/json' \
+      #   --data '{"state": "failure","target_url": "https://example.com/build/status","description": "The tests failed!","context": "ci/tests"}'
 
     # - name: Run E2E tests
     #   uses: cypress-io/github-action@v2

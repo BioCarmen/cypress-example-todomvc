@@ -24,7 +24,7 @@ jobs:
         id: extracting_route
         run: |
           echo "::set-output name=route::$(echo ${{ github.event.issue.pull_request.url }}  | sed s-https://api.github.com--)"
-          echo "sha ${{ github.event.issue.pull_request }}"
+          echo "sha ${{ github.event.issue.pull_request.commit_id }}"
       - name: Getting PR data
         if: ${{ github.event.issue.pull_request }}
         id: pr_data
@@ -46,7 +46,7 @@ jobs:
           context: "Test run"
           description: "Passed"
           state: "success"
-          sha: ${{github.event.pull_request.head.sha || github.sha}}
+          sha: ${{ github.event.issue.pull_request.commit_id || github.sha}}
   #     - name: Cypress run
   #       uses: cypress-io/github-action@v2
   #       with:

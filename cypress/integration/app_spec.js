@@ -39,7 +39,8 @@ describe("TodoMVC - React", function () {
     // We've set our baseUrl to be http://localhost:8888
     // which is automatically prepended to cy.visit
     //
-    // https://on.cypress.io/api/visit
+    // https
+    // ://on.cypress.io/api/visit
     cy.visit("/");
   });
 

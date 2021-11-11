@@ -3,8 +3,6 @@ on:
   workflow_dispatch:
   issue_comment:
     types: [created, edited]
-  pull_request:
-    types: [labeled]
 jobs:
   cypress-run-e2e:
     if: ${{ github.event_name == 'workflow_dispatch' || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' )) }}
@@ -76,12 +74,12 @@ jobs:
       - name: echo
         run: echo "${{needs.cypress-run-e2e.result}} ${{needs.cypress-run-e2e.result != 'success' || needs.cypress-run-e2e.result != 'skipped' }}"
       - name: Pass all cypress test matrix status
-        if: ${{ needs.cypress-run-e2e.result == 'success' || needs.cypress-run-e2e.result == 'skipped' }}
+        if: ${{ needs.cypress-run-e2e.result == 'success' }}
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}
           context: "e2e run"
-          description: "Passed / skipped"
+          description: "Passed"
           state: "success"
           sha: ${{ needs.cypress-run-e2e.outputs.pr_sha }}
       - name: Fail all cypress test matrix status

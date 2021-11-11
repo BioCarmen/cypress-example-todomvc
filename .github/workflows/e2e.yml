@@ -86,7 +86,7 @@ jobs:
           context: "e2e run"
           description: "Passed"
           state: "success"
-          sha: ${{ needs.cypress-run-e2e.outputs.pr_sha }}
+          sha: ${{ github.event.pull_request.head.sha || needs.cypress-run-e2e.outputs.pr_sha }}
       - name: Fail all cypress test matrix status
         if: ${{ needs.cypress-run-e2e.result == 'failure' }}
         uses: Sibz/github-status-action@v1
@@ -95,4 +95,4 @@ jobs:
           context: "e2e run"
           description: "Failure"
           state: "failure"
-          sha: ${{ needs.cypress-run-e2e.outputs.pr_sha }}
+          sha: ${{ github.event.pull_request.head.sha || needs.cypress-run-e2e.outputs.pr_sha }}

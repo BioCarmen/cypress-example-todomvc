@@ -1,6 +1,7 @@
 name: End-to-end tests
 on:
   workflow_dispatch:
+  pull_request:
   issue_comment:
     types: [created, edited]
 jobs:
@@ -39,6 +40,9 @@ jobs:
         if: ${{ github.event.issue.pull_request }}
         with:
           ref: ${{ fromJson(steps.pr_data.outputs.data).head.ref }}
+      # if trigger on pr
+      - uses: actions/checkout@v2
+        if: ${{ !github.event.issue.pull_request }}
       - name: Get PR sha
         if: ${{ github.event.issue.pull_request }}
         id: pr_sha
@@ -46,6 +50,7 @@ jobs:
           echo "::set-output name=pr_sha::${{ fromJson(steps.pr_data.outputs.data).head.sha }}"
       - name: Run the action - pending # You would run your tests before this using the output to set state/desc
         uses: Sibz/github-status-action@v1
+        if: ${{ github.event.issue.pull_request }}
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}
           context: "e2e run"

@@ -76,7 +76,7 @@ jobs:
       - name: echo
         run: echo "${{needs.cypress-run-e2e.result}} ${{needs.cypress-run-e2e.result != 'success' || needs.cypress-run-e2e.result != 'skipped' }}"
       - name: Pass all cypress test matrix status
-        if: ${{ needs.cypress-run-e2e.result != 'success' && needs.cypress-run-e2e.result != 'skipped' }}
+        if: ${{ needs.cypress-run-e2e.result == 'success' && needs.cypress-run-e2e.result == 'skipped' }}
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}

@@ -59,6 +59,7 @@ jobs:
           description: "Pending"
           state: "pending"
           sha: ${{ fromJson(steps.pr_data.outputs.data).head.sha }}
+          target_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
@@ -85,16 +86,19 @@ jobs:
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}
-          context: "e2e run - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          context: "e2e run"
           description: "Passed"
           state: "success"
           sha: ${{ github.event.pull_request.head.sha || needs.cypress-run-e2e.outputs.pr_sha }}
+          target_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
       - name: Fail all cypress test matrix status
         if: ${{ needs.cypress-run-e2e.result == 'failure' }}
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}
-          context: "e2e run - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          context: "e2e run"
           description: "Failure"
           state: "failure"
           sha: ${{ github.event.pull_request.head.sha || needs.cypress-run-e2e.outputs.pr_sha }}
+          target_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

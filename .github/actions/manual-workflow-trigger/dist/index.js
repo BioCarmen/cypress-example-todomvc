@@ -9820,15 +9820,20 @@ const action = async () => {
     labelsToCheck,
     labels.filter((label) => labelsToCheck.includes(label)).length > 0
   );
+  const requiredLabels = labels.filter((label) =>
+    labelsToCheck.includes(label)
+  );
   if (labels.filter((label) => labelsToCheck.includes(label)).length > 0) {
     try {
       labelsToCheck.forEach(async (labelToCheck) => {
-        await client.issues.removeLabel({
-          owner: repo.owner.login,
-          repo: repo.name,
-          issue_number: context.payload.pull_request.number,
-          name: labelToCheck,
-        });
+        if (labels.includes(labelToCheck)) {
+          await client.issues.removeLabel({
+            owner: repo.owner.login,
+            repo: repo.name,
+            issue_number: context.payload.pull_request.number,
+            name: labelToCheck,
+          });
+        }
       });
     } catch (err) {
       console.error(err);

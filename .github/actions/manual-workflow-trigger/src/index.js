@@ -9,7 +9,6 @@ const action = async () => {
   const labels = context.payload.pull_request.labels;
   const labelsName = labels.map((label) => label.name);
   const repo = context.payload.repository;
-  console.log("labelsName", labelsName);
   const labelsToCheck = core.getInput("label", { required: true }).split(",");
 
   if (

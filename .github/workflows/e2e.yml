@@ -6,9 +6,20 @@ on:
   issue_comment:
     types: [created, edited]
 jobs:
+  check:
+    name: Check if job should run
+    runs-on: ubuntu-20.04
+    if: github.event.label.name == 'Run Jest and Cypress' || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' ))
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/manual-workflow-trigger
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          label: "Run Jest and Cypress,Run Jest"
   cypress-run-e2e:
-    if: ${{ (github.event.label.name == 'Run Jest and Cypress') || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' ))  }}
+    # if: ${{ (github.event.label.name == 'Run Jest and Cypress') || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' ))  }}
     runs-on: windows-latest
+    needs: check
     strategy:
       # when one test fails, DO NOT cancel the other
       # containers, because this will kill Cypress processes

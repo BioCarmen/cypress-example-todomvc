@@ -58,21 +58,21 @@ jobs:
     #       # Recommended: pass the GitHub token lets this action correctly
     #       # determine the unique run id necessary to re-run the checks
     #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  jest-pass:
-    if: ${{ always() }}
-    runs-on: windows-latest
-    needs: jest-run
-    steps:
-      - name: echo
-        run: echo "${{needs.jest-run.result}} ${{needs.jest-run.result != 'success' || needs.jest-run.result != 'skipped' }}"
-      - name: Check all cypress test matrix status
-        if: ${{ needs.jest-run.result != 'success' && needs.jest-run.result != 'skipped' }}
-        run: exit 1
-    # - name: Run E2E tests
-    #   uses: cypress-io/github-action@v2
-    #   with:
-    #     start: "npm run test:ci:record"
-    #     wait-on: "http://localhost:8888"
-    #     # let's see if the Test Runner handles url in the config
-    #     # https://github.com/cypress-io/cypress/issues/5466
-    #     config: baseUrl=http://localhost:8888
+  # jest-pass:
+  #   if: ${{ always() }}
+  #   runs-on: windows-latest
+  #   needs: jest-run
+  #   steps:
+  #     - name: echo
+  #       run: echo "${{needs.jest-run.result}} ${{needs.jest-run.result != 'success' || needs.jest-run.result != 'skipped' }}"
+  #     - name: Check all cypress test matrix status
+  #       if: ${{ needs.jest-run.result != 'success' && needs.jest-run.result != 'skipped' }}
+  #       run: exit 1
+  # - name: Run E2E tests
+  #   uses: cypress-io/github-action@v2
+  #   with:
+  #     start: "npm run test:ci:record"
+  #     wait-on: "http://localhost:8888"
+  #     # let's see if the Test Runner handles url in the config
+  #     # https://github.com/cypress-io/cypress/issues/5466
+  #     config: baseUrl=http://localhost:8888

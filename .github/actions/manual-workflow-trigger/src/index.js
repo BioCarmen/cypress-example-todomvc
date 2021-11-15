@@ -10,7 +10,10 @@ const action = async () => {
   const repo = context.payload.repository;
 
   const labelsToCheck = core.getInput("label", { required: true }).split(",");
-
+  console.log(
+    labelsToCheck,
+    labels.filter((label) => labelsToCheck.includes(label)).length > 0
+  );
   if (labels.filter((label) => labelsToCheck.includes(label)).length > 0) {
     try {
       labelsToCheck.forEach(async (labelToCheck) => {

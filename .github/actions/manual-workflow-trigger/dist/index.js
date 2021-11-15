@@ -9809,30 +9809,32 @@ const { context } = __webpack_require__(469);
 const { Octokit } = __webpack_require__(889);
 
 const action = async () => {
-    const token = core.getInput('github-token', { required: true });
-    const client = new Octokit({ auth: token });
+  const token = core.getInput("github-token", { required: true });
+  const client = new Octokit({ auth: token });
 
-    const labels = context.payload.pull_request.labels;
-    const repo = context.payload.repository;
+  const labels = context.payload.pull_request.labels;
+  const repo = context.payload.repository;
 
-    const labelToCheck = core.getInput('label', { required: true });
+  const labelsToCheck = core.getInput("label", { required: true }).split(",");
 
-    if (labels.filter((label) => label.name === labelToCheck).length > 0) {
-        try {
-            await client.issues.removeLabel({
-                owner: repo.owner.login,
-                repo: repo.name,
-                issue_number: context.payload.pull_request.number,
-                name: labelToCheck,
-            });
-        } catch (err) {
-            console.error(err);
-        }
-        core.setOutput('run', 'true');
-    } else {
-        core.setFailed('Not running');
-        core.setOutput('run', 'false');
+  if (labels.filter((label) => labelsToCheck.includes(label)).length > 0) {
+    try {
+      labelsToCheck.forEach(async (labelToCheck) => {
+        await client.issues.removeLabel({
+          owner: repo.owner.login,
+          repo: repo.name,
+          issue_number: context.payload.pull_request.number,
+          name: labelToCheck,
+        });
+      });
+    } catch (err) {
+      console.error(err);
     }
+    core.setOutput("run", "true");
+  } else {
+    core.setFailed("Not running");
+    core.setOutput("run", "false");
+  }
 };
 action();
 

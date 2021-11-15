@@ -9816,13 +9816,16 @@ const action = async () => {
   const repo = context.payload.repository;
 
   const labelsToCheck = core.getInput("label", { required: true }).split(",");
+  const required = labels.filter((label) => {
+    console.log("check require", label, labelsToCheck.includes(label));
+    return labelsToCheck.includes(label);
+  });
   console.log(
+    required,
     labelsToCheck,
     labels.filter((label) => labelsToCheck.includes(label)).length > 0
   );
-  const requiredLabels = labels.filter((label) =>
-    labelsToCheck.includes(label)
-  );
+
   if (labels.filter((label) => labelsToCheck.includes(label)).length > 0) {
     try {
       labelsToCheck.forEach(async (labelToCheck) => {

@@ -11,16 +11,16 @@ const action = async () => {
 
   const labelsToCheck = core.getInput("label", { required: true }).split(",");
   const required = labels.filter((label) => {
-    console.log("check require", label, labelsToCheck.includes(label));
-    return labelsToCheck.includes(label);
+    console.log("check require", label, labelsToCheck.includes(label.name));
+    return labelsToCheck.includes(label.name);
   });
   console.log(
     required,
     labelsToCheck,
-    labels.filter((label) => labelsToCheck.includes(label)).length > 0
+    labels.filter((label) => labelsToCheck.includes(label.name)).length > 0
   );
 
-  if (labels.filter((label) => labelsToCheck.includes(label)).length > 0) {
+  if (labels.filter((label) => labelsToCheck.includes(label.name)).length > 0) {
     try {
       labelsToCheck.forEach(async (labelToCheck) => {
         if (labels.includes(labelToCheck)) {

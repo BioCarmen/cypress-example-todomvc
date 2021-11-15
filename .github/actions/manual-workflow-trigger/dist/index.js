@@ -9813,18 +9813,10 @@ const action = async () => {
   const client = new Octokit({ auth: token });
 
   const labels = context.payload.pull_request.labels;
+  const labelsName = labels.map((label) => label.name);
   const repo = context.payload.repository;
-
+  console.log("labelsName", labelsName);
   const labelsToCheck = core.getInput("label", { required: true }).split(",");
-  const required = labels.filter((label) => {
-    console.log("check require", label, labelsToCheck.includes(label.name));
-    return labelsToCheck.includes(label.name);
-  });
-  console.log(
-    required,
-    labelsToCheck,
-    labels.filter((label) => labelsToCheck.includes(label.name)).length > 0
-  );
 
   if (labels.filter((label) => labelsToCheck.includes(label.name)).length > 0) {
     try {

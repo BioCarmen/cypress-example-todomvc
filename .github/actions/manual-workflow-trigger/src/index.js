@@ -12,10 +12,13 @@ const action = async () => {
   console.log("labelsName", labelsName);
   const labelsToCheck = core.getInput("label", { required: true }).split(",");
 
-  if (labels.filter((label) => labelsToCheck.includes(label.name)).length > 0) {
+  if (
+    labelsName.filter((labelName) => labelsToCheck.includes(labelName)).length >
+    0
+  ) {
     try {
       labelsToCheck.forEach(async (labelToCheck) => {
-        if (labels.includes(labelToCheck)) {
+        if (labelsName.includes(labelToCheck)) {
           await client.issues.removeLabel({
             owner: repo.owner.login,
             repo: repo.name,

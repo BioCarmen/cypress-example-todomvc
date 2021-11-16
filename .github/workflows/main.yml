@@ -17,7 +17,6 @@ jobs:
           label: "Run Jest"
   find-out:
     runs-on: windows-latest
-    if: success()
     needs: check
     steps:
       - name: "step-checkout"
@@ -28,7 +27,6 @@ jobs:
 
   jest-run:
     runs-on: windows-latest
-    if: success()
     needs: check
     steps:
       - name: "step-log"

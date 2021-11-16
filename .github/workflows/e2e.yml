@@ -2,14 +2,24 @@ name: End-to-end tests
 on:
   workflow_dispatch:
   pull_request:
-    branches:
-      - master
+    types: [labeled]
   issue_comment:
     types: [created, edited]
 jobs:
+  check:
+    name: Check if job should run
+    runs-on: ubuntu-20.04
+    if: github.event.label.name == 'Run Jest and Cypress' || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' ))
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/manual-workflow-trigger
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          label: "Run Jest and Cypress,Run Jest"
   cypress-run-e2e:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'develop' || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' )) }}
+    # if: ${{ (github.event.label.name == 'Run Jest and Cypress') || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' ))  }}
     runs-on: windows-latest
+    needs: check
     strategy:
       # when one test fails, DO NOT cancel the other
       # containers, because this will kill Cypress processes
@@ -75,7 +85,7 @@ jobs:
           # determine the unique run id necessary to re-run the checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   cypress-pass-e2e:
-    if: ${{ always()}}
+    # if: ${{ always()}}
     runs-on: windows-latest
     needs: cypress-run-e2e
     steps:

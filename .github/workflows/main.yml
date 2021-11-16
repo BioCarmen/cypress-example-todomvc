@@ -2,23 +2,32 @@ name: Main
 on:
   workflow_dispatch:
   pull_request:
-    branches:
-      - master
-      - develop
     types: [labeled]
 
 jobs:
+  check:
+    name: Check if job should run
+    runs-on: ubuntu-20.04
+    if: github.event.label.name == 'Run Jest and Cypress' ||  github.event.label.name == 'Run Jest'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/manual-workflow-trigger
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          label: "Run Jest and Cypress,Run Jest"
   find-out:
     runs-on: windows-latest
+    needs: check
     steps:
       - name: "step-checkout"
         uses: actions/checkout@v1
       - name: "step-log"
         run: |
           echo "[B] github.ref: ${{github.event.pull_request.head.ref}} ${{github.base_ref}}"
+
   jest-run:
-    if: github.event.pull_request.head.ref == 'develop' || github.event.label.name == 'Run Tests'
     runs-on: windows-latest
+    needs: check
     steps:
       - name: "step-log"
         run: |
@@ -49,21 +58,21 @@ jobs:
     #       # Recommended: pass the GitHub token lets this action correctly
     #       # determine the unique run id necessary to re-run the checks
     #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  jest-pass:
-    if: ${{ always() }}
-    runs-on: windows-latest
-    needs: jest-run
-    steps:
-      - name: echo
-        run: echo "${{needs.jest-run.result}} ${{needs.jest-run.result != 'success' || needs.jest-run.result != 'skipped' }}"
-      - name: Check all cypress test matrix status
-        if: ${{ needs.jest-run.result != 'success' && needs.jest-run.result != 'skipped' }}
-        run: exit 1
-    # - name: Run E2E tests
-    #   uses: cypress-io/github-action@v2
-    #   with:
-    #     start: "npm run test:ci:record"
-    #     wait-on: "http://localhost:8888"
-    #     # let's see if the Test Runner handles url in the config
-    #     # https://github.com/cypress-io/cypress/issues/5466
-    #     config: baseUrl=http://localhost:8888
+  # jest-pass:
+  #   if: ${{ always() }}
+  #   runs-on: windows-latest
+  #   needs: jest-run
+  #   steps:
+  #     - name: echo
+  #       run: echo "${{needs.jest-run.result}} ${{needs.jest-run.result != 'success' || needs.jest-run.result != 'skipped' }}"
+  #     - name: Check all cypress test matrix status
+  #       if: ${{ needs.jest-run.result != 'success' && needs.jest-run.result != 'skipped' }}
+  #       run: exit 1
+  # - name: Run E2E tests
+  #   uses: cypress-io/github-action@v2
+  #   with:
+  #     start: "npm run test:ci:record"
+  #     wait-on: "http://localhost:8888"
+  #     # let's see if the Test Runner handles url in the config
+  #     # https://github.com/cypress-io/cypress/issues/5466
+  #     config: baseUrl=http://localhost:8888

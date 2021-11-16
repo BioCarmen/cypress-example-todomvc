@@ -14,7 +14,8 @@ jobs:
       - uses: ./.github/actions/manual-workflow-trigger
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          label: "Run Jest"
+          label: "Run Jest,Run Jest and Cypress"
+
   find-out:
     runs-on: windows-latest
     needs: check

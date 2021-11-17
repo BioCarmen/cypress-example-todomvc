@@ -8,13 +8,14 @@ jobs:
   check:
     name: Check if job should run
     runs-on: ubuntu-20.04
-    if: github.event.label.name == 'Run Jest'
+    # if: github.event.label.name == 'Run Jest'
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/manual-workflow-trigger
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          label: "Run Jest"
+          label: "Run Jest,Run Jest and Cypress"
+
   find-out:
     runs-on: windows-latest
     needs: check

@@ -44,6 +44,7 @@ describe("TodoMVC - React", function () {
     //
     // ://on.cypress.io/api/visit
     cy.visit("/");
+    //
   });
 
   afterEach(() => {

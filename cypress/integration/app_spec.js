@@ -93,6 +93,7 @@ describe("TodoMVC - React", function () {
     it.skip("should allow me to add todo items", function () {
       // create 1st todo
       //
+      //
       cy.get(".new-todo").type(TODO_ITEM_ONE).type("{enter}");
 
       // make sure the 1st label contains the 1st todo text

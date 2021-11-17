@@ -60,7 +60,7 @@ describe("TodoMVC - React", function () {
   it("adds 2 todos", function () {
     cy.get(".new-todo").type("learn testing{enter}").type("be cool{enter}");
 
-    cy.get(".todo-list li").should("have.length", 2);
+    cy.get(".todo-list li").should("have.length", 1);
   });
 
   context("When page is initially opened", function () {
@@ -89,6 +89,7 @@ describe("TodoMVC - React", function () {
     // https://on.cypress.io/contains
     // https://on.cypress.io/should
     // https://on.cypress.io/as
+    //
 
     it.skip("should allow me to add todo items", function () {
       // create 1st todo

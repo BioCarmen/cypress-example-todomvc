@@ -106,7 +106,7 @@ jobs:
           sha: ${{ github.event.pull_request.head.sha || needs.cypress-run-e2e.outputs.pr_sha }}
           target_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
       - name: To main - Fail all cypress test matrix status
-        if: ${{ !github.event.issue.pull_request && needs.cypress-run-e2e.result == 'failure' }}
+        if: ${{ needs.cypress-run-e2e.result == 'failure' }}
         run: exit 1
       - name: PR - Fail all cypress test matrix status
         if: ${{ github.event.issue.pull_request && needs.cypress-run-e2e.result == 'failure' }}

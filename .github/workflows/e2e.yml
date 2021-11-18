@@ -74,7 +74,7 @@ jobs:
           sha: ${{ fromJson(steps.pr_data.outputs.data).head.sha }}
           target_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
       - name: Cypress run - Cypress Dashboard
-        if: ${{ github.event.pull_request.head.ref == 'develop' }}
+        # if: ${{ github.event.pull_request.head.ref == 'develop' }}
         uses: cypress-io/github-action@v2
         with:
           record: true

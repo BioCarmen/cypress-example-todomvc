@@ -35,7 +35,7 @@ jobs:
       pr_sha: ${{ steps.pr_sha.outputs.pr_sha }}
     steps:
       - name: Extracting PR route
-        if: ${{ github.event.issue.pull_request }}
+        # if: ${{ github.event.issue.pull_request }}
         id: extracting_route
         run: |
           echo "::set-output name=route::$(echo ${{ github.event.issue.pull_request.url }}  | sed s-https://api.github.com--)"

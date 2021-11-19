@@ -2,8 +2,8 @@ name: End-to-end tests
 on:
   workflow_dispatch:
   pull_request:
-    # branches:
-    #   - master
+    branches:
+      - master
     types: [labeled]
   issue_comment:
     types: [created, edited]
@@ -41,6 +41,7 @@ jobs:
           # echo "::set-output name=route::$(echo ${{ github.event.issue.pull_request.url }}  | sed s-https://api.github.com--)"
           # echo "sha ${{ toJSON(github.event.issue.pull_request) }}"
           echo "echo echo echo"
+          echo "hohoho"
       - name: Getting PR data
         if: ${{ github.event.issue.pull_request }}
         id: pr_data

@@ -18,10 +18,21 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           label: "Run Jest and Cypress"
+  matrix_prep:
+    runs-on: windows-latest
+    needs: check
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Set matrix for cypress Dashboard
+        id: set-matrix
+        run: |
+          branchName=$(echo '${{ github.ref }}' | sed 's,refs/heads/,,g')           
+          echo ::set-output name=matrix::${{secrets.CYPRESS_DASHBOARD_MATRIX}}"
   cypress-run-e2e:
     # if: ${{ (github.event.label.name == 'Run Jest and Cypress') || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' ))  }}
     runs-on: windows-latest
-    needs: check
+    needs: matrix_prep
     strategy:
       # when one test fails, DO NOT cancel the other
       # containers, because this will kill Cypress processes
@@ -30,7 +41,7 @@ jobs:
       fail-fast: false
       matrix:
         # run 3 copies of the current job in parallel
-        containers: [1, 2]
+        containers: ${{ needs.matrix_prep.outputs.matrix || [1, 2, 3, 4] }}
     outputs:
       pr_sha: ${{ steps.pr_sha.outputs.pr_sha }}
     steps:

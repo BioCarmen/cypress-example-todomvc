@@ -41,7 +41,7 @@ jobs:
       fail-fast: false
       matrix:
         # run 3 copies of the current job in parallel
-        containers: ${{ needs.matrix_prep.outputs.matrix }}
+        containers: ${{ formJSON(needs.matrix_prep.outputs.matrix) }}
     outputs:
       pr_sha: ${{ steps.pr_sha.outputs.pr_sha }}
     steps:

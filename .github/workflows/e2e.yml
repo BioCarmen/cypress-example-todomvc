@@ -27,7 +27,7 @@ jobs:
       - name: Set matrix for cypress Dashboard
         id: set-matrix
         run: |
-          echo "::set-output name=matrix::${{ [1,2,3] }}"
+          echo "::set-output name=matrix::[1,2,3]"
   cypress-run-e2e:
     # if: ${{ (github.event.label.name == 'Run Jest and Cypress') || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' ))  }}
     runs-on: windows-latest

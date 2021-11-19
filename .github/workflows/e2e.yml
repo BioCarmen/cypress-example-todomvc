@@ -28,7 +28,7 @@ jobs:
         id: set-matrix
         run: |
           branchName=$(echo '${{ github.ref }}' | sed 's,refs/heads/,,g')           
-          echo ::set-output name=matrix::${{secrets.CYPRESS_DASHBOARD_MATRIX}}"
+          echo "::set-output name=matrix::${{ secrets.CYPRESS_DASHBOARD_MATRIX }}"
   cypress-run-e2e:
     # if: ${{ (github.event.label.name == 'Run Jest and Cypress') || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' ))  }}
     runs-on: windows-latest

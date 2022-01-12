@@ -9,3 +9,14 @@ jobs:
     steps:
       - run: |
           echo "ready to tag and deploy"
+
+      - name: Create tag
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/test-tag',
+              sha: context.sha
+            })

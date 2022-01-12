@@ -1,0 +1,13 @@
+name: Main
+on:
+  push:
+    tags:
+      - "prod*"
+
+jobs:
+  check:
+    name: Check if job should run
+    runs-on: ubuntu-20.04
+    steps:
+      - run: |
+          echo "tag"

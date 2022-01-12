@@ -9,8 +9,8 @@ jobs:
     steps:
       - run: |
           echo "ready to tag and deploy"
-          echo ${{ github.event.release.tag_name }}
-
+          echo ${{ github.event.release }}
+          echo ${{ github.event}}
       # - name: Create tag
       #   uses: actions/github-script@v5
       #   with:

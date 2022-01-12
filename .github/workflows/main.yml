@@ -8,10 +8,10 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: |
-          echo "ready to tag and deploy"
-          t=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo $t
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
       # - name: Create tag
       #   uses: actions/github-script@v5
       #   with:

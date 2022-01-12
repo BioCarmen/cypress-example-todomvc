@@ -9,8 +9,8 @@ jobs:
     steps:
       - run: |
           echo "ready to tag and deploy"
-          echo ${{ github.event.release }}
-          echo ${{ github.event}}
+          t=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo $t
       # - name: Create tag
       #   uses: actions/github-script@v5
       #   with:

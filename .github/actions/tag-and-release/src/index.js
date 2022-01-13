@@ -7,13 +7,16 @@ const action = async () => {
   const client = new Octokit({ auth: token });
 
   const repo = context.payload.repository;
-
-  core.debug(repo);
-  const tags = await client.repos.listTags({
-    ...context.repo,
-    per_page: 100,
-    page: 1,
-  });
-  core.debug(tags);
+  try {
+    core.debug(repo);
+    const tags = await client.repos.listTags({
+      ...context.repo,
+      per_page: 100,
+      page: 1,
+    });
+    core.debug(tags);
+  } catch (error) {
+    core.debug(error);
+  }
 };
 action();

@@ -8,17 +8,19 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: git fetch --prune --unshallow
+      # - run: git fetch --prune --unshallow
       # - name: Dump GitHub context
       #   env:
       #     GITHUB_CONTEXT: ${{ toJSON(github) }}
       #   run: echo "$GITHUB_CONTEXT"
-      # - name: run script
-      #   run: |
-      #     sh ./test.sh
-      - uses: ./.github/actions/tag-and-release
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: run script
+        run: |
+        echo "Fetch tags"
+        git fetch --prune --tags
+        t=$(git describe --tags `git rev-list --tags --max-count=1`)
+        echo $t
+
+
 
       # - name: Create tag
       #   uses: actions/github-script@v5

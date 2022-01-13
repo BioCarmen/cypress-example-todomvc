@@ -1,5 +1,12 @@
 #!/bin/bash
 
+MESSAGE="0"
+VERSION="0"
+DRAFT="false"
+PRE="false"
+BRANCH="master"
+GITHUB_ACCESS_TOKEN="<YOUR_ACCESS_TOKEN>"
+
 # 1) Fetch the current release version
 
 echo "Fetch tags"
@@ -17,7 +24,7 @@ new_tag="prod-$TODAY-$version"
 echo $new_tag
 # 3) Add git tag
 echo "Add git tag $new_tag"
- git tag -a "$new_tag" -m "release $TODAY"
+git tag -a "$new_tag" -m "release $TODAY"
 
  # 4) Push the new tag
 echo "Push the tag"

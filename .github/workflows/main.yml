@@ -13,9 +13,13 @@ jobs:
       #   env:
       #     GITHUB_CONTEXT: ${{ toJSON(github) }}
       #   run: echo "$GITHUB_CONTEXT"
-      - name: run script
-        run: |
-          sh ./test.sh
+      # - name: run script
+      #   run: |
+      #     sh ./test.sh
+      - uses: ./.github/actions/tag-and-release
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
       # - name: Create tag
       #   uses: actions/github-script@v5
       #   with:

@@ -19,6 +19,11 @@ jobs:
           git fetch --prune --tags
           t=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo $t
+          TODAY=`date +%y-%m-%d`
+          echo $TODAY
+          version="01"
+          new_tag="prod-$TODAY-$version"
+          echo $new_tag
 
       # - name: Create tag
       #   uses: actions/github-script@v5

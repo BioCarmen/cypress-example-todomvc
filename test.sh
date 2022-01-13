@@ -16,5 +16,5 @@ version=01
 new_tag=`prod-$TODAY-$version`
 
   # 3) Add git tag
-  echo "Add git tag v$nnew_tag"
+  echo "Add git tag v$new_tag"
   git tag -a "$new_tag" -m "release $TODAY"

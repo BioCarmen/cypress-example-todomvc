@@ -12,9 +12,13 @@ echo $t
 
 TODAY=`date +%y-%m-%d`
 echo $TODAY
-version=01
-new_tag=`prod-$TODAY-$version`
+version="01"
+new_tag="prod-$TODAY-$version"
+echo $new_tag
+# 3) Add git tag
+echo "Add git tag $new_tag"
+ git tag -a "$new_tag" -m "release $TODAY"
 
-  # 3) Add git tag
-  echo "Add git tag v$new_tag"
-  git tag -a "$new_tag" -m "release $TODAY"
+ # 4) Push the new tag
+echo "Push the tag"
+git push --tags origin develop

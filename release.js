@@ -1,29 +1,33 @@
 const { exec } = require("child_process");
 module.exports = async ({ github, context, core }) => {
-  const today = new Date();
+  let newTagName = "";
+  const today = new Date().toISOString().toISOString().split("T")[0];
   console.log(today);
-  exec(
-    "git describe --tags `git rev-list --tags --max-count=1`",
-    (error, stdout) => {
-      console.log(stdout);
-    }
-  );
+
   exec("git tag --sort=committerdate | tail -1", (error, stdout) => {
     if (error) {
       console.error(`exec error: ${error}`);
       return;
     }
 
-    let newVersion = stdout.trim();
-    console.log(newVersion);
+    const latestVersion = stdout.trim();
+    const latestVersionItems = latestVersion.split("-");
+    const latestVersionDate = `${latestVersionItems[1]}-${latestVersionItems[2]}-${latestVersionItems[3]}`;
+    if (latestVersionDate === today) {
+      newTagName = `prod-${latestVersionItems}-${latestVersionItems[4] + 1}`;
+    } else {
+      newTagName = `prod-${today}-01`;
+    }
+    console.log(newTagName);
   });
-  //   creare ref
-  //    github.rest.git.createRef({
-  //         owner: context.repo.owner,
-  //          repo: context.repo.repo,
-  //          ref: `refs/tags/${{steps.generate_tag.outputs.new_tag}}`,
-  //          sha: context.sha
-  //        })
+
+  //  creare ref
+  github.rest.git.createRef({
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+    ref: `refs/tags/${newTagName}`,
+    sha: context.sha,
+  });
 
   //   Create a release
 };

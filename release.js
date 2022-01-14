@@ -1,5 +1,5 @@
 const { exec } = require("child_process");
-const eee = async () => {
+module.exports = async () => {
   let newTagName = "";
   const today = new Date().toISOString().split("T")[0];
   console.log(today);
@@ -38,4 +38,3 @@ const eee = async () => {
     //   Create a release
   });
 };
-eee();

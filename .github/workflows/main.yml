@@ -26,10 +26,9 @@ jobs:
           new_tag="prod-$TODAY-$version"
           echo $new_tag
           echo "::set-output name=new_tag::$new_tag"
-
-      - name: tag name
-        run: |
-          echo "${{steps.generate_tag.outputs.new_tag}}"
+      # - name: tag name
+      #   run: |
+      #     echo "${{steps.generate_tag.outputs.new_tag}}"
       - name: Create tag
         uses: actions/github-script@v5
         with:

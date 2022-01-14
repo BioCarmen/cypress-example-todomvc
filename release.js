@@ -14,6 +14,7 @@ module.exports = async ({ github, context, core }) => {
 
     const latestVersionItems = latestVersion.split("-");
     const latestVersionDate = `${latestVersionItems[1]}-${latestVersionItems[2]}-${latestVersionItems[3]}`;
+    const latestVersionNum = parseInt(latestVersionItems[4]) + 1;
     console.log(
       "latesetst",
       latestVersion,
@@ -21,9 +22,10 @@ module.exports = async ({ github, context, core }) => {
       latestVersionDate === today
     );
     if (latestVersionDate === today) {
-      newTagName = `prod-${latestVersionDate}-${latestVersionItems[4] + 1}`;
+      const newNum = parseInt(latestVersionItems[4]) + 1;
+      newTagName = `prod-${latestVersionDate}-${newNum}`;
     } else {
-      newTagName = `prod-${today}-01`;
+      newTagName = `prod-${today}-1`;
     }
     console.log(newTagName);
     await console.log("don't start");

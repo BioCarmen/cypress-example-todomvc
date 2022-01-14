@@ -20,6 +20,4 @@ jobs:
     steps:
       - name: see
         run: |
-          echo ${{ github.head_ref }}
-          echo ${{ toJSON(github.event.issue.pull_request) }}
           sleep 100000

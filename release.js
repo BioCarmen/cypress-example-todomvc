@@ -1,5 +1,5 @@
 const { exec } = require("child_process");
-module.exports = async ({ github, context, core }) => {
+const run = async ({ github, context, core }) => {
   let newTagName = "";
   const today = new Date().toISOString().split("T")[0];
   console.log(today);
@@ -38,3 +38,4 @@ module.exports = async ({ github, context, core }) => {
 
   //   Create a release
 };
+run();

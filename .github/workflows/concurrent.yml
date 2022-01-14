@@ -8,6 +8,10 @@ on:
     types: [labeled]
   issue_comment:
     types: [created, edited]
+
+concurrency:
+  group: test-${{ github.head_ref || github.event.issue.pull_request.url }}
+  cancel-in-progress: true
 jobs:
   check:
     name: Check if job should run
@@ -16,3 +20,5 @@ jobs:
       - name: see
         run: |
           echo ${{ github.head_ref }}
+          echo ${{ github.event.issue.pull_request }}
+          sleep 100000

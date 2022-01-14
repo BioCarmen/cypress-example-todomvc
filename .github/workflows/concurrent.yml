@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   pull_request:
     branches:
-      - main
+      - master
     types: [labeled]
   issue_comment:
     types: [created, edited]

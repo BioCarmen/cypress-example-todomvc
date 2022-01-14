@@ -21,7 +21,7 @@ module.exports = async ({ github, context, core }) => {
       latestVersionDate === today
     );
     if (latestVersionDate === today) {
-      newTagName = `prod-${latestVersionItems}-${latestVersionItems[4] + 1}`;
+      newTagName = `prod-${latestVersionDate}-${latestVersionItems[4] + 1}`;
     } else {
       newTagName = `prod-${today}-01`;
     }

@@ -9,7 +9,7 @@ module.exports = async ({ github, context, core }) => {
   );
 
   if (stderr) {
-    console.error(`exec error: ${error}`);
+    console.error(`exec error: ${stderr}`);
     return;
   }
 

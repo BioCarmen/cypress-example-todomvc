@@ -30,13 +30,21 @@ module.exports = async ({ github, context, core }) => {
     console.log(newTagName);
     await console.log("don't start");
     //  creare ref
-    await github.rest.git.createRef({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      ref: `refs/tags/${newTagName}`,
-      sha: context.sha,
-    });
-
-    //   Create a release
+    try {
+      await github.rest.git.createRef({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        ref: `refs/tags/${newTagName}`,
+        sha: context.sha,
+      });
+      //   Create a release
+      await git.rest.repos.createRelease({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        tag_name: newTagName,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   });
 };

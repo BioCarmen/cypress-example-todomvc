@@ -38,13 +38,14 @@ module.exports = async ({ github, context, core }) => {
         sha: context.sha,
       });
       //   Create a release
-      await git.rest.repos.createRelease({
+      await github.rest.repos.createRelease({
         owner: context.repo.owner,
         repo: context.repo.repo,
         tag_name: newTagName,
       });
     } catch (error) {
       console.error(error);
+      process.exit(1);
     }
   });
 };

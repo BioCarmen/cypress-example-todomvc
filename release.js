@@ -37,12 +37,12 @@ module.exports = async ({ github, context, core }) => {
         ref: `refs/tags/${newTagName}`,
         sha: context.sha,
       });
-      //   Create a release
-      await github.rest.repos.createRelease({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        tag_name: newTagName,
-      });
+      //   //   Create a release
+      //   await github.rest.repos.createRelease({
+      //     owner: context.repo.owner,
+      //     repo: context.repo.repo,
+      //     tag_name: newTagName,
+      //   });
     } catch (error) {
       console.error(error);
       process.exit(1);

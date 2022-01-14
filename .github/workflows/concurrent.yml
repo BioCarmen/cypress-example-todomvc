@@ -1,0 +1,17 @@
+name: concurrent
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    types: [labeled]
+  issue_comment:
+    types: [created, edited]
+jobs:
+  check:
+    name: Check if job should run
+    runs-on: ubuntu-20.04
+    steps:
+      - name: see
+        run: |
+          echo ${{ github.head_ref }}

@@ -15,8 +15,7 @@ module.exports = async ({ github, context, core }) => {
     const latestVersionItems = latestVersion.split("-");
     const latestVersionDate = `${latestVersionItems[1]}-${latestVersionItems[2]}-${latestVersionItems[3]}`;
     const latestVersionNum = parseInt(latestVersionItems[4]) + 1;
-    console.log(
-      "eee",
+
       "latesetst",
       latestVersion,
       latestVersionDate,

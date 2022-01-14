@@ -25,7 +25,7 @@ jobs:
           version="01"
           new_tag="prod-$TODAY-$version"
           echo $new_tag
-          echo "::set-output name=new_tag::${{ new_tag}}"
+          echo "::set-output name=new_tag::$new_tag"
 
       - name: tag name
         run: |

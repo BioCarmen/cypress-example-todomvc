@@ -4,7 +4,7 @@ module.exports = async ({ github, context, core }) => {
   const today = new Date().toISOString().split("T")[0];
   console.log(today);
 
-  exec("git tag --sort=committerdate | tail -1", (error, stdout) => {
+  await exec("git tag --sort=committerdate | tail -1", (error, stdout) => {
     if (error) {
       console.error(`exec error: ${error}`);
       return;
@@ -29,7 +29,7 @@ module.exports = async ({ github, context, core }) => {
   });
 
   //  creare ref
-  github.rest.git.createRef({
+  await github.rest.git.createRef({
     owner: context.repo.owner,
     repo: context.repo.repo,
     ref: `refs/tags/${newTagName}`,

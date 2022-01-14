@@ -14,6 +14,7 @@ jobs:
       #     GITHUB_CONTEXT: ${{ toJSON(github) }}
       #   run: echo "$GITHUB_CONTEXT"
       - name: run script
+        id: generate_tag
         run: |
           echo "Fetch tags"
           git fetch --prune --tags
@@ -24,14 +25,18 @@ jobs:
           version="01"
           new_tag="prod-$TODAY-$version"
           echo $new_tag
+          echo "::set-output name=new_tag::${{ new_tag}}"
 
-      # - name: Create tag
-      #   uses: actions/github-script@v5
-      #   with:
-      #     script: |
-      #       github.rest.git.createRef({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         ref: 'refs/tags/test-tag',
-      #         sha: context.sha
-      #       })
+      - name: tag name
+        run: |
+          echo "${{steps.generate_tag.outputs.new_tag}}"
+      - name: Create tag
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `refs/tags/${steps.generate_tag.outputs.new_tag}`,
+              sha: context.sha
+            })

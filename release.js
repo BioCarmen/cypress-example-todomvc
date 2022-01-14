@@ -4,29 +4,31 @@ module.exports = async ({ github, context, core }) => {
   const today = new Date().toISOString().split("T")[0];
   console.log(today);
 
-  await exec("git tag --sort=committerdate | tail -1", (error, stdout) => {
-    if (error) {
-      console.error(`exec error: ${error}`);
-      return;
-    }
+  const { stdout, stderr } = await exec(
+    "git tag --sort=committerdate | tail -1"
+  );
 
-    const latestVersion = stdout.trim();
+  if (stderr) {
+    console.error(`exec error: ${error}`);
+    return;
+  }
 
-    const latestVersionItems = latestVersion.split("-");
-    const latestVersionDate = `${latestVersionItems[1]}-${latestVersionItems[2]}-${latestVersionItems[3]}`;
-    console.log(
-      "latesetst",
-      latestVersion,
-      latestVersionDate,
-      latestVersionDate === today
-    );
-    if (latestVersionDate === today) {
-      newTagName = `prod-${latestVersionItems}-${latestVersionItems[4] + 1}`;
-    } else {
-      newTagName = `prod-${today}-01`;
-    }
-    console.log(newTagName);
-  });
+  const latestVersion = stdout.trim();
+
+  const latestVersionItems = latestVersion.split("-");
+  const latestVersionDate = `${latestVersionItems[1]}-${latestVersionItems[2]}-${latestVersionItems[3]}`;
+  console.log(
+    "latesetst",
+    latestVersion,
+    latestVersionDate,
+    latestVersionDate === today
+  );
+  if (latestVersionDate === today) {
+    newTagName = `prod-${latestVersionItems}-${latestVersionItems[4] + 1}`;
+  } else {
+    newTagName = `prod-${today}-01`;
+  }
+  console.log(newTagName);
 
   //  creare ref
   await github.rest.git.createRef({

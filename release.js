@@ -15,7 +15,7 @@ module.exports = async ({ github, context, core }) => {
     const latestVersionItems = latestVersion.split("-");
     const latestVersionDate = `${latestVersionItems[1]}-${latestVersionItems[2]}-${latestVersionItems[3]}`;
     const latestVersionNum = parseInt(latestVersionItems[4]) + 1;
-
+    console.log(
       "latesetst",
       latestVersion,
       latestVersionDate,
@@ -29,7 +29,6 @@ module.exports = async ({ github, context, core }) => {
     }
     console.log(newTagName);
     await console.log("don't start");
-    console.log("something")
     //  creare ref
     try {
       await github.rest.git.createRef({

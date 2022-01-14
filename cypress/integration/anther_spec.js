@@ -42,7 +42,6 @@ describe("TodoMVC - React", function () {
     // https
     //
     //
-    //
     // ://on.cypress.io/api/visit
     cy.visit("/");
     //

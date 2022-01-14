@@ -1,0 +1,12 @@
+name: "Tag and Release"
+description: "Tag and release"
+inputs:
+  github-token:
+    description: "The GITHUB_TOKEN secret"
+    required: true
+outputs:
+  run:
+    description: '"true" if job should run, "false" otherwise'
+runs:
+  using: "node16"
+  main: "dist/index.js"

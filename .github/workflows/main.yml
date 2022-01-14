@@ -32,10 +32,13 @@ jobs:
       - name: Create tag
         uses: actions/github-script@v5
         with:
+          # script: |
+          #   github.rest.git.createRef({
+          #     owner: context.repo.owner,
+          #     repo: context.repo.repo,
+          #     ref: `refs/tags/${{steps.generate_tag.outputs.new_tag}}`,
+          #     sha: context.sha
+          #   })
           script: |
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: `refs/tags/${{steps.generate_tag.outputs.new_tag}}`,
-              sha: context.sha
-            })
+            const script = require('./release.js')
+            await script({github, context, core})

@@ -29,6 +29,7 @@ module.exports = async ({ github, context, core }) => {
     }
     console.log(newTagName);
     await console.log("don't start");
+    console.log("something")
     //  creare ref
     try {
       await github.rest.git.createRef({

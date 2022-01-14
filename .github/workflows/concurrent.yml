@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - master
+      - develop
     types: [labeled]
   issue_comment:
     types: [created, edited]

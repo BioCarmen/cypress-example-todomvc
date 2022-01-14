@@ -1,7 +1,7 @@
 const { exec } = require("child_process");
 module.exports = async ({ github, context, core }) => {
   let newTagName = "";
-  const today = new Date().toISOString().toISOString().split("T")[0];
+  const today = new Date().toISOString().split("T")[0];
   console.log(today);
 
   exec("git tag --sort=committerdate | tail -1", (error, stdout) => {

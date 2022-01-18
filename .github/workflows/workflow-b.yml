@@ -1,0 +1,9 @@
+name: Reusable workflow example
+
+on:
+  push:
+
+jobs:
+  call_a:
+    name: call a
+    uses: BioCarmen/cypress-example-todomvc/.github/workflows/workflow-a.yml@develop

@@ -43,10 +43,8 @@ module.exports = async ({ github, context, core, secret }) => {
       //     repo: context.repo.repo,
       //     tag_name: newTagName,
       //   });
-      execSync(
-        `git remote set-url origin https://x-access-token:${secret}@github.com/${context.repo.repo}`
-      );
-      execSync("git commit -am 'Automated report'");
+      execSync(`git fetch && git checkout master`);
+      execSync(`git reset --hard origin/${newTagName}`);
       execSync("git push");
     } catch (error) {
       console.error(error);

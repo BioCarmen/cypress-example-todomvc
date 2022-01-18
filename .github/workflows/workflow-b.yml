@@ -1,7 +1,6 @@
 name: Reusable workflow example
 
 on:
-  push:
   deployment_status:
 
 jobs:
@@ -19,7 +18,7 @@ jobs:
       - run: |
           echo ${{ github.repository }}
           echo ${{ github.event.deployment_status.state }}
-          echo $${ github.head.ref }
+          echo $${ fromJson(github) }
       # Forward deployment's status to the deployed commit.
       - uses: octokit/request-action@v2.0.23
         env:

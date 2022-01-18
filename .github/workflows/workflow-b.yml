@@ -15,6 +15,10 @@ jobs:
     if: github.event.deployment_status.state != 'pending'
 
     steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
       - run: |
           echo ${{ github.repository }}
           echo ${{ github.event.deployment_status.state }}

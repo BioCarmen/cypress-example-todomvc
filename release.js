@@ -1,5 +1,5 @@
-const { exec } = require("child_process");
-module.exports = async ({ github, context, core }) => {
+const { exec, execSync } = require("child_process");
+module.exports = async ({ github, context, core, secret }) => {
   let newTagName = "";
   const today = new Date().toISOString().split("T")[0];
   console.log(today);
@@ -43,6 +43,11 @@ module.exports = async ({ github, context, core }) => {
       //     repo: context.repo.repo,
       //     tag_name: newTagName,
       //   });
+      execSync(
+        "git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ context.repo.repo }}"
+      );
+      execSync("git commit -am 'Automated report'");
+      execSync("git push");
     } catch (error) {
       console.error(error);
       process.exit(1);

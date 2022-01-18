@@ -1,5 +1,5 @@
 const { exec, execSync } = require("child_process");
-module.exports = async ({ github, context, core, secret }) => {
+module.exports = async ({ github, context, core }) => {
   let newTagName = "";
   const today = new Date().toISOString().split("T")[0];
   console.log(today);
@@ -28,7 +28,7 @@ module.exports = async ({ github, context, core, secret }) => {
       newTagName = `prod-${today}-1`;
     }
     console.log(newTagName);
-    await console.log("don't start", secret);
+
     //  creare ref
     try {
       await github.rest.git.createRef({

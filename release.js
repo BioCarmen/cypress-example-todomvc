@@ -44,7 +44,7 @@ module.exports = async ({ github, context, core }) => {
       //     tag_name: newTagName,
       //   });
       execSync(`git fetch && git checkout master`);
-      execSync(`git reset --hard origin/${newTagName}`);
+      execSync(`git reset --hard ${newTagName}`);
       execSync("git push");
     } catch (error) {
       console.error(error);

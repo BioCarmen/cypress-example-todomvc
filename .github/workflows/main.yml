@@ -30,16 +30,23 @@ jobs:
       # - name: tag name
       #   run: |
       #     echo "${{steps.generate_tag.outputs.new_tag}}"
-      - name: Create tag
-        uses: actions/github-script@v5
-        with:
-          # script: |
-          #   github.rest.git.createRef({
-          #     owner: context.repo.owner,
-          #     repo: context.repo.repo,
-          #     ref: `refs/tags/${{steps.generate_tag.outputs.new_tag}}`,
-          #     sha: context.sha
-          #   })
-          script: |
-            const script = require('./release.js')
-            await script({github, context, core, secret: ${{ secrets.GITHUB_TOKEN }}})
+      - name: Commit report
+        run: |
+          # git config --global user.name 'Your Name'
+          # git config --global user.email 'your-username@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git commit -am "Automated report"
+          git push
+      # - name: Create tag
+      #   uses: actions/github-script@v5
+      #   with:
+      # script: |
+      #   github.rest.git.createRef({
+      #     owner: context.repo.owner,
+      #     repo: context.repo.repo,
+      #     ref: `refs/tags/${{steps.generate_tag.outputs.new_tag}}`,
+      #     sha: context.sha
+      #   })
+      # script: |
+      #   const script = require('./release.js')
+      #   await script({github, context, core, secret: ${{ secrets.GITHUB_TOKEN }}})

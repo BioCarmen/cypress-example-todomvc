@@ -28,7 +28,7 @@ module.exports = async ({ github, context, core, secret }) => {
       newTagName = `prod-${today}-1`;
     }
     console.log(newTagName);
-    await console.log("don't start");
+    await console.log("don't start", secret);
     //  creare ref
     try {
       await github.rest.git.createRef({
@@ -44,7 +44,7 @@ module.exports = async ({ github, context, core, secret }) => {
       //     tag_name: newTagName,
       //   });
       execSync(
-        "git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ context.repo.repo }}"
+        `git remote set-url origin https://x-access-token:${secret}@github.com/${context.repo.repo}`
       );
       execSync("git commit -am 'Automated report'");
       execSync("git push");

@@ -32,8 +32,8 @@ jobs:
       #     echo "${{steps.generate_tag.outputs.new_tag}}"
       - name: Commit report
         run: |
-          # git config --global user.name 'Your Name'
-          # git config --global user.email 'your-username@users.noreply.github.com'
+          # git config --global user.name 'someint'
+          # git config --global user.email 'something@carmen.com'
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git commit -am "Automated report"
           git push

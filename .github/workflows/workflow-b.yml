@@ -4,10 +4,6 @@ on:
   deployment_status:
 
 jobs:
-  call_a:
-    name: call a
-    uses: BioCarmen/cypress-example-todomvc/.github/workflows/workflow-a.yml@develop
-
   deployment-status:
     runs-on: ubuntu-latest
 

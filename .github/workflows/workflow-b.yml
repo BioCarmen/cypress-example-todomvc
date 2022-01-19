@@ -8,19 +8,19 @@ jobs:
     runs-on: ubuntu-latest
 
     # Continue only if some definitive status has been reported.
-    if: github.event.deployment_status.state != 'pending' && github.event.environment =='carmen-staging'
+    if: github.event.deployment_status.state != 'pending'
 
     steps:
       - name: Wait for 5 minutes
         run: |
-          sleep 300
+          sleep 30
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: echo "$GITHUB_CONTEXT"
       - run: |
           echo ${{ github.repository }}
-          echo ${{ github.event.deployment_status.state }}
+          echo ${{ github.event.environment == 'carmen-staging' }} ${{ github.event.environment }}
           echo ${{ github.ref  }}
       # Forward deployment's status to the deployed commit.
       - uses: octokit/request-action@v2.0.23

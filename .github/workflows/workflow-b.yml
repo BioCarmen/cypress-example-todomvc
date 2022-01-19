@@ -20,8 +20,8 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
       - run: |
           echo ${{ github.repository }}
-          echo ${{ github.event.environment == 'carmen-staging' }} ${{ github.event.environment }}
-          echo ${{ github.ref  }}
+          echo ${{ toJSON(github.event) }} ${{ github.event }}
+          echo ${{ github.job  }}
       # Forward deployment's status to the deployed commit.
       - uses: octokit/request-action@v2.0.23
         env:

@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # Continue only if some definitive status has been reported.
-    if: github.event.deployment_status.state != 'pending'
+    if: github.event.deployment_status.state != 'pending' && github.event.environment:'test-staging'
 
     steps:
       - name: Dump GitHub context

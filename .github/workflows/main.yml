@@ -29,6 +29,7 @@ jobs:
           new_tag="prod-$TODAY-$version"
           echo $new_tag
           echo "::set-output name=new_tag::$new_tag"
+          echo ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
       # - name: tag name
       #   run: |
       #     echo "${{steps.generate_tag.outputs.new_tag}}"
@@ -37,6 +38,7 @@ jobs:
           git config --global user.name 'someint'
           git config --global user.email 'something@carmen.com'
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
       - name: Create tag
         uses: actions/github-script@v5
         with:

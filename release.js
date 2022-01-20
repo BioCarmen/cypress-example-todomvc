@@ -32,7 +32,7 @@ module.exports = async ({ github, context, core }) => {
         sha: context.sha,
       });
       console.log(newTagName);
-      throw new Error();
+
       //   //   Create a release
       //   await github.rest.repos.createRelease({
       //     owner: context.repo.owner,

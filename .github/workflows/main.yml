@@ -50,6 +50,3 @@ jobs:
           script: |
             const script = require('./release.js')
             await script({github, context, core })
-  call_a:
-    name: call a 3
-    uses: BioCarmen/cypress-example-todomvc/.github/workflows/push-to-s3.yml@develop

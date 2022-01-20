@@ -11,9 +11,9 @@ on:
 jobs:
   on-success:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name != 'workflow_dispatch' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name != 'workflow_run' }}
     steps:
-      - run: echo 'Should deploy to staging'
+      - run: echo ${{github.event_name}}
 
   deploy-staging:
     name: Build and push bio-web-app to s3 (Staging)

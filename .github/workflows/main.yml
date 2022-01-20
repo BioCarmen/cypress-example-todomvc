@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          token: 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
+          token: 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
       # - run: git fetch --prune --unshallow
       # - name: Dump GitHub context
       #   env:
@@ -38,7 +38,7 @@ jobs:
         run: |
           git config --global user.name 'someint'
           git config --global user.email 'something@carmen.com'
-          git remote set-url origin https://x-access-token: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@github.com/${{ github.repository }}
+          git remote set-url origin https://x-access-token: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@github.com/${{ github.repository }}
       - name: Create tag
         uses: actions/github-script@v5
         with:

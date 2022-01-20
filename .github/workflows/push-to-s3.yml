@@ -1,0 +1,16 @@
+name: Bio-web-app deployment
+
+on:
+  push:
+    branches:
+      - main
+      - release
+
+jobs:
+  deploy-staging:
+    name: Build and push bio-web-app to s3 (Staging)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy bio web app
+        run: |
+          echo "Deployed bio web app"

@@ -2,7 +2,6 @@ const { exec, execSync } = require("child_process");
 module.exports = async ({ github, context, core }) => {
   let newTagName = "";
   const today = new Date().toISOString().split("T")[0];
-  console.log(today);
 
   exec("git tag --sort=committerdate | tail -1", async (error, stdout) => {
     if (error) {
@@ -15,12 +14,7 @@ module.exports = async ({ github, context, core }) => {
     const latestVersionItems = latestVersion.split("-");
     const latestVersionDate = `${latestVersionItems[1]}-${latestVersionItems[2]}-${latestVersionItems[3]}`;
     const latestVersionNum = parseInt(latestVersionItems[4]) + 1;
-    console.log(
-      "latesetst",
-      latestVersion,
-      latestVersionDate,
-      latestVersionDate === today
-    );
+
     if (latestVersionDate === today) {
       const newNum = parseInt(latestVersionItems[4]) + 1;
       newTagName = `prod-${latestVersionDate}-${newNum}`;

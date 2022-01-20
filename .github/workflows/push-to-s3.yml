@@ -3,7 +3,6 @@ name: Bio-web-app deployment
 on:
   push:
     branches:
-      - main
       - release
 
 jobs:

@@ -1,27 +1,13 @@
 name: End-to-end tests
 on:
   workflow_dispatch:
-  pull_request:
-    # branches:
-    #   - master
-    types: [labeled]
-  issue_comment:
-    types: [created, edited]
+  deployment_status:
+
 jobs:
-  check:
-    name: Check if job should run
-    runs-on: ubuntu-20.04
-    if: github.event.label.name == 'Run Jest and Cypress' || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' ))
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ./.github/actions/manual-workflow-trigger
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          label: "Run Jest and Cypress"
   cypress-run-e2e:
-    # if: ${{ (github.event.label.name == 'Run Jest and Cypress') || (github.event.issue.pull_request && contains( github.event.comment.body, 'run cypress' ))  }}
+    if: (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'carmen-staging') || github.event_name == 'workflow_dispatch'
     runs-on: windows-latest
-    needs: check
+
     strategy:
       # when one test fails, DO NOT cancel the other
       # containers, because this will kill Cypress processes
@@ -34,94 +20,15 @@ jobs:
     outputs:
       pr_sha: ${{ steps.pr_sha.outputs.pr_sha }}
     steps:
-      - name: Extracting PR route
-        if: ${{ github.event.issue.pull_request }}
-        id: extracting_route
-        run: |
-          echo "::set-output name=route::$(echo ${{ github.event.issue.pull_request.url }}  | sed s-https://api.github.com--)"
-          echo "sha ${{ toJSON(github.event.issue.pull_request) }}"
-      - name: Getting PR data
-        if: ${{ github.event.issue.pull_request }}
-        id: pr_data
-        uses: octokit/request-action@v2.x
-        with:
-          route: GET ${{ steps.extracting_route.outputs.route }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Checkout PRed branch
-        uses: actions/checkout@v2
-        if: ${{ github.event.issue.pull_request }}
-        with:
-          ref: ${{ fromJson(steps.pr_data.outputs.data).head.ref }}
       # if trigger on pr
       - uses: actions/checkout@v2
-        if: ${{ !github.event.issue.pull_request }}
-      - name: Get PR sha
-        if: ${{ github.event.issue.pull_request }}
-        id: pr_sha
-        run: |
-          echo "::set-output name=pr_sha::${{ fromJson(steps.pr_data.outputs.data).head.sha }}"
-      - name: Run the action - pending # You would run your tests before this using the output to set state/desc
-        uses: Sibz/github-status-action@v1
-        if: ${{ github.event.issue.pull_request }}
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        continue-on-error: true
         with:
-          authToken: ${{secrets.GITHUB_TOKEN}}
-          context: "e2e run"
-          description: "Pending"
-          state: "pending"
-          sha: ${{ fromJson(steps.pr_data.outputs.data).head.sha }}
-          target_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          node-version: 14.18.1
+
       - name: Cypress run - Cypress Dashboard
-        if: ${{ github.event.pull_request.head.ref == 'develop' }}
-        uses: cypress-io/github-action@v2
-        with:
-          record: true
-          parallel: true
-          group: "Actions example"
-          start: "npm run test:ci:record"
-          wait-on: "http://localhost:8888"
-          spec: |
-            cypress/integration/anther_spec.js
-        env:
-          # pass the Dashboard record key as an environment variable
-          CYPRESS_RECORD_KEY: "9e0a0d13-a3fb-43e2-bccd-85f299345adb"
-          # Recommended: pass the GitHub token lets this action correctly
-          # determine the unique run id necessary to re-run the checks
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Cypress run - knapsack pro
-        if: ${{ github.event.pull_request.head.ref != 'develop' || github.event.issue.pull_request }}
         run: |
-          echo "pass"
-  cypress-pass-e2e:
-    # if: ${{ github.event.issue.pull_request && (needs.cypress-run-e2e.result == 'success' || needs.cypress-run-e2e.result == 'failure')}}
-    if: ${{ always() }}
-    name: E2E tests result
-    runs-on: windows-latest
-    needs: cypress-run-e2e
-    steps:
-      - name: echo
-        run: echo "${{needs.cypress-run-e2e.result}} ${{needs.cypress-run-e2e.result != 'success' || needs.cypress-run-e2e.result != 'skipped' }}"
-      - name: PR - Pass all cypress test matrix status
-        if: ${{ github.event.issue.pull_request && needs.cypress-run-e2e.result == 'success' }}
-        uses: Sibz/github-status-action@v1
-        with:
-          authToken: ${{secrets.GITHUB_TOKEN}}
-          context: "e2e run"
-          description: "Passed"
-          state: "success"
-          sha: ${{ github.event.pull_request.head.sha || needs.cypress-run-e2e.outputs.pr_sha }}
-          target_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-      - name: PR - Fail all cypress test matrix status
-        if: ${{ github.event.issue.pull_request && needs.cypress-run-e2e.result == 'failure' }}
-        uses: Sibz/github-status-action@v1
-        with:
-          authToken: ${{secrets.GITHUB_TOKEN}}
-          context: "e2e run"
-          description: "Failure"
-          state: "failure"
-          sha: ${{ github.event.pull_request.head.sha || needs.cypress-run-e2e.outputs.pr_sha }}
-          target_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-      - name: To main - Fail all cypress test matrix status
-        if: ${{ needs.cypress-run-e2e.result == 'failure' }}
-        run: exit 1
+          npm install

@@ -31,6 +31,8 @@ module.exports = async ({ github, context, core }) => {
         ref: `refs/tags/${newTagName}`,
         sha: context.sha,
       });
+      console.log(newTagName);
+      throw new Error();
       //   //   Create a release
       //   await github.rest.repos.createRelease({
       //     owner: context.repo.owner,
@@ -41,6 +43,7 @@ module.exports = async ({ github, context, core }) => {
       execSync(`git reset --hard ${newTagName}`);
       execSync("git push -f");
     } catch (error) {
+      execSync(`git push --delete origin ${newTagName}`);
       console.error(error);
       process.exit(1);
     }

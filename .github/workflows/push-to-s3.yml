@@ -1,9 +1,10 @@
 name: Bio-web-app deployment
 
 on:
+  workflow_call:
   push:
     branches:
-      - release
+      - main
 
 jobs:
   deploy-staging:

@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: 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
       # - run: git fetch --prune --unshallow
       # - name: Dump GitHub context
       #   env:

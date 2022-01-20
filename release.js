@@ -37,7 +37,7 @@ module.exports = async ({ github, context, core }) => {
       //     repo: context.repo.repo,
       //     tag_name: newTagName,
       //   });
-      execSync(`git fetch && git checkout master`);
+      execSync(`git fetch && git checkout release`);
       execSync(`git reset --hard ${newTagName}`);
       execSync("git push -f");
     } catch (error) {

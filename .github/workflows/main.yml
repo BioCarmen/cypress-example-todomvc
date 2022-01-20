@@ -36,7 +36,7 @@ jobs:
         run: |
           git config --global user.name 'someint'
           git config --global user.email 'something@carmen.com'
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git remote set-url origin https://x-access-token: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@github.com/${{ github.repository }}
       - name: Create tag
         uses: actions/github-script@v5
         with:

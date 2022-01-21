@@ -32,16 +32,16 @@ module.exports = async ({ github, context, core }) => {
         sha: context.sha,
       });
       console.log(newTagName);
-
+      return newTagName;
       //   //   Create a release
       //   await github.rest.repos.createRelease({
       //     owner: context.repo.owner,
       //     repo: context.repo.repo,
       //     tag_name: newTagName,
       //   });
-      execSync(`git fetch && git checkout release`);
-      execSync(`git reset --hard ${newTagName}`);
-      execSync("git push -f");
+      // execSync(`git fetch && git checkout release`);
+      // execSync(`git reset --hard ${newTagName}`);
+      // execSync("git push -f");
     } catch (error) {
       execSync(`git push --delete origin ${newTagName}`);
       console.error(error);

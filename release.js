@@ -32,7 +32,7 @@ module.exports = async ({ github, context, core }) => {
       });
 
       core.exportVariable("author", newTagName);
-      return newTagName;
+      return "something 1";
       //   //   Create a release
       //   await github.rest.repos.createRelease({
       //     owner: context.repo.owner,

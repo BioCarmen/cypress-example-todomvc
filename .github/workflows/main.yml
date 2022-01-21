@@ -42,6 +42,7 @@ jobs:
 
       - name: Create tag
         uses: actions/github-script@v5
+        id: set-release
         with:
           # script: |
           #   github.rest.git.createRef({
@@ -53,4 +54,10 @@ jobs:
           script: |
             const script = require('./release.js')
             const newTagName = await script({github, context, core })
-            console.log(newTagName)
+            console.log("new tag", newTagName)
+            return newTagName
+          result-encoding: string
+
+      - name: print name
+        run: |
+          echo ${{ steps.set-release.outputs.result }}

@@ -31,7 +31,8 @@ module.exports = async ({ github, context, core }) => {
         sha: context.sha,
       });
 
-      core.exportVariable("author", commit.data.commit.author.email);
+      core.exportVariable("author", newTagName);
+      return newTagName;
       //   //   Create a release
       //   await github.rest.repos.createRelease({
       //     owner: context.repo.owner,

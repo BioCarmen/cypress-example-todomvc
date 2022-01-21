@@ -51,4 +51,5 @@ jobs:
           #   })
           script: |
             const script = require('./release.js')
-            const newTagNew = await script({github, context, core })
+            const newTagName = await script({github, context, core })
+            echo newTagName

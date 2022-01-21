@@ -21,7 +21,7 @@ module.exports = async ({ github, context, core }) => {
     } else {
       newTagName = `prod-${today}-1`;
     }
-    console.log(newTagName);
+    
 
     //  creare ref
     try {
@@ -31,7 +31,7 @@ module.exports = async ({ github, context, core }) => {
         ref: `refs/tags/${newTagName}`,
         sha: context.sha,
       });
-      console.log(newTagName);
+     
       return newTagName;
       //   //   Create a release
       //   await github.rest.repos.createRelease({

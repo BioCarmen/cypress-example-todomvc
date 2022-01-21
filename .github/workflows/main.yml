@@ -52,10 +52,9 @@ jobs:
           #     sha: context.sha
           #   })
           script: |
-            const script = require('./release.js')
-            const newTagName = await script({github, context, core })
-            console.log("new tag", newTagName)
-            return newTagName
+            const script = require('./release.js')       
+            console.log(await script({github, context, core }))
+            # return await script({github, context, core })
           result-encoding: string
 
       - name: print name

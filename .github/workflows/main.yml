@@ -54,7 +54,7 @@ jobs:
           script: |
             const script = require('./release.js')       
             console.log(await script({github, context, core }))
-            # return await script({github, context, core })
+
           result-encoding: string
 
       - name: print name

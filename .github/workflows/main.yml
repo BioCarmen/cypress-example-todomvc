@@ -59,4 +59,4 @@ jobs:
 
       - name: print name
         run: |
-          echo ${{ steps.set-release.outputs.result }}
+          echo ${{ env.author }}

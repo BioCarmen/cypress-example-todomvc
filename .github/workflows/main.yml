@@ -4,6 +4,7 @@ on:
     branches:
       - "develop"
       - "hotfix/*"
+    push:
 
 jobs:
   check:
@@ -52,4 +53,3 @@ jobs:
           script: |
             const script = require('./release.js')
             const newTagName = await script({github, context, core })
-            echo newTagName

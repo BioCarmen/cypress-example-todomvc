@@ -11,7 +11,7 @@ jobs:
     name: run test
     runs-on: ubuntu-20.04
     steps:
-      - run: exit 1
+      - run: echo "good"
   check:
     name: Check if job should run
     runs-on: ubuntu-20.04

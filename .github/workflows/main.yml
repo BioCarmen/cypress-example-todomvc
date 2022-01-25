@@ -54,3 +54,13 @@ jobs:
       - name: get
         if: always()
         run: echo ${{steps.run_script.outcome}}
+  slack-fail:
+    if: always()
+    needs: [check]
+    name: run test
+    runs-on: ubuntu-20.04
+    steps:
+      - name: send failed slack
+        if: needs.check.result != 'success'
+        run: |
+          echo "Fail"

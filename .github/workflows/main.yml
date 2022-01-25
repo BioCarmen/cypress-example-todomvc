@@ -52,7 +52,7 @@ jobs:
             console.log(returned)
           result-encoding: string
       - name: get
-        if: always()
+        if: success()
         run: echo ${{steps.run_script.outcome}}
   slack-fail:
     if: always()

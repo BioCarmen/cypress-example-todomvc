@@ -7,7 +7,7 @@ module.exports = async ({ github, context, core }) => {
     `git describe --tags $(git rev-list --tags --max-count=1)`
   );
 
-  console.log("latest", latestTag);
+  console.log("latest", rev);
   // exec("git describe --tags --abbrev=0", async (error, stdout) => {
   //   console.log("lssss", stdout);
   //   if (error) {

@@ -28,12 +28,12 @@ module.exports = async ({ github, context, core }) => {
 
     //  creare ref
     try {
-      await github.rest.git.createRef({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        ref: `refs/tags/${newTagName}`,
-        sha: context.sha,
-      });
+      // await github.rest.git.createRef({
+      //   owner: context.repo.owner,
+      //   repo: context.repo.repo,
+      //   ref: `refs/tags/${newTagName}`,
+      //   sha: context.sha,
+      // });
 
       core.exportVariable("author", newTagName);
 
@@ -47,7 +47,7 @@ module.exports = async ({ github, context, core }) => {
       // execSync(`git reset --hard ${newTagName}`);
       // execSync("git push -f");
     } catch (error) {
-      execSync(`git push --delete origin ${newTagName}`);
+      // execSync(`git push --delete origin ${newTagName}`);
       console.error(error);
       process.exit(1);
     }

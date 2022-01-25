@@ -50,12 +50,14 @@ jobs:
     name: Send Slack message
     runs-on: ubuntu-20.04
     needs: [check]
-    # if: success()
+    if: always()
     steps:
       - name: Post success result to Slack
+        if: needs.check.result == 'success'
         run: echo "success"
       # Fail run
       - name: Post result to a Slack channel
+        if: needs.check.result != 'success'
         run: echo "fali"
 
       - name: print name

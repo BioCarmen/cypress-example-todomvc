@@ -3,7 +3,7 @@ module.exports = async ({ github, context, core }) => {
   let newTagName = "";
   const today = new Date().toISOString().split("T")[0];
   execSync("git fetch --prune --tags");
-  execSync("git describe --tags --abbrev=0");
+
   exec("git describe --tags --abbrev=0", async (error, stdout) => {
     console.log("lssss", stdout);
     if (error) {

@@ -19,10 +19,14 @@ jobs:
       #   run: echo "$GITHUB_CONTEXT"
 
       - name: Commit report
+        id: latest-tag
         run: |
           git config --global user.name 'someint'
           git config --global user.email 'something@carmen.com'
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git fetch --prune --tags
+          t=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "::set-output name=latest_tag::$t"
 
       - name: Create tag
         uses: actions/github-script@v5
@@ -37,10 +41,8 @@ jobs:
           #   })
           script: |
             const script = require('./release.js')
-            git fetch --prune --tags
-            const teg = git describe --tags `git rev-list --tags --max-count=1`      
-            console.log.log(teg)
-            await script({github, context, core })
+
+            await script({github, context, core, tag: ${{steps.latest-tag.outputs.latest_tag}} })
             console.log(returned)
           result-encoding: string
 

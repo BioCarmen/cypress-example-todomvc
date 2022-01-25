@@ -1,13 +1,14 @@
 const { exec, execSync } = require("child_process");
-module.exports = async ({ github, context, core }) => {
+module.exports = async ({ github, context, core, tag }) => {
   let newTagName = "";
+  console.log(tag);
   const today = new Date().toISOString().split("T")[0];
-  execSync("git fetch --prune --tags");
-  execSync("git rev-list --tags --max-count=1", (err, stdout) => {
-    console.log("print somehting");
-    console.log("stdout", stdout);
-  });
-  const rev = execSync(`git describe --tags `);
+  // execSync("git fetch --prune --tags");
+  // execSync("git rev-list --tags --max-count=1", (err, stdout) => {
+  //   console.log("print somehting");
+  //   console.log("stdout", stdout);
+  // });
+  // const rev = execSync(`git describe --tags `);
 
   console.log("latest", rev);
   // exec("git describe --tags --abbrev=0", async (error, stdout) => {

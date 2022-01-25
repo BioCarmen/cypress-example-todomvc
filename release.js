@@ -2,10 +2,9 @@ const { exec, execSync } = require("child_process");
 module.exports = async ({ github, context, core }) => {
   let newTagName = "";
   const today = new Date().toISOString().split("T")[0];
-
-  exec("git fetch --prune --tags", async (error, stdout) => {
-    const latestTag = await execSync("git describe --tags --abbrev=0");
-    console.log("lssss", latestTag);
+  execSync("git fetch --prune --tags");
+  exec("git describe --tags --abbrev=0", async (error, stdout) => {
+    console.log("lssss", stdout);
     if (error) {
       console.error(`exec error: ${JSON.stringify(error)}`);
       return;

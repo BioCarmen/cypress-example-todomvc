@@ -3,11 +3,9 @@ module.exports = async ({ github, context, core }) => {
   let newTagName = "";
   const today = new Date().toISOString().split("T")[0];
 
-  await exec("git fetch --prune --tags");
-  const latestTag = await exec("git describe --tags --abbrev=0");
-  console.log("lssss", latestTag);
-  exec("git describe --tags --abbrev=0", async (error, stdout) => {
-    console.log(stdout);
+  exec("git fetch --prune --tags", async (error, stdout) => {
+    const latestTag = await execSync("git describe --tags --abbrev=0");
+    console.log("lssss", latestTag);
     if (error) {
       console.error(`exec error: ${JSON.stringify(error)}`);
       return;

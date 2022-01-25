@@ -4,7 +4,7 @@ module.exports = async ({ github, context, core }) => {
   const today = new Date().toISOString().split("T")[0];
   execSync("git fetch --prune --tags");
   const rev = execSync(
-    `git describe --tags $(git rev-list --tags --max-count=1`
+    `git describe --tags $(git rev-list --tags --max-count=1)`
   );
 
   console.log("latest", latestTag);

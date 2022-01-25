@@ -3,8 +3,10 @@ module.exports = async ({ github, context, core }) => {
   let newTagName = "";
   const today = new Date().toISOString().split("T")[0];
   execSync("git fetch --prune --tags");
-  const rev = execSync(`git rev-list --tags --max-count=1`);
-  const latestTag = execSync(`git describe --tags ${rev}`);
+  const rev = execSync(
+    `git describe --tags $(git rev-list --tags --max-count=1`
+  );
+
   console.log("latest", latestTag);
   // exec("git describe --tags --abbrev=0", async (error, stdout) => {
   //   console.log("lssss", stdout);

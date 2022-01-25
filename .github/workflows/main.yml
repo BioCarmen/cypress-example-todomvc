@@ -55,7 +55,7 @@ jobs:
         if: success()
         run: echo ${{steps.set-release.outcome}}
   slack-fail:
-    if: always()
+    if: failure()
     needs: [check]
     name: run test
     runs-on: ubuntu-20.04

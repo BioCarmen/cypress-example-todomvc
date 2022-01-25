@@ -19,7 +19,7 @@ jobs:
       #   run: echo "$GITHUB_CONTEXT"
 
       - name: Commit report
-        id: latest-tag
+        id: get-tag
         run: |
           git config --global user.name 'someint'
           git config --global user.email 'something@carmen.com'
@@ -45,6 +45,15 @@ jobs:
             await script({github, context, core, tag: `${{steps.latest-tag.outputs.latest_tag}}` })
             console.log(returned)
           result-encoding: string
+  slack:
+    name: Send Slack message
+    runs-on: ubuntu-20.04
+    if: success()
+    steps:
+      - name: Post success result to Slack
+        run: echo "success"
+      # Fail run
+      - name: Post result to a Slack channel
 
       - name: print name
         run: |

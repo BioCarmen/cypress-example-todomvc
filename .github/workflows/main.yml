@@ -7,10 +7,15 @@ on:
   push:
 
 jobs:
+  test:
+    name: run test
+    runs-on: ubuntu-20.04
+    steps:
+      - run: exit 1
   check:
     name: Check if job should run
     runs-on: ubuntu-20.04
-
+    needs: [test]
     steps:
       - uses: actions/checkout@v2
       # - run: git fetch --prune --unshallow

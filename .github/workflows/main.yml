@@ -42,7 +42,7 @@ jobs:
           script: |
             const script = require('./release.js')
 
-            await script({github, context, core, tag: ${{steps.latest-tag.outputs.latest_tag}} })
+            await script({github, context, core, tag: `${{steps.latest-tag.outputs.latest_tag}}` })
             console.log(returned)
           result-encoding: string
 

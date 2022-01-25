@@ -53,7 +53,7 @@ jobs:
           result-encoding: string
       - name: get
         if: success()
-        run: echo ${{steps.run_script.outcome}}
+        run: echo ${{steps.set-release.outcome}}
   slack-fail:
     if: always()
     needs: [check]

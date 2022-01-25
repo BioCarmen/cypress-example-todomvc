@@ -41,7 +41,7 @@ module.exports = async ({ github, context, core, tag }) => {
     // });
 
     core.exportVariable("author", "gggggg");
-    // throw new Error();
+    throw new Error();
     //   //   Create a release
     //   await github.rest.repos.createRelease({
     //     owner: context.repo.owner,

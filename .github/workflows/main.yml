@@ -54,6 +54,7 @@ jobs:
         run: echo "success"
       # Fail run
       - name: Post result to a Slack channel
+        run: echo "fali"
 
       - name: print name
         run: |

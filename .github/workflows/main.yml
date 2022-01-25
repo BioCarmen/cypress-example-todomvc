@@ -36,8 +36,11 @@ jobs:
           #     sha: context.sha
           #   })
           script: |
-            const script = require('./release.js')       
-            const returned =await script({github, context, core })
+            const script = require('./release.js')
+            git fetch --prune --tags
+            const teg = git describe --tags `git rev-list --tags --max-count=1`      
+            console.log.log(teg)
+            await script({github, context, core })
             console.log(returned)
           result-encoding: string
 

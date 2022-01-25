@@ -51,22 +51,6 @@ jobs:
             await script({github, context, core, tag: `${{steps.latest-tag.outputs.latest_tag}}` })
             console.log(returned)
           result-encoding: string
-  slack:
-    name: Send Slack message
-    runs-on: ubuntu-20.04
-
-    needs: [check]
-    if: always()
-    steps:
-      - uses: actions/checkout@v2
-      - name: Post success result to Slack
-        if: needs.check.result == 'success'
-        run: echo "success"
-      # Fail run
-      - name: Post result to a Slack channel
-        if: needs.check.result != 'success'
-        run: echo "fali"
-
-      - name: print name
-        run: |
-          echo ${{ env.author }}
+      - name: get
+        if: always()
+        run: echo ${{steps.run_script.outcome}}

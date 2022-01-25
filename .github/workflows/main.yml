@@ -17,23 +17,7 @@ jobs:
       #   env:
       #     GITHUB_CONTEXT: ${{ toJSON(github) }}
       #   run: echo "$GITHUB_CONTEXT"
-      - name: run script
-        id: generate_tag
-        run: |
-          echo "Fetch tags"
-          git fetch --prune --tags
-          t=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo $t
-          TODAY=`date +%y-%m-%d`
-          echo $TODAY
-          version="01"
-          new_tag="prod-$TODAY-$version"
-          echo $new_tag
-          echo "::set-output name=new_tag::$new_tag"
-          echo ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-      # - name: tag name
-      #   run: |
-      #     echo "${{steps.generate_tag.outputs.new_tag}}"
+
       - name: Commit report
         run: |
           git config --global user.name 'someint'

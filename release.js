@@ -4,6 +4,8 @@ module.exports = async ({ github, context, core }) => {
   const today = new Date().toISOString().split("T")[0];
 
   execSync("git fetch --prune --tags");
+  const latestTag = execSync("git describe --tags --abbrev=0");
+  console.log("lssss", latestTag);
   exec("git describe --tags --abbrev=0", async (error, stdout) => {
     console.log(stdout);
     if (error) {
@@ -34,7 +36,7 @@ module.exports = async ({ github, context, core }) => {
       });
 
       core.exportVariable("author", newTagName);
-      return "something 1";
+
       //   //   Create a release
       //   await github.rest.repos.createRelease({
       //     owner: context.repo.owner,

@@ -54,9 +54,11 @@ jobs:
   slack:
     name: Send Slack message
     runs-on: ubuntu-20.04
+
     needs: [check]
     if: always()
     steps:
+      - uses: actions/checkout@v2
       - name: Post success result to Slack
         if: needs.check.result == 'success'
         run: echo "success"

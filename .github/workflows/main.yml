@@ -10,6 +10,7 @@ jobs:
   check:
     name: Check if job should run
     runs-on: ubuntu-20.04
+
     steps:
       - uses: actions/checkout@v2
       # - run: git fetch --prune --unshallow
@@ -48,7 +49,8 @@ jobs:
   slack:
     name: Send Slack message
     runs-on: ubuntu-20.04
-    if: success()
+    needs: [check]
+    # if: success()
     steps:
       - name: Post success result to Slack
         run: echo "success"

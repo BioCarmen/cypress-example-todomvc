@@ -24,14 +24,3 @@ jobs:
           echo ${{ github.event.deployment.environment }}
           echo ${{ github.job  }}
       # Forward deployment's status to the deployed commit.
-      - uses: octokit/request-action@v2.0.23
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          route: POST /repos/:repository/statuses/${{ github.event.deployment.sha }}
-          repository: ${{ github.repository }}
-          state: ${{ github.event.deployment_status.state }}
-          target_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          description: >
-            ${{ format('Heroku deployment is {0}', github.event.deployment_status.state) }}
-          context: deployment-status

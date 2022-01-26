@@ -18,8 +18,6 @@ jobs:
     needs: [test]
     steps:
       - uses: actions/checkout@v2
-        with:
-          persist-credentials: false
       # - run: git fetch --prune --unshallow
       # - name: Dump GitHub context
       #   env:
@@ -29,9 +27,9 @@ jobs:
       - name: Commit report
         id: get-tag
         run: |
-          git config --global user.name 'bioReleaseManager'
+          git config --global user.name 'release'
           git config --global user.email 'release.manager@biorender.com'
-          git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git fetch --prune --tags
           t=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "::set-output name=latest_tag::$t"
@@ -56,6 +54,8 @@ jobs:
       - name: get
         if: success()
         run: echo ${{steps.set-release.outcome}}
+      - name: call a
+        uses: BioCarmen/cypress-example-todomvc/.github/workflows/workflow-a.yml@develop
   slack-fail:
     if: failure()
     needs: [check]

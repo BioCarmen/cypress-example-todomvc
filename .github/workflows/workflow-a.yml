@@ -2,6 +2,12 @@ name: Reusable workflow example
 
 on:
   workflow_call:
+    secrets:
+      SENTRY_AUTH_TOKEN_CLIENT:
+        required: true
+      AWS_ACCESS_KEY_ID_FOR_AWS_DEV_ACCOUNT:
+        required: true
+
   pull_request:
     types: [labeled]
 
@@ -13,4 +19,4 @@ jobs:
       - uses: actions/checkout@v2
       - name: "something"
         run: |
-          echo "run worflow a"
+          echo ${{secrets.SENTRY_AUTH_TOKEN_CLIENT}}

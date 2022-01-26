@@ -58,6 +58,9 @@ jobs:
     needs: [check]
     if: success()
     uses: ./.github/workflows/workflow-a.yml
+    secrets:
+      SENTRY_AUTH_TOKEN_CLIENT: ${{secrets.SENTRY_AUTH_TOKEN_CLIENT}}
+      AWS_ACCESS_KEY_ID_FOR_AWS_DEV_ACCOUNT: ${{secrets.AWS_ACCESS_KEY_ID_FOR_AWS_DEV_ACCOUNT}}
   slack-fail:
     if: failure()
     needs: [check]

@@ -18,6 +18,8 @@ jobs:
     needs: [test]
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       # - run: git fetch --prune --unshallow
       # - name: Dump GitHub context
       #   env:
@@ -28,7 +30,7 @@ jobs:
         id: get-tag
         run: |
           git config --global user.name 'BioCarmen'
-          git config --global user.email 'carmen@biorender.com'
+          git config --global user.email 'carmenluo@biorender.com'
           git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}
           git fetch --prune --tags
           t=$(git describe --tags `git rev-list --tags --max-count=1`)

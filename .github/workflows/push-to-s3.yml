@@ -1,10 +1,12 @@
 name: Bio-web-app deployment
 
 on:
+  workflow_run:
+    workflows: [Main]
+    types: [completed]
   push:
     branches:
       - master
-      - release
 
 jobs:
   on-success:
@@ -18,6 +20,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: on-success
     steps:
+      - name: checkout
+        run: |
+          echo ${{github.event.workflow_run.head_branch}}
+          echo ${{ github.event.workflow_run.head_sha }}
       - name: Deploy bio web app
         run: |
-          echo "Deployed bio web app"
+          echo ${{ github.sha }}
+          echo ${GITHUB_SHA}

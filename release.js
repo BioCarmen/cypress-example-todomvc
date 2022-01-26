@@ -46,6 +46,7 @@ module.exports = async ({ github, context, core, tag }) => {
     } catch (error) {
       execSync(`git push --delete origin ${newTagName}`);
       console.error(error);
+      console.log(error);
       process.exit(1);
     }
   });

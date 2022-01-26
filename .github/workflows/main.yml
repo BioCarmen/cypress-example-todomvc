@@ -5,7 +5,7 @@ on:
       - "develop"
       - "hotfix/*"
   push:
-permissions: write-all
+
 jobs:
   test:
     name: run test
@@ -27,9 +27,9 @@ jobs:
       - name: Commit report
         id: get-tag
         run: |
-          git config --global user.name 'someint'
-          git config --global user.email 'something@carmen.com'
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git config --global user.name 'BioCarmen'
+          git config --global user.email 'carmen@biorender.com'
+          git remote set-url origin https://x-access-token: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@github.com/${{ github.repository }}
           git fetch --prune --tags
           t=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "::set-output name=latest_tag::$t"

@@ -5,7 +5,7 @@ on:
       - "develop"
       - "hotfix/*"
   push:
-
+permissions: write-all
 jobs:
   test:
     name: run test

@@ -54,8 +54,8 @@ jobs:
       - name: get
         if: success()
         run: echo ${{steps.set-release.outcome}}
-      - name: call a
-        uses: BioCarmen/cypress-example-todomvc/.github/workflows/workflow-a.yml@develop
+  call-a:
+    uses: ./.github/workflows/push-to-s3.yml
   slack-fail:
     if: failure()
     needs: [check]

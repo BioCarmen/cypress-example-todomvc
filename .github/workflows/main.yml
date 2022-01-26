@@ -30,8 +30,7 @@ jobs:
       - name: Commit report
         id: get-tag
         run: |
-          # git config --global user.name 'BioCarmen'
-          # git config --global user.email 'carmen@biorender.com'
+
           git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}
           git fetch --prune --tags
           t=$(git describe --tags `git rev-list --tags --max-count=1`)

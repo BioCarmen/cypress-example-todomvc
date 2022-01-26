@@ -55,7 +55,7 @@ jobs:
         if: success()
         run: echo ${{steps.set-release.outcome}}
   call-a:
-    uses: ./.github/workflows/push-to-s3.yml
+    uses: ./.github/workflows/workflow-a.yml
   slack-fail:
     if: failure()
     needs: [check]

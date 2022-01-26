@@ -1,12 +1,8 @@
 name: Bio-web-app deployment
 
 on:
-  workflow_run:
-    workflows: [Main]
-    types: [completed]
   push:
-    branches:
-      - master
+    branches: [master, release]
 
 jobs:
   on-success:

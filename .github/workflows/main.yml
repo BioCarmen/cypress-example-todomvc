@@ -20,6 +20,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           token: ${{ secrets.PAT }}
+          persist-credentials: false
       # - run: git fetch --prune --unshallow
       # - name: Dump GitHub context
       #   env:
@@ -56,13 +57,13 @@ jobs:
       - name: get
         if: success()
         run: echo ${{steps.set-release.outcome}}
-  call-a:
-    needs: [check]
-    if: success()
-    uses: ./.github/workflows/workflow-a.yml
-    secrets:
-      SENTRY_AUTH_TOKEN_CLIENT: ${{secrets.SENTRY_AUTH_TOKEN_CLIENT}}
-      AWS_ACCESS_KEY_ID_FOR_AWS_DEV_ACCOUNT: ${{secrets.AWS_ACCESS_KEY_ID_FOR_AWS_DEV_ACCOUNT}}
+  # call-a:
+  #   needs: [check]
+  #   if: success()
+  #   uses: ./.github/workflows/workflow-a.yml
+  #   secrets:
+  #     SENTRY_AUTH_TOKEN_CLIENT: ${{secrets.SENTRY_AUTH_TOKEN_CLIENT}}
+  #     AWS_ACCESS_KEY_ID_FOR_AWS_DEV_ACCOUNT: ${{secrets.AWS_ACCESS_KEY_ID_FOR_AWS_DEV_ACCOUNT}}
   slack-fail:
     if: failure()
     needs: [check]

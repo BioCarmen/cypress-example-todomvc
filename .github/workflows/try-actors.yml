@@ -4,15 +4,11 @@ on:
     branches:
       - "develop"
   schedule:
-  - cron: "* * * * *"
+    - cron: "* * * * *"
 
 jobs:
   test:
     name: run test
     runs-on: ubuntu-20.04
     steps:
-      - run: |
-        echo "${{ github.actor }}"
-        echo "$GITHUB_ACTOR"
-        
- 
+      - run: echo "${{ github.actor }}"

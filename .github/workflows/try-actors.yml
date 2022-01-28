@@ -11,4 +11,14 @@ jobs:
     name: run test
     runs-on: ubuntu-20.04
     steps:
-      - run: echo "${{ github.actor }} || releaseManager"
+      - name: set name
+        id: set-name
+        run: |
+          if ${{ github.actor }}
+              then
+                echo "::set-output name=actor::${{github.actor}}"
+              fi
+          done
+      - name: echo
+        run: |
+          echo "${{steps.set-name.outputs.actor }}"

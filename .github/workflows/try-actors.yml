@@ -15,10 +15,10 @@ jobs:
         id: set-name
         run: |
           if ${{ github.actor }}
-              then
-                echo "::set-output name=actor::${{github.actor}}"
-              fi
-          done
+          then
+            echo "::set-output name=actor::${{github.actor}}"
+          fi
+
       - name: echo
         run: |
           echo "${{steps.set-name.outputs.actor }}"

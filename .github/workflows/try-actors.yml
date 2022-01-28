@@ -11,4 +11,4 @@ jobs:
     name: run test
     runs-on: ubuntu-20.04
     steps:
-      - run: echo "${{ github.actor }}"
+      - run: echo "${{ github.actor }} || releaseManager"

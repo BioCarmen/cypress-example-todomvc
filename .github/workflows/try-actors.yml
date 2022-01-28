@@ -14,4 +14,4 @@ jobs:
       - name: set name
         id: set-name
         run: |
-          echo "${{ github.actor }}""
+          echo "${{ github.actor }}"

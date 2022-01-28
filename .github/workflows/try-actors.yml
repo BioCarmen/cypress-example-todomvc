@@ -16,7 +16,7 @@ jobs:
         run: |
           if ${{ github.actor }}
           then
-            echo "::set-output name=actor::${{github.actor}}"
+            echo "::set-output name=actor::"${{github.actor}}""
           fi
 
       - name: echo

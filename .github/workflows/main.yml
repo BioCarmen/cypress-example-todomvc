@@ -54,6 +54,7 @@ jobs:
               return `${note.replace('## ','*')}*`}
             }))
             console.log(arrays)
+            return arrays.join('\n')
           # script: |
           # const script = require('./release.js')
 

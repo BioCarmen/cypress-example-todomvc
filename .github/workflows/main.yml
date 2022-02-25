@@ -39,7 +39,7 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            github.repos.createRelease({
+            github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: `refs/tags/${{steps.get-tag.outputs.latest_tag}}`,

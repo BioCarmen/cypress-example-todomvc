@@ -72,19 +72,6 @@ jobs:
         uses: slackapi/slack-github-action@v1.17.0
         with:
           channel-id: "test-updates-user-end-trial"
-          payload: |
-            {
-              
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "New release is live on production",
-                  }
-                },
-                
-              ]
-            }
+          slack-message: "*New release to production is successful*\n${{ steps.set-release.outputs.result}}"
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

@@ -17,9 +17,7 @@ jobs:
     needs: [test]
     steps:
       - uses: actions/checkout@v2
-        with:
-          # token: ${{ secrets.PAT }}
-          persist-credentials: false
+
       # - run: git fetch --prune --unshallow
       # - name: Dump GitHub context
       #   env:
@@ -29,12 +27,12 @@ jobs:
       - name: Commit report
         id: get-tag
         run: |
-
-          git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}
           git fetch --prune --tags
           t=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "::set-output name=latest_tag::$t"
-
+      - name: echo
+        run: |
+          echo ${{ steps.get-tag.outputs.latest_tag }}
       - name: Create tag
         uses: actions/github-script@v5
         id: set-release

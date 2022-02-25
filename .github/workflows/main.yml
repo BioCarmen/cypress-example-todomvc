@@ -45,7 +45,7 @@ jobs:
               tag_name: `refs/tags/${{steps.get-tag.outputs.latest_tag}}`,
               generate_release_notes: true
             })
-            console.log(release, toJSON(release))
+            console.log(release)
           # script: |
           # const script = require('./release.js')
 

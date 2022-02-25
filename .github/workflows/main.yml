@@ -38,7 +38,7 @@ jobs:
         id: set-release
         with:
           script: |
-            github.rest.git.createRelease({
+            git.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: `refs/tags/${{steps.get-tag.outputs.latest_tag}}`,
@@ -46,10 +46,9 @@ jobs:
               generate_release_notes: true
             })
           # script: |
-            # const script = require('./release.js')
+          # const script = require('./release.js')
 
-            # await script({github, context, core, tag: `${{steps.latest-tag.outputs.latest_tag}}` })
-            
+          # await script({github, context, core, tag: `${{steps.latest-tag.outputs.latest_tag}}` })
 
           result-encoding: string
       - name: get

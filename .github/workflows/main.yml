@@ -46,15 +46,17 @@ jobs:
               generate_release_notes: true
             })
             const releaseNotes = release.data.body
-            const arrays = releaseNotes.split(/\r?\n/).map((note=>{
+            const arrays = releaseNotes.split(/\r?\n/).filter(item=>item).map((note=>{
+
               if (note.includes('https://github' && 'pull')){
                const link = note.split(' ').filter((item)=>item.startsWith("https://github"))[0]
-               return note.replace('* ', '').replace(link, `<${link}|pr>`)
+               const pr = link.split('/').pop()
+               return `• ${note.replace('* ', '').replace(link, `<${link}|`#${pr}`>`)}`
               } else {
               return `${note.replace('## ','*')}*`}
             }))
             console.log(arrays)
-            return arrays.join('\n')
+            return arrays.filter.join('\n')
           # script: |
           # const script = require('./release.js')
 
@@ -65,6 +67,19 @@ jobs:
         uses: slackapi/slack-github-action@v1.17.0
         with:
           channel-id: "test-updates-user-end-trial"
-          slack-message: ${{ steps.set-release.outputs.result}}
+          payload: |
+            {
+              
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "New release is live on production",
+                  }
+                },
+                
+              ]
+            }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

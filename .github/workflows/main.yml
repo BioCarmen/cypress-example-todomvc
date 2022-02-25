@@ -1,6 +1,6 @@
 name: Main
 on:
-  workflow_dispatch:
+  push:
     branches:
       - "develop"
       - "hotfix/*"
@@ -34,20 +34,22 @@ jobs:
         run: |
           echo ${{ steps.get-tag.outputs.latest_tag }}
       - name: Create tag
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         id: set-release
         with:
-          # script: |
-          #   github.rest.git.createRef({
-          #     owner: context.repo.owner,
-          #     repo: context.repo.repo,
-          #     ref: `refs/tags/${{steps.generate_tag.outputs.new_tag}}`,
-          #     sha: context.sha
-          #   })
           script: |
-            const script = require('./release.js')
+            github.rest.git.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `refs/tags/${{steps.get-tag.outputs.latest_tag}}`,
+              sha: context.sha,
+              generate_release_notes: true
+            })
+          # script: |
+            # const script = require('./release.js')
 
-            await script({github, context, core, tag: `${{steps.latest-tag.outputs.latest_tag}}` })
+            # await script({github, context, core, tag: `${{steps.latest-tag.outputs.latest_tag}}` })
+            
 
           result-encoding: string
       - name: get

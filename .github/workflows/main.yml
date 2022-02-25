@@ -61,7 +61,7 @@ jobs:
             }
             });
             console.log(arrays)
-            return arrays.filter.join('\n')
+            return arrays.join('\n')
           # script: |
           # const script = require('./release.js')
 

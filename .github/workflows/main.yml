@@ -46,29 +46,17 @@ jobs:
               generate_release_notes: true
             })
             console.log(release)
+            return release.data.body
           # script: |
           # const script = require('./release.js')
 
           # await script({github, context, core, tag: `${{steps.latest-tag.outputs.latest_tag}}` })
 
           result-encoding: string
-      - name: get
-        if: success()
-        run: echo ${{steps.set-release.outcome}}
-  # call-a:
-  #   needs: [check]
-  #   if: success()
-  #   uses: ./.github/workflows/workflow-a.yml
-  #   secrets:
-  #     SENTRY_AUTH_TOKEN_CLIENT: ${{secrets.SENTRY_AUTH_TOKEN_CLIENT}}
-  #     AWS_ACCESS_KEY_ID_FOR_AWS_DEV_ACCOUNT: ${{secrets.AWS_ACCESS_KEY_ID_FOR_AWS_DEV_ACCOUNT}}
-  slack-fail:
-    if: failure()
-    needs: [check]
-    name: run test
-    runs-on: ubuntu-20.04
-    steps:
       - name: send failed slack
-        if: needs.check.result != 'success'
-        run: |
-          echo "Fail"
+        uses: slackapi/slack-github-action@v1.17.0
+        with:
+          channel-id: "test-updates-user-end-trial"
+          slack-message: ${{ steps.set-release.outputs.result}}
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

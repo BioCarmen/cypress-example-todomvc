@@ -40,7 +40,7 @@ jobs:
                         "value": "value-0"
                       }
                     ],
-                    "action-id": "static_select-action"
+                    "action_id": "static_select-action"
                   }
                 }
               ]

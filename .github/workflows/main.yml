@@ -38,34 +38,34 @@ jobs:
         id: set-release
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const release = await github.rest.repos.createRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: `refs/tags/${{steps.get-tag.outputs.latest_tag}}`,
-              generate_release_notes: true
-            })
-            const releaseNotes = release.data.body
-            const arrays = releaseNotes.split(/\r?\n/).filter((item) => item)
-            .map((note) => {
-            if (note.includes("https://github" && "pull")) {
-              const link = note
-                .split(" ")
-                .filter((item) => item.startsWith("https://github"))[0];
-              const pr = link.split("/").pop();
-              return `• ${note
-                .replace("* ", "")
-                .replace(link, `<${link}|#${pr}>`)}`;
-            } else {
-              return `${note.replace("## ", "*")}*`;
-            }
-            });
-            console.log(arrays)
-            return arrays.join('\n')
           # script: |
-          # const script = require('./release.js')
+          # const release = await github.rest.repos.createRelease({
+          #   owner: context.repo.owner,
+          #   repo: context.repo.repo,
+          #   tag_name: `refs/tags/${{steps.get-tag.outputs.latest_tag}}`,
+          #   generate_release_notes: true
+          # })
+          # const releaseNotes = release.data.body
+          # const arrays = releaseNotes.split(/\r?\n/).filter((item) => item)
+          # .map((note) => {
+          # if (note.includes("https://github" && "pull")) {
+          #   const link = note
+          #     .split(" ")
+          #     .filter((item) => item.startsWith("https://github"))[0];
+          #   const pr = link.split("/").pop();
+          #   return `• ${note
+          #     .replace("* ", "")
+          #     .replace(link, `<${link}|#${pr}>`)}`;
+          # } else {
+          #   return `${note.replace("## ", "*")}*`;
+          # }
+          # });
+          # console.log(arrays)
+          # return arrays.join('\n')
+          script: |
+            const script = require('./release.js')
 
-          # await script({github, context, core, tag: `${{steps.latest-tag.outputs.latest_tag}}` })
+            await script({github, context, core, tag: `${{steps.latest-tag.outputs.latest_tag}}` })
 
           result-encoding: string
       - name: send failed slack

@@ -4,7 +4,18 @@ on:
   deployment_status:
 
 jobs:
-  deployment-status:
+  start-release:
+    runs-on: ubuntu-latest
+    if: github.event.deployment_status.action == 'created' && github.event.deployment.environment == 'carmen-staging'
+    steps:
+      - name: send slack
+        uses: slackapi/slack-github-action@v1.17.0
+        with:
+          channel-id: "test-updates-user-end-trial"
+          slack-message: "*New release to production is successful*\n${{ steps.set-release.outputs.result}}"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+  release-notes:
     runs-on: ubuntu-latest
 
     # Continue only if some definitive status has been reported.

@@ -15,13 +15,31 @@ jobs:
           channel-id: "test-updates-user-end-trial"
           payload: |
             {
-              "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
                     "text": "Starting a new release...Current status: "
+                  },
+                  "accessory": {
+                    type: "static_select",
+                    "placeholder": {
+                      "type": "plain_text",
+                      "text": build,
+                      "emoji": true
+                    },
+                    "options": [
+                      {
+                        "text": {
+                          "type": "plain_text",
+                          "text": "completed".
+                          "emoji": true
+                        },
+                        "value": "value-o"
+                      }
+                    ],
+                    "action-id": "static_select-action"
                   }
                 }
               ]

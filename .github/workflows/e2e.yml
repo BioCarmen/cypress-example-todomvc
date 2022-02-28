@@ -36,8 +36,8 @@ jobs:
           record: true
           parallel: true
           group: "Actions example"
-          start: "npm run test:ci:record"
-          wait-on: "http://localhost:8888"
+          start: "npm run start:ci"
+          config: baseUrl=http://localhost:8888
         env:
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: "be2efe05-65a6-477e-ba04-9ed19fd53a83"

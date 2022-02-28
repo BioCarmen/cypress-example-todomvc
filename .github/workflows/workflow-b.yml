@@ -2,6 +2,7 @@ name: Reusable workflow example
 
 on:
   deployment_status:
+  push:
 
 jobs:
   start-release:
@@ -17,55 +18,28 @@ jobs:
               "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
               "blocks": [
                 {
-			            "type": "section",
-			            "text": {
-				            "type": "mrkdwn",
-				            "text": "Starting a new release...Current status: "
-		              	},
-		          	  "accessory": {
-				            "type": "static_select",
-				            "placeholder": {
-					            "type": "plain_text",
-					            "text": "build",
-					            "emoji": true
-				            },
-				          "options": [
-				          	{
-						          "text": {
-							          "type": "plain_text",
-							          "text": "completed",
-							          "emoji": true
-						          },
-						          "value": "value-0"
-					          },
-					          {
-						          "text": {
-							          "type": "plain_text",
-							          "text": "released",
-							          "emoji": true
-						          },
-						        "value": "value-1"
-					          }
-				          ],
-				          "action_id": "static_select-action"
-			            }
-		            }
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Starting a new release...Current status: "
+                  }
+                }
               ]
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-  release-notes:
-    runs-on: ubuntu-latest
+  # release-notes:
+  #   runs-on: ubuntu-latest
 
-    # Continue only if some definitive status has been reported.
-    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'carmen-staging'
+  #   # Continue only if some definitive status has been reported.
+  #   if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'carmen-staging'
 
-    steps:
-      - name: send slack
-        uses: slackapi/slack-github-action@v1.17.0
-        with:
-          channel-id: "test-updates-user-end-trial"
-          slack-message: "done"
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      # Forward deployment's status to the deployed commit.
+  #   steps:
+  #     - name: send slack
+  #       uses: slackapi/slack-github-action@v1.17.0
+  #       with:
+  #         channel-id: "test-updates-user-end-trial"
+  #         slack-message: "done"
+  #       env:
+  #         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+  # Forward deployment's status to the deployed commit.

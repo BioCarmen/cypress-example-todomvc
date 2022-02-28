@@ -37,7 +37,7 @@ jobs:
                           "text": "completed".
                           "emoji": true
                         },
-                        "value": "value-o"
+                        "value": "value-0"
                       }
                     ],
                     "action-id": "static_select-action"

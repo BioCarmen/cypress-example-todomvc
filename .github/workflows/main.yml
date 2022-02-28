@@ -68,10 +68,10 @@ jobs:
             await script({github, context, core, tag: `${{steps.latest-tag.outputs.latest_tag}}` })
 
           result-encoding: string
-      - name: send failed slack
-        uses: slackapi/slack-github-action@v1.17.0
-        with:
-          channel-id: "test-updates-user-end-trial"
-          slack-message: "*New release to production is successful*\n${{ steps.set-release.outputs.result}}"
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      # - name: send failed slack
+      #   uses: slackapi/slack-github-action@v1.17.0
+      #   with:
+      #     channel-id: "test-updates-user-end-trial"
+      #     slack-message: "*New release to production is successful*\n${{ steps.set-release.outputs.result}}"
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

@@ -1,6 +1,6 @@
 {
-  "baseUrl": "https://staging.biorender.com",
+  "baseUrl": "http://localhost:8888",
   "fixturesFolder": false,
   "pluginsFile": false,
-  "projectId": "wrpm27"
+  "projectId": "d2kner"
 }

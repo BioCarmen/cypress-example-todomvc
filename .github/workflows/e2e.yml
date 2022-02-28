@@ -30,5 +30,17 @@ jobs:
           node-version: 14.18.1
 
       - name: Cypress run - Cypress Dashboard
-        run: |
-          npm install
+
+        uses: cypress-io/github-action@v2
+        with:
+          record: true
+          parallel: true
+          group: "Actions example"
+          start: "npm run test:ci:record"
+          wait-on: "http://localhost:8888"
+        env:
+          # pass the Dashboard record key as an environment variable
+          CYPRESS_RECORD_KEY: "be2efe05-65a6-477e-ba04-9ed19fd53a83"
+          # Recommended: pass the GitHub token lets this action correctly
+          # determine the unique run id necessary to re-run the checks
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

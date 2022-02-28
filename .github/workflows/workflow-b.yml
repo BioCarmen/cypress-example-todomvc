@@ -15,6 +15,7 @@ jobs:
           channel-id: "test-updates-user-end-trial"
           payload: |
             {
+              "text": "ok",
               "blocks": [
                 {
                   "type": "section",

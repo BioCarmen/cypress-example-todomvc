@@ -40,8 +40,7 @@ jobs:
                     "type": "plain_text",
                     "text": "Starting a new release. Current status: ",
                     "emoji": true
-                  },
-                  "initial_value": "build"               
+                  }         
                 }
               ]
             }

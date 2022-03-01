@@ -30,7 +30,8 @@ jobs:
                         "text": {
                           "type": "plain_text",
                           "text": "text"
-                        }
+                        },
+                        "value": "value-0"
                       }
                     ]
                   }               

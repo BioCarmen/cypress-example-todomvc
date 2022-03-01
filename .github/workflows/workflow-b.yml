@@ -17,14 +17,9 @@ jobs:
           payload: |
             {
               "blocks": [
-                { "type": "divider" },
                 {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "Pick an item from the dropdown list"
-                  },
-                  "accessory": {
+                  "type": "input",
+                  "element": {
                     "type": "static_select",
                     "placeholder": {
                       "type": "plain_text",
@@ -39,22 +34,8 @@ jobs:
                       }
                     ]
                   }               
-                },
-                {
-                  "type": "actions",
-                  "elements": [
-                    {
-                      "type": "button",
-                      "text": {
-                        "type": "plain_text",
-                        "text": "button"
-                      },
-                      "url": "https://media.makeameme.org/created/a-slack-this.jpg"
-                    }
-                  ]
                 }
-              ],
-              "channel-id": "test-updates-user-end-trial"
+              ]
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

@@ -13,7 +13,7 @@ jobs:
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
         with:
-          channel-id: "SLACK_CHANNEL_ID" # ID of Slack Channel you want to post to
+          channel-id: "test-updates-user-end-trial" # ID of Slack Channel you want to post to
           payload: |
             {
               "blocks": [
@@ -42,7 +42,7 @@ jobs:
                   ]
                 }
               ],
-              "channel-id": "NEW_TARGET_CHANNEL_ID"
+              "channel-id": "test-updates-user-end-trial"
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

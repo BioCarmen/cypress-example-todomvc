@@ -6,7 +6,7 @@ on:
 jobs:
   start-release:
     runs-on: ubuntu-latest
-    if: github.event.deployment_status.action == 'created' && github.event.deployment.environment == 'carmen-staging'
+    if: github.event.deployment_status.state == 'pending' && github.event.deployment.environment == 'carmen-staging'
     steps:
       - name: Send GitHub trigger payload to Slack Workflow Builder
         id: slack

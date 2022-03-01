@@ -19,14 +19,29 @@ jobs:
               "blocks": [
                 { "type": "divider" },
                 {
-                  "type": "image",
-                  "title": {
-                    "type": "plain_text",
-                    "text": "Slack Slack Slack",
-                    "emoji": true
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Pick an item from the dropdown list"
                   },
-                  "image_url": "https://media.makeameme.org/created/a-slack-this.jpg",
-                  "alt_text": "marg"
+                  "accessory": {
+                    "type": "static_select",
+                    "placeholder": {
+                      "type": "plain_text",
+                      "text": "select item",
+                      "emoji": true
+                    },
+                    "options": [
+                      {
+                        "text": {
+                          "type": "plain_text"
+                          "text": "text",
+                          "emoji": true
+                        },
+                        "value": "value-0"
+                      }
+                    ]
+                  }               
                 },
                 {
                   "type": "actions",

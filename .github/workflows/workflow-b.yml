@@ -28,7 +28,7 @@ jobs:
                     "options": [
                       {
                         "text": {
-                          "type": "plain_text"
+                          "type": "plain_text",
                           "text": "text"
                         }
                       }

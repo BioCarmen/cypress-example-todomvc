@@ -24,12 +24,14 @@ jobs:
                     "placeholder": {
                       "type": "plain_text",
                       "text": "select item",
+                      "emoji": true
                     },
                     "options": [
                       {
                         "text": {
                           "type": "plain_text",
-                          "text": "text"
+                          "text": "text",
+                          "emoji": true
                         },
                         "value": "value-0"
                       }

@@ -35,9 +35,9 @@ jobs:
                       "type": "button",
                       "text": {
                         "type": "plain_text",
-                        "text": $values.button_text
+                        "text": "button"
                       },
-                      "url": $values.button_url
+                      "url": "https://media.makeameme.org/created/a-slack-this.jpg"
                     }
                   ]
                 }
@@ -46,9 +46,7 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        values: |
-          button_text: ${{ github.sha }}
-          button_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
   # release-notes:
   #   runs-on: ubuntu-latest
 

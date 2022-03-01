@@ -13,37 +13,8 @@ jobs:
         uses: slackapi/slack-github-action@v1.17.0
         with:
           channel-id: "test-updates-user-end-trial"
-          payload: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "Starting a new release...Current status: "
-                  },
-                  "accessory": {
-                    type: "static_select",
-                    "placeholder": {
-                      "type": "plain_text",
-                      "text": "build",
-                      "emoji": true
-                    },
-                    "options": [
-                      {
-                        "text": {
-                          "type": "plain_text",
-                          "text": "completed",
-                          "emoji": true
-                        },
-                        "value": "value-0"
-                      }
-                    ],
-                    "action_id": "static_select-action"
-                  }
-                }
-              ]
-            }
+          payload-file-path: "./release-manager.json"
+
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
   # release-notes:

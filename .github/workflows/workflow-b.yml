@@ -27,7 +27,7 @@ jobs:
                     type: "static_select",
                     "placeholder": {
                       "type": "plain_text",
-                      "text": build,
+                      "text": "build",
                       "emoji": true
                     },
                     "options": [

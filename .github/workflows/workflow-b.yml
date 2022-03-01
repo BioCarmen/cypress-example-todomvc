@@ -15,7 +15,6 @@ jobs:
           channel-id: "test-updates-user-end-trial"
           payload: |
             {
-              "text": "Starting a new release...Current status: ",
               "blocks": [
                 {
                   "type": "section",

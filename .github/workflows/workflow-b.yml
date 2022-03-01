@@ -38,7 +38,7 @@ jobs:
                     ]
                   },
                   "label": {
-                    type: "plain_text",
+                    "type": "plain_text",
                     "text": "Starting a new release. Current status: ",
                     "emoji": true
                   }               

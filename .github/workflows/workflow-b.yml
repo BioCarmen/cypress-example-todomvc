@@ -10,7 +10,7 @@ jobs:
     # if: github.event.deployment_status.action == 'created' && github.event.deployment.environment == 'carmen-staging'
     steps:
       - name: send slack
-        uses: slackapi/slack-github-action@v1.17.0
+        uses: slackapi/slack-github-action@v1.18.0
         with:
           channel-id: "test-updates-user-end-trial"
           payload-file-path: "./release-message.json"

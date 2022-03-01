@@ -13,7 +13,7 @@ jobs:
         uses: slackapi/slack-github-action@v1.17.0
         with:
           channel-id: "test-updates-user-end-trial"
-          payload-file-path: "./release-manager.json"
+          payload-file-path: "./release-message.json"
 
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

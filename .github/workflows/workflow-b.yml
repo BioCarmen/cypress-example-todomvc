@@ -23,7 +23,7 @@ jobs:
                     "type": "static_select",
                     "placeholder": {
                       "type": "plain_text",
-                      "text": "select item",
+                      "text": "build",
                       "emoji": true
                     },
                     "options": [
@@ -36,6 +36,11 @@ jobs:
                         "value": "value-0"
                       }
                     ]
+                  },
+                  "label": {
+                    type: "plain_text",
+                    "text": "Starting a new release. Current status: ",
+                    "emoji": true
                   }               
                 }
               ]

@@ -1,12 +1,13 @@
 name: Reusable workflow example
 
 on:
+  deployment:
   deployment_status:
 
 jobs:
   start-release:
     runs-on: ubuntu-latest
-    if: github.event.deployment_status.state == 'pending' && github.event.deployment.environment == 'carmen-staging'
+    if: github.event.deployment.environment == 'carmen-staging'
     steps:
       - name: Send GitHub trigger payload to Slack Workflow Builder
         id: slack

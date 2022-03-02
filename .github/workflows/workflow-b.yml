@@ -17,7 +17,7 @@ jobs:
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
         with:
-          channel-id: "test-updates-user-end-trial" # ID of Slack Channel you want to post to
+          channel-id: "C02J77LD0NT" # ID of Slack Channel you want to post to
           payload: |
             {
               "attachments": [
@@ -32,7 +32,7 @@ jobs:
                       "type": "section"
                     }
                   ],
-                  "color": "#00FF00"
+                  "color": "#FFC300"
                 }
               ]
             }
@@ -49,7 +49,7 @@ jobs:
       - name: send slack
         uses: slackapi/slack-github-action@v1.17.0
         with:
-          channel-id: "test-updates-user-end-trial"
+          channel-id: "C02J77LD0NT"
           payload: |
             {
               "attachments": [

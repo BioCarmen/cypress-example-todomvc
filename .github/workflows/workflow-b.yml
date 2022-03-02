@@ -8,8 +8,11 @@ on:
 jobs:
   start-release:
     runs-on: ubuntu-latest
-    if: github.event.deployment.environment == 'carmen-staging'
+    # if: github.event.deployment.environment == 'carmen-staging'
     steps:
+      - name: "test"
+        run: |
+          echo
       - name: Send GitHub trigger payload to Slack Workflow Builder
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
@@ -17,41 +20,14 @@ jobs:
           channel-id: "test-updates-user-end-trial" # ID of Slack Channel you want to post to
           payload: |
             {
-              "blocks": [
-                {
-                  "type": "input",
-                  "element": {
-                    "type": "static_select",
-                    "placeholder": {
-                      "type": "plain_text",
-                      "text": "Please select a status",
-                      "emoji": true
-                    },
-                    "options": [
-                      {
-                        "text": {
-                          "type": "plain_text",
-                          "text": "build",
-                          "emoji": true
-                        },
-                        "value": "value-0"
-                      }
-                    ]
-                  },
-                  "label": {
-                    "type": "plain_text",
-                    "text": "Starting a new release. Current status: ",
-                    "emoji": true
-                  }         
-                }
-              ],
               "attachments": [
                 {
                   "blocks": [
                     {
                       "text": {
-                        "text": "Starting a new release.",
-                        "type": "plain_text"
+                        "text": "Starting a new release: :inprogress:",
+                        "type": "plain_text",
+                        "emoji": true
                       },
                       "type": "section"
                     }
@@ -67,13 +43,30 @@ jobs:
     runs-on: ubuntu-latest
 
     # Continue only if some definitive status has been reported.
-    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'carmen-staging'
-
+    # if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'carmen-staging'
+    needs: start-release
     steps:
       - name: send slack
         uses: slackapi/slack-github-action@v1.17.0
         with:
           channel-id: "test-updates-user-end-trial"
-          slack-message: "done"
+          payload: |
+            {
+              "attachments": [
+                {
+                  "blocks": [
+                    {
+                      "text": {
+                        "text": "Release is completed on production. :done:",
+                        "type": "plain_text",
+                        "emoji": true
+                      },
+                      "type": "section"
+                    }
+                  ],
+                  "color": "#00FF00"
+                }
+              ]
+            }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

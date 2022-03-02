@@ -49,16 +49,14 @@ jobs:
                 {
                   "blocks": [
                     {
-                      "type": "divider"
-                    },
-                    {
                       "text": {
-                        "text": "wrap in clock",
+                        "text": "start to deploy",
                         "type": "plain_text"
                       },
                       "type": "section"
                     }
-                  ]
+                  ],
+                  "color": "good"
                 }
               ]
             }

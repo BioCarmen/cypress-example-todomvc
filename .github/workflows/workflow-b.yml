@@ -56,7 +56,7 @@ jobs:
                       "type": "section"
                     }
                   ],
-                  "color": "good"
+                  "color": "#00FF00"
                 }
               ]
             }

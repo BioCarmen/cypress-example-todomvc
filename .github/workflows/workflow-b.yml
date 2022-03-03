@@ -1,23 +1,19 @@
-name: Reusable workflow example
-
+name: Generate release
 on:
   deployment:
   deployment_status:
-  push:
+  workflow_dispatch:
 
 jobs:
   start-release:
     runs-on: ubuntu-latest
-    # if: github.event.deployment.environment == 'carmen-staging'
+    if: github.event.deployment.environment == 'biorender-production'
     steps:
-      - name: "test"
-        run: |
-          echo
-      - name: Send GitHub trigger payload to Slack Workflow Builder
-        id: slack
+      - name: Send release status to mission-control
         uses: slackapi/slack-github-action@v1.18.0
         with:
-          channel-id: "C02J77LD0NT" # ID of Slack Channel you want to post to
+          # channel name: mission-control
+          channel-id: "C01L8NKPGQP"
           payload: |
             {
               "attachments": [
@@ -25,31 +21,80 @@ jobs:
                   "blocks": [
                     {
                       "text": {
-                        "text": "Starting a new release: :inprogress:",
+                        "text": "Starting a new code release to production: :inprogress:",
                         "type": "plain_text",
                         "emoji": true
                       },
                       "type": "section"
                     }
                   ],
-                  "color": "#FFC300"
+                  "color": "#DAA038"
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+  generate-release:
+    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'biorender-production'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get latest tag
+        id: get-tag
+        run: |
+          git fetch --prune --tags
+          t=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "::set-output name=latest_tag::$t"
+
+      - name: Create release
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const release = await github.rest.repos.createRelease({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            tag_name: `refs/tags/${{steps.get-tag.outputs.latest_tag}}`,
+            generate_release_notes: true,
+            })
+
+      - name: Send release completed to mission-control
+        uses: slackapi/slack-github-action@v1.18.0
+        if: success()
+        with:
+          # channel name: mission-control
+          channel-id: "C01L8NKPGQP"
+          payload: |
+            {
+              "attachments": [
+                {
+                  "blocks": [
+                    {
+                      "text": {
+                        "text": "Release of new code to production is complete. :done:",
+                        "type": "plain_text",
+                        "emoji": true
+                      },
+                      "type": "section"
+                    }
+                  ],
+                  "color": "#47A868"
                 }
               ]
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-  release-notes:
+  release-failure:
+    if: github.event.deployment_status.state == 'failure' && github.event.deployment.environment == 'biorender-production'
     runs-on: ubuntu-latest
-
-    # Continue only if some definitive status has been reported.
-    # if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'carmen-staging'
-    needs: start-release
     steps:
-      - name: send slack
-        uses: slackapi/slack-github-action@v1.17.0
+      - name: Send release failed to mission-control
+        uses: slackapi/slack-github-action@v1.18.0
         with:
-          channel-id: "C02J77LD0NT"
+          # channel name: mission-control
+          channel-id: "C01L8NKPGQP"
           payload: |
             {
               "attachments": [
@@ -57,14 +102,14 @@ jobs:
                   "blocks": [
                     {
                       "text": {
-                        "text": "Release is completed on production. :done:",
+                        "text": "Release of new code to production failed. :x:",
                         "type": "plain_text",
                         "emoji": true
                       },
                       "type": "section"
                     }
                   ],
-                  "color": "#00FF00"
+                  "color": "#A30200"
                 }
               ]
             }

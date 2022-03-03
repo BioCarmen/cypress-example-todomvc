@@ -7,9 +7,9 @@ on:
 jobs:
   start-release:
     runs-on: ubuntu-latest
-    if: github.event.deployment.environment == 'carmen-staging' && github.event.deployment_status.state != 'success'
+    if: github.event.deployment.environment == 'carmen-staging'
     steps:
-      - run: echo "${{github.event.deployment_status.state}}"
+      - run: echo "${{github.event.action}}" "${{github.event.deployment_status.state}}"
       - name: Send release status to mission-control
         uses: slackapi/slack-github-action@v1.18.0
         with:

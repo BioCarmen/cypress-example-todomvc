@@ -7,7 +7,7 @@ on:
 jobs:
   start-release:
     runs-on: ubuntu-latest
-    if: github.event.deployment.environment == 'biorender-production'
+    if: github.event.deployment.environment == 'carmen-staging'
     steps:
       - name: Send release status to mission-control
         uses: slackapi/slack-github-action@v1.18.0
@@ -35,7 +35,7 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
   generate-release:
-    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'biorender-production'
+    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'carmen-staging'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.deployment.environment == 'carmen-staging' && (github.event.deployment_status.state != 'success' && github.event.deployment_status.state != 'failure')
     steps:
-      - run: echo "${{github.event.action}}" "${{github.event.deployment_status.state}}"
+      - run: echo "sha-$GITHUB_SHA-time-$(date +"%s")"
       - name: Send release status to mission-control
         uses: slackapi/slack-github-action@v1.18.0
         with:
@@ -58,7 +58,7 @@ jobs:
             tag_name: `refs/tags/${{steps.get-tag.outputs.latest_tag}}`,
             generate_release_notes: true,
             })
-      - run: sleep 8
+      - run: sleep 60
       - name: Send release completed to mission-control
         uses: slackapi/slack-github-action@v1.18.0
         if: success()

@@ -38,9 +38,9 @@ jobs:
         id: get-actor
         run: |
           if [ ${{ github.event_name }} == 'workflow_dispatch' ]; then
-            echo "::set-output actor=${{ github.actor }}"
+            echo "::set-output name=actor::${{ github.actor }}"
           else
-            echo "::set-output actor=`github-actions[bot]`"
+            echo "::set-output name=actor::github-actions[bot]"
           fi
       - name: Create tag
         uses: actions/github-script@v6

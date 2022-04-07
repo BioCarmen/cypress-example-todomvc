@@ -41,6 +41,7 @@ jobs:
             echo "::set-output actor=${{ github.actor }}"
           else
             echo "::set-output actor=github-actions[bot]"
+          fi
       - name: Create tag
         uses: actions/github-script@v6
         id: set-release

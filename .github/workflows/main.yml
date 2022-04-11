@@ -23,17 +23,26 @@ jobs:
           echo "::set-output name=latest_tag::$t"
           g=$(git rev-list --count $t..origin/develop)
           echo "::set-output name=rev_list_count::$g"
+      - name: Release is up to date with develop
+        if: ${{steps.get-tag.outputs.rev_list_count == 0 }}
+        uses: slackapi/slack-github-action@v1.17.0
+        with:
+          channel-id: "test-updates-user-end-trial"
+          slack-message: "Release is up to date with develop"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
   check:
     name: Check if job should run
     runs-on: ubuntu-20.04
+    if: ${{needs.get-latest-tag.outputs.rev_list_count != 0 }}
     needs: [get-latest-tag]
     steps:
       - uses: actions/checkout@v2
 
       # - run: git fetch --prune --unshallow
       - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
+
         run: echo ${{ needs.get-latest-tag.outputs.rev_list_count}} ${{needs.get-latest-tag.outputs}}
 
       # - name: Commit report

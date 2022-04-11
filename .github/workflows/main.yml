@@ -10,6 +10,9 @@ jobs:
   get-latest-tag:
     name: run test
     runs-on: ubuntu-latest
+    outputs:
+      latest_tag: ${{ steps.get-tag.outputs.latest_tag }}
+      rev_list_count: ${{steps.get-tag.outputs.latest_tag }}
     steps:
       - uses: actions/checkout@v2
       - name: Commit report
@@ -18,7 +21,8 @@ jobs:
           git fetch --prune --tags
           t=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "::set-output name=latest_tag::$t"
-          git rev-list --count $t..origin/release
+          revListCount = $(git rev-list --count $t..origin/develop)
+          echo "::set-output name=rev_list_count::$evListCount"
   check:
     name: Check if job should run
     runs-on: ubuntu-20.04
@@ -30,7 +34,7 @@ jobs:
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
+        run: echo ${{ needs.get-latest-tag.outputs.rev_list_count}}
 
       # - name: Commit report
       #   id: get-tag

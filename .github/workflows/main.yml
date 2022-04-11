@@ -18,7 +18,7 @@ jobs:
           git fetch --prune --tags
           t=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "::set-output name=latest_tag::$t"
-          git rev-list --count $t..release
+          git rev-list --count $t..origin/release
   check:
     name: Check if job should run
     runs-on: ubuntu-20.04

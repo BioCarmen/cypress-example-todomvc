@@ -7,11 +7,18 @@ on:
   push:
 
 jobs:
-  test:
+  get-latest-tag:
     name: run test
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      - run: echo "yeah"
+      - uses: actions/checkout@v2
+      - name: Commit report
+        id: get-tag
+        run: |
+          git fetch --prune --tags
+          t=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "::set-output name=latest_tag::$t"
+          git rev-list --count $t..release
   check:
     name: Check if job should run
     runs-on: ubuntu-20.04
@@ -25,12 +32,12 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: echo "$GITHUB_CONTEXT"
 
-      - name: Commit report
-        id: get-tag
-        run: |
-          git fetch --prune --tags
-          t=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo "::set-output name=latest_tag::$t"
+      # - name: Commit report
+      #   id: get-tag
+      #   run: |
+      #     git fetch --prune --tags
+      #     t=$(git describe --tags `git rev-list --tags --max-count=1`)
+      #     echo "::set-output name=latest_tag::$t"
       - name: echo
         run: |
           echo ${{ steps.get-tag.outputs.latest_tag }}

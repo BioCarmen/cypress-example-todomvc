@@ -22,7 +22,7 @@ jobs:
   check:
     name: Check if job should run
     runs-on: ubuntu-20.04
-    needs: [test]
+    needs: [get-latest-tag]
     steps:
       - uses: actions/checkout@v2
 

@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       latest_tag: ${{ steps.get-tag.outputs.latest_tag }}
-      rev_list_count: ${{steps.get-tag.outputs.latest_tag }}
+      rev_list_count: ${{steps.get-tag.outputs.rev_list_count }}
     steps:
       - uses: actions/checkout@v2
       - name: Commit report
@@ -34,7 +34,7 @@ jobs:
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo ${{ needs.get-latest-tag.outputs.rev_list_count}}
+        run: echo ${{ needs.get-latest-tag.outputs.rev_list_count}} ${{needs.get-latest-tag.outputs}}
 
       # - name: Commit report
       #   id: get-tag

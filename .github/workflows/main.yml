@@ -21,8 +21,8 @@ jobs:
           git fetch --prune --tags
           t=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "::set-output name=latest_tag::$t"
-          revListCount = $(git rev-list --count $t..origin/develop)
-          echo "::set-output name=rev_list_count::$evListCount"
+          g=$(git rev-list --count $t..origin/develop)
+          echo "::set-output name=rev_list_count::$g"
   check:
     name: Check if job should run
     runs-on: ubuntu-20.04

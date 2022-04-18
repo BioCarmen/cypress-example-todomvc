@@ -39,6 +39,8 @@ jobs:
     needs: [get-latest-tag]
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       # - run: git fetch --prune --unshallow
       - name: Dump GitHub context

@@ -97,6 +97,8 @@ jobs:
             await script({github, context, core, tag: `${{steps.latest-tag.outputs.latest_tag}}` })
 
           result-encoding: string
+      - name: Push to Heroku
+        run: git push -f https://heroku:${{ secrets.HEROKU_API_TOKEN }}@git.heroku.com/carmen-staging.git origin/release:master
       - name: send failed slack
         uses: slackapi/slack-github-action@v1.17.0
         with:

@@ -39,8 +39,8 @@ jobs:
     needs: [get-latest-tag]
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+        # with:
+        #   fetch-depth: 0
 
       # - run: git fetch --prune --unshallow
       - name: Dump GitHub context
@@ -101,6 +101,7 @@ jobs:
           result-encoding: string
       - name: Push to Heroku
         run: |
+          git filter-branch -- --all
           git push -f https://heroku:${{ secrets.HEROKU_API_TOKEN }}@git.heroku.com/carmen-staging.git release:refs/heads/master
       - name: send failed slack
         uses: slackapi/slack-github-action@v1.17.0

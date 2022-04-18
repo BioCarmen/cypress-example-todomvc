@@ -99,7 +99,8 @@ jobs:
           result-encoding: string
       - name: Push to Heroku
         run: |
-          git push -f https://heroku:${{ secrets.HEROKU_API_TOKEN }}@git.heroku.com/carmen-staging.git release:refs/heads/main
+          git fetch --all --unshallow
+          git push -f https://heroku:${{ secrets.HEROKU_API_TOKEN }}@git.heroku.com/carmen-staging.git release:refs/heads/master
       - name: send failed slack
         uses: slackapi/slack-github-action@v1.17.0
         with:

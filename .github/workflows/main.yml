@@ -115,4 +115,6 @@ jobs:
           ref: release
       - name: deploy actual
         run: |
+          echo ${{github.sha}}
+          git fetch --all --unshallow
           git push -f https://heroku:${{ secrets.HEROKU_API_TOKEN }}@git.heroku.com/carmen-staging.git release:master

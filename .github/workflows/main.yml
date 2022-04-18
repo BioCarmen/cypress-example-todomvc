@@ -1,10 +1,7 @@
 name: Main
 on:
   workflow_dispatch:
-    branches:
-      - "develop"
-      - "hotfix/*"
-  push:
+  pull_request:
 
 jobs:
   get-latest-tag:
@@ -38,7 +35,10 @@ jobs:
     if: ${{needs.get-latest-tag.outputs.rev_list_count != 0 }}
     needs: [get-latest-tag]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          ref: develop
+
         # with:
         #   fetch-depth: 0
 

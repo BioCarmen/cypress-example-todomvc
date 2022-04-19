@@ -5,11 +5,8 @@ on:
     secrets:
       SENTRY_AUTH_TOKEN_CLIENT:
         required: true
-      AWS_ACCESS_KEY_ID_FOR_AWS_DEV_ACCOUNT:
-        required: true
 
-  pull_request:
-    types: [labeled]
+  push:
 
 jobs:
   example_job:

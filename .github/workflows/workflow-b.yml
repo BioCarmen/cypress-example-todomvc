@@ -5,113 +5,117 @@ on:
   workflow_dispatch:
 
 jobs:
-  start-release:
-    runs-on: ubuntu-latest
-    if: github.event.deployment.environment == 'carmen-staging' && (github.event.deployment_status.state != 'success' && github.event.deployment_status.state != 'failure')
-    steps:
-      - run: echo "sha-$GITHUB_SHA-time-$(date +"%s")"
-      - name: Send release status to mission-control
-        uses: slackapi/slack-github-action@v1.18.0
-        with:
-          channel-id: "test-updates-user-end-trial"
-          payload: |
-            {
-              "attachments": [
-                {
-                  "blocks": [
-                    {
-                      "text": {
-                        "text": "Starting a new code release to production: :inprogress:",
-                        "type": "plain_text",
-                        "emoji": true
-                      },
-                      "type": "section"
-                    }
-                  ],
-                  "color": "#DAA038"
-                }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-  generate-release:
-    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'carmen-staging'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+  call-workflow-a:
+    uses: ./.github/workflows/workflow-a
+    with:
+      SENTRY_AUTH_TOKEN_CLIENT: ${secrets.SENTRY_AUTH_TOKEN_CLIENT}}
+  # start-release:
+  #   runs-on: ubuntu-latest
+  #   if: github.event.deployment.environment == 'carmen-staging' && (github.event.deployment_status.state != 'success' && github.event.deployment_status.state != 'failure')
+  #   steps:
+  #     - run: echo "sha-$GITHUB_SHA-time-$(date +"%s")"
+  #     - name: Send release status to mission-control
+  #       uses: slackapi/slack-github-action@v1.18.0
+  #       with:
+  #         channel-id: "test-updates-user-end-trial"
+  #         payload: |
+  #           {
+  #             "attachments": [
+  #               {
+  #                 "blocks": [
+  #                   {
+  #                     "text": {
+  #                       "text": "Starting a new code release to production: :inprogress:",
+  #                       "type": "plain_text",
+  #                       "emoji": true
+  #                     },
+  #                     "type": "section"
+  #                   }
+  #                 ],
+  #                 "color": "#DAA038"
+  #               }
+  #             ]
+  #           }
+  #       env:
+  #         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+  # generate-release:
+  #   if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'carmen-staging'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
 
-      - name: Get latest tag
-        id: get-tag
-        run: |
-          git fetch --prune --tags
-          t=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo "::set-output name=latest_tag::$t"
+  #     - name: Get latest tag
+  #       id: get-tag
+  #       run: |
+  #         git fetch --prune --tags
+  #         t=$(git describe --tags `git rev-list --tags --max-count=1`)
+  #         echo "::set-output name=latest_tag::$t"
 
-      - name: Create release
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const release = await github.rest.repos.createRelease({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            tag_name: `refs/tags/${{steps.get-tag.outputs.latest_tag}}`,
-            generate_release_notes: true,
-            })
-      - run: sleep 60
-      - name: Send release completed to mission-control
-        uses: slackapi/slack-github-action@v1.18.0
-        if: success()
-        with:
-          # channel name: mission-control
-          channel-id: "test-updates-user-end-trial"
-          payload: |
-            {
-              "attachments": [
-                {
-                  "blocks": [
-                    {
-                      "text": {
-                        "text": "Release of new code to production is complete. :done:",
-                        "type": "plain_text",
-                        "emoji": true
-                      },
-                      "type": "section"
-                    }
-                  ],
-                  "color": "#47A868"
-                }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+  #     - name: Create release
+  #       uses: actions/github-script@v6
+  #       with:
+  #         github-token: ${{secrets.GITHUB_TOKEN}}
+  #         script: |
+  #           const release = await github.rest.repos.createRelease({
+  #           owner: context.repo.owner,
+  #           repo: context.repo.repo,
+  #           tag_name: `refs/tags/${{steps.get-tag.outputs.latest_tag}}`,
+  #           generate_release_notes: true,
+  #           })
+  #     - run: sleep 60
+  #     - name: Send release completed to mission-control
+  #       uses: slackapi/slack-github-action@v1.18.0
+  #       if: success()
+  #       with:
+  #         # channel name: mission-control
+  #         channel-id: "test-updates-user-end-trial"
+  #         payload: |
+  #           {
+  #             "attachments": [
+  #               {
+  #                 "blocks": [
+  #                   {
+  #                     "text": {
+  #                       "text": "Release of new code to production is complete. :done:",
+  #                       "type": "plain_text",
+  #                       "emoji": true
+  #                     },
+  #                     "type": "section"
+  #                   }
+  #                 ],
+  #                 "color": "#47A868"
+  #               }
+  #             ]
+  #           }
+  #       env:
+  #         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-  release-failure:
-    if: github.event.deployment_status.state == 'failure' && github.event.deployment.environment == 'biorender-production'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Send release failed to mission-control
-        uses: slackapi/slack-github-action@v1.18.0
-        with:
-          # channel name: mission-control
-          channel-id: "test-updates-user-end-trial"
-          payload: |
-            {
-              "attachments": [
-                {
-                  "blocks": [
-                    {
-                      "text": {
-                        "text": "Release of new code to production failed. :x:",
-                        "type": "plain_text",
-                        "emoji": true
-                      },
-                      "type": "section"
-                    }
-                  ],
-                  "color": "#A30200"
-                }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+  # release-failure:
+  #   if: github.event.deployment_status.state == 'failure' && github.event.deployment.environment == 'biorender-production'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Send release failed to mission-control
+  #       uses: slackapi/slack-github-action@v1.18.0
+  #       with:
+  #         # channel name: mission-control
+  #         channel-id: "test-updates-user-end-trial"
+  #         payload: |
+  #           {
+  #             "attachments": [
+  #               {
+  #                 "blocks": [
+  #                   {
+  #                     "text": {
+  #                       "text": "Release of new code to production failed. :x:",
+  #                       "type": "plain_text",
+  #                       "emoji": true
+  #                     },
+  #                     "type": "section"
+  #                   }
+  #                 ],
+  #                 "color": "#A30200"
+  #               }
+  #             ]
+  #           }
+  #       env:
+  #         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

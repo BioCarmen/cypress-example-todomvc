@@ -12,6 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: "something"
+      - name: something
         run: |
           echo ${{secrets.SENTRY_AUTH_TOKEN_CLIENT}}

@@ -6,8 +6,6 @@ on:
       SENTRY_AUTH_TOKEN_CLIENT:
         required: true
 
-  push:
-
 jobs:
   example_job:
     name: Pass input and secrets to my-action

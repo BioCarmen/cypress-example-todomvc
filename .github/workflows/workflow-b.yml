@@ -8,7 +8,7 @@ jobs:
   call-workflow-a:
     uses: ./.github/workflows/workflow-a.yml
     secrets:
-      SENTRY_AUTH_TOKEN_CLIENT: ${secrets.SENTRY_AUTH_TOKEN_CLIENT}}
+      SENTRY_AUTH_TOKEN_CLIENT: ${{secrets.SENTRY_AUTH_TOKEN_CLIENT}}
   # start-release:
   #   runs-on: ubuntu-latest
   #   if: github.event.deployment.environment == 'carmen-staging' && (github.event.deployment_status.state != 'success' && github.event.deployment_status.state != 'failure')

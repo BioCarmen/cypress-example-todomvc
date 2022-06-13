@@ -15,10 +15,11 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            const targetTag = ${{ inputs.rollback_to_tag }}
             const targetRelease = await github.rest.git.getRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: tags/${{ inputs.rollback_to_tag }}
+              ref: `tags/${targetTag}`
             })
             console.log(targetRelease)
       - name: Rollback to second latest tag

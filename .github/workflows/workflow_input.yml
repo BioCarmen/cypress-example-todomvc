@@ -1,32 +1,28 @@
+name: Rollback Service (AWS)
 on:
   workflow_dispatch:
     inputs:
-      logLevel:
-        description: "Log level"
-        required: true
-        default: "warning"
-        type: choice
-        options:
-          - info
-          - warning
-          - debug
-      print_tags:
-        description: "True to print to STDOUT"
-        required: true
-        type: boolean
-      tags:
-        description: "Test scenario tags"
-        required: true
+      rollback_to_tag:
+        description: "Release tag to rollback to"
         type: string
-      environment:
-        description: "Environment to run tests against"
-        type: environment
-        required: true
 
 jobs:
   print-tag:
     runs-on: ubuntu-latest
-    if: ${{ inputs.print_tags }}
+    if: ${{ inputs.rollback_to_tag }}
     steps:
       - name: Print the input tag to STDOUT
-        run: echo  The tags are ${{ inputs.tags }}
+        run: echo  The tags are ${{ inputs.rollback_to_tag }}
+  get-last-tag:
+    runs-on: ubuntu-latest
+    if: ${{ !inputs.rollback_to_tag }}
+    steps:
+      - name: Print the input tag to STDOUT
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            const latestRelease = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,          
+            })
+            console.log(latestRelease)

@@ -15,7 +15,6 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            let targetRelease
             const rollbackToTag = ${{  inputs.rollback_to_tag }}
             if (rollbackToTag) {
               targetRelease = await github.rest.git.getRef({
@@ -24,6 +23,7 @@ jobs:
               ref: 'tags/${{ inputs.rollback_to_tag }}'
               })
               console.log(targetRelease)
+              return targetRelease
             } else {
               const releases = await github.rest.repos.listReleases({
                 owner: context.repo.owner,
@@ -36,8 +36,9 @@ jobs:
                 repo: context.repo.repo,
                 ref: `tags/${secondLatestTag}`
               })
+              console.log(targetRelease)
+              return targetRelease
             }
-            return targetRelease;
 
       - name: Set target SHA
         run: |

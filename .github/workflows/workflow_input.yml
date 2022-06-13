@@ -16,7 +16,7 @@ jobs:
         with:
           script: |
             const rollbackToTag = ${{  inputs.rollback_to_tag }}
-            if (rollbackToTag) {
+            if (false) {
               targetRelease = await github.rest.git.getRef({
               owner: context.repo.owner,
               repo: context.repo.repo,

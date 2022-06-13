@@ -11,13 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ inputs.rollback_to_tag }}
     steps:
-      - name: Print the input tag to STDOUT
-        run: echo  The tags are ${{ inputs.rollback_to_tag }}
+      - run: echo The tags are ${{ inputs.rollback_to_tag }}
+
   get-last-tag:
     runs-on: ubuntu-latest
     if: ${{ !inputs.rollback_to_tag }}
     steps:
-      - name: Print the input tag to STDOUT
       - uses: actions/github-script@v6
         with:
           script: |

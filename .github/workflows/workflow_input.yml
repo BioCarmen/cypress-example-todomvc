@@ -15,8 +15,6 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const targetTag = tags/${{ inputs.rollback_to_tag }}
-            console.log(targetTag)
             const targetRelease = await github.rest.git.getRef({
               owner: context.repo.owner,
               repo: context.repo.repo,

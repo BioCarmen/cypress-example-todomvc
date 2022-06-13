@@ -20,7 +20,7 @@ jobs:
             const targetRelease = await github.rest.git.getRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: `${targetTag}`
+              ref: 'tags/prod-2022-03-04-2'
             })
             console.log(targetRelease)
       - name: Rollback to second latest tag

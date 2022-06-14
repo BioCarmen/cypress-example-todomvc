@@ -51,7 +51,7 @@ jobs:
               echo "::set-output name=targetSha::${{ steps.specific-tag.outputs.result }}"
           fi
           if [[ "${{ steps.second-latest-tag.outputs.result }}" != "" ]]; then
-              echo "::set-output name=targetSha::${{ steps.specific-tag.outputs.result }}"
+              echo "::set-output name=targetSha::${{ steps.second-latest-tag.outputs.result }}"
           fi
   bio-web-app:
     runs-on: ubuntu-latest

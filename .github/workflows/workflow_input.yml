@@ -24,7 +24,7 @@ jobs:
               repo: context.repo.repo,
               ref: 'tags/${{ inputs.rollback_to_tag }}'
             })
-            console.log(targetRelease)
+            return targetRelease.data.object.sha
 
       - name: Rollback to second latest tag
         if: ${{ !inputs.rollback_to_tag }}
@@ -43,7 +43,7 @@ jobs:
               repo: context.repo.repo,
               ref: `tags/${secondLatestTag}`
             })
-            console.log(targetRelease)
+            return targetRelease.data.object.sha
       - name: Set target SHA
         id: set_target_sha
         run: |

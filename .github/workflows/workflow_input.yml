@@ -9,55 +9,51 @@ on:
 jobs:
   get-target-sha:
     runs-on: ubuntu-latest
+    outputs:
+      - target_sha: ${{ steps.set_target_sha.outputs.targetSha }}
     steps:
       - name: Rollback to the specific tag
-        id: get-tag
+        id: specific-tag
+        if: ${{ inputs.rollback_to_tag }}
         uses: actions/github-script@v6
         with:
           script: |
             const rollbackToTag = ${{  inputs.rollback_to_tag }}
-            if (false) {
-              targetRelease = await github.rest.git.getRef({
+            const targetRelease = await github.rest.git.getRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: 'tags/${{ inputs.rollback_to_tag }}'
-              })
-              console.log(targetRelease)
-              return targetRelease
-            } else {
-              const releases = await github.rest.repos.listReleases({
-                owner: context.repo.owner,
-                repo: context.repo.repo,          
-              })
-              const secondLatestTag = releases.data[1].tag_name
-              console.log(secondLatestTag)
-              targetRelease = await github.rest.git.getRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: `tags/${secondLatestTag}`
-              })
-              console.log(targetRelease)
-              return targetRelease
-            }
+            })
+            console.log(targetRelease)
 
+      - name: Rollback to second latest tag
+        if: ${{ !inputs.rollback_to_tag }}
+        id: second-latest-tag
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const releases = await github.rest.repos.listReleases({
+              owner: context.repo.owner,
+              repo: context.repo.repo,          
+            })
+            const secondLatestTag = releases.data[1].tag_name
+            console.log(secondLatestTag)
+            const targetRelease = await github.rest.git.getRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `tags/${secondLatestTag}`
+            })
+            console.log(targetRelease)
       - name: Set target SHA
+        id: set_target_sha
         run: |
-          echo "${{steps.get-tag.outputs.result}}"
-      # - name: Rollback to second latest tag
-      #   if: ${{ !inputs.rollback_to_tag }}
-      #   id: second-latest-tag
-      #   uses: actions/github-script@v6
-      #   with:
-      #     script: |
-      #       const releases = await github.rest.repos.listReleases({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #       })
-      #       const secondLatestTag = releases.data[1].tag_name
-      #       console.log(secondLatestTag)
-      #       const targetRelease = await github.rest.git.getRef({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         ref: `tags/${secondLatestTag}`
-      #       })
-      #       console.log(targetRelease)
+          if [[ "${{ steps.specific-tag.outputs.result }}" != "" ]]; then
+              echo "::set-output name=targetSha::${{ steps.specific-tag.outputs.result }}"
+          fi
+          if [[ "${{ steps.second-latest-tag.outputs.result }}" != "" ]]; then
+              echo "::set-output name=targetSha::${{ steps.specific-tag.outputs.result }}"
+          fi
+  bio-web-app:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{jobs.get-target-sha.outputs.target_sha }}

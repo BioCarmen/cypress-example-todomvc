@@ -55,5 +55,6 @@ jobs:
           fi
   bio-web-app:
     runs-on: ubuntu-latest
+    needs: get-target-sha
     steps:
-      - run: echo ${{jobs.get-target-sha.outputs.target_sha }}
+      - run: echo ${{needs.get-target-sha.outputs.target_sha }}

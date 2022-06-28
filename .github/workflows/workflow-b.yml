@@ -5,6 +5,14 @@ on:
   workflow_dispatch:
 
 jobs:
+  create-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            console.log(context)
   call-workflow-a:
     uses: ./.github/workflows/workflow-a.yml
     secrets:

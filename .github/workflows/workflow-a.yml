@@ -11,7 +11,7 @@ jobs:
     name: Pass input and secrets to my-action
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
       - name: something
         run: |
           echo ${{secrets.SENTRY_AUTH_TOKEN_CLIENT}}
+          echo ${{github.sha}}

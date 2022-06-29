@@ -19,5 +19,5 @@ jobs:
             github.rest.repos.createDeployment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: ${{github.sha}}
+              ref: `${{github.sha}}`
             })

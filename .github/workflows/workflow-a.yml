@@ -13,9 +13,10 @@ jobs:
     steps:
       - name: create deployment
         uses: actions/github-script@v6
-        run: |
-          const deployment = await github.rest.repos.createDeployment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: ${{github.sha}}
-            })
+        with:
+          script: |
+            const deployment = await github.rest.repos.createDeployment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+               ref: ${{github.sha}}
+              })

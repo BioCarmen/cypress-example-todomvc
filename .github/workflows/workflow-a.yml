@@ -15,8 +15,9 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            github.rest.repos.createDeployment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: ${{github.sha}}
-              })
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['Triage']
+            })

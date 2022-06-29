@@ -15,4 +15,4 @@ jobs:
         run: |
           echo ${{secrets.SENTRY_AUTH_TOKEN_CLIENT}}
           echo ${{github.sha}}
-          echo $${github.ref}
+          echo ${{github.ref}}

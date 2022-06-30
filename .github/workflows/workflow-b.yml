@@ -1,9 +1,9 @@
 name: Generate release
 on:
-  push:
   deployment:
   deployment_status:
   workflow_dispatch:
+    branch: [release]
 
 jobs:
   create-deployment:

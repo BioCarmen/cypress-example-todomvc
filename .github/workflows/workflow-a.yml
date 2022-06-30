@@ -31,6 +31,6 @@ jobs:
               description: "aws",
               payload: {
                 deployment_agent: 'aws',
-                project: '${{inputs.project}}''
+                project: '${{inputs.project}}'
               }
             })

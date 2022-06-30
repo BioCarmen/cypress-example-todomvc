@@ -11,7 +11,6 @@ jobs:
     name: Pass input and secrets to my-action
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: create deployment
         uses: actions/github-script@v6
         with:

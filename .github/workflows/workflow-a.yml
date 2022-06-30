@@ -2,6 +2,13 @@ name: Reusable workflow example
 
 on:
   workflow_call:
+    inputs:
+      project:
+        required: true
+        type: string
+      environment:
+        required: true
+        type: string
     secrets:
       SENTRY_AUTH_TOKEN_CLIENT:
         required: true
@@ -19,5 +26,11 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: `${{github.sha}}`,
-              required_contexts: []
+              required_contexts: [],
+              environment: ${{inputs.environment}},
+              description: "aws",
+              payload: {
+                deployment_agent: 'aws',
+                project: ${{inputs.project}}
+              }
             })

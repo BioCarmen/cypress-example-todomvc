@@ -25,12 +25,12 @@ jobs:
             github.rest.repos.createDeployment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: `${{github.sha}}`,
+              ref: '${{github.sha}}',
               required_contexts: [],
-              environment: ${{inputs.environment}},
+              environment: '${{inputs.environment}}',
               description: "aws",
               payload: {
                 deployment_agent: 'aws',
-                project: ${{inputs.project}}
+                project: '${{inputs.project}}''
               }
             })

@@ -1,0 +1,18 @@
+name: Build bio-web-app (staging, production)
+
+on:
+  push:
+    branches: [release]
+  workflow_call:
+    inputs:
+      projects:
+        required: true
+        type: string
+jobs:
+  build-staging:
+    name: Build and push bio-web-app to s3 (Staging)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: echo sha
+        run: echo ${{GITHUB_SHA}}

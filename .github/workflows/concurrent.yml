@@ -26,3 +26,9 @@ jobs:
             }
             core.exportVariable('selectedProjects', projects);
       - run: echo ${{env.selectedProjects}}
+  build-bio-web-app:
+    needs: [check]
+    if: success
+    uses: ./.github/workflows/test-workflow-call.yml
+    with:
+      projects: "core-api"

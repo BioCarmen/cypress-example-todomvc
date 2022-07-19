@@ -19,7 +19,6 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const projects = context.payload
-            const clientPayload = context.payload.client_payload
+            const inputs = context.payload.inputs
+            const projects = Object.entries(inputs).filter(input=>input[1]==='true')
             console.log(projects)
-            console.log(clientPayload)

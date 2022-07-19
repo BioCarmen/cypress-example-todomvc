@@ -1,14 +1,13 @@
 name: concurrent
 on:
   workflow_dispatch:
-  pull_request:
-    branches:
-      - master
-      - develop
-    types: [labeled]
-  issue_comment:
-    types: [created, edited]
-
+    inputs:
+      core-api:
+        type: boolean
+        description: ore-api
+      bio-pusher:
+        type: boolean
+        description: bio-pusher-services
 jobs:
   check:
     name: Check if job should run
@@ -16,4 +15,4 @@ jobs:
     steps:
       - name: see
         run: |
-          sleep 100000
+          sleep 1

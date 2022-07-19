@@ -19,5 +19,5 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const projects = fromJSON(github.event.inputs)
+            const projects = github.event.inputs
             console.log(projects)

@@ -17,4 +17,7 @@ jobs:
     steps:
       - name: see
         run: |
-          echo ${{fromJSON(github.event.inputs)}} ${{github.event.inputs.bio-pusher}}
+          echo ${{fromJSON(github.event.inputs)}}
+      - name: see
+        run: |
+          echo ${{toJSON(github.event.inputs)}}

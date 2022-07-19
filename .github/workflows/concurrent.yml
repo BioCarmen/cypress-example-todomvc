@@ -19,5 +19,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const projects = github.event.inputs
+            const projects = context.payload
+            const clientPayload = context.payload.client_payload
             console.log(projects)
+            console.log(clientPayload)

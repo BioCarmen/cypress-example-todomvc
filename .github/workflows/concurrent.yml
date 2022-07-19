@@ -5,9 +5,11 @@ on:
       core-api:
         type: boolean
         description: ore-api
+        required: true
       bio-pusher:
         type: boolean
         description: bio-pusher-services
+        required: true
 jobs:
   check:
     name: Check if job should run
@@ -15,4 +17,4 @@ jobs:
     steps:
       - name: see
         run: |
-          sleep 1
+          echo ${{github.event.inputs.core-api}} ${{github.event.inputs.bio-pusher}}

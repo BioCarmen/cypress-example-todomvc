@@ -20,7 +20,9 @@ jobs:
         with:
           script: |
             const inputs = context.payload.inputs
-            const projects = Object.entries(inputs).filter(input=>input[1]==='true').map(input=>input[0])
-            console.log(projects)
+            const projects = Object.entries(inputs).filter(input=>input[1]==='true').map(input=>input[0]).join()
+            if(projects===''){
+              throw new Error('No project selected')
+            }
             core.exportVariable('selectedProjects', projects);
       - run: echo ${{env.selectedProjects}}

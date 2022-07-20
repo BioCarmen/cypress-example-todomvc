@@ -17,7 +17,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const projects = ${{inputs.projects}}
+            const projects = String(${{inputs.projects}})
 
             console.log(projects)
 

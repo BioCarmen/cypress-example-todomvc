@@ -14,6 +14,8 @@ jobs:
   check:
     name: Check if job should run
     runs-on: ubuntu-20.04
+    outputs:
+      selectedProjects: ${{env.selectedProjects}}
     steps:
       - name: see
         uses: actions/github-script@v6
@@ -31,4 +33,4 @@ jobs:
     if: success()
     uses: ./.github/workflows/test-workflow-call.yml
     with:
-      projects: "core-api"
+      projects: ${{needs.check.outputs.selectedProjects}}

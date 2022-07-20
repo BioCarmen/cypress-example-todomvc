@@ -18,9 +18,9 @@ jobs:
         with:
           script: |
             const projects = ${{inputs.projects}}
-            const projectsArray = ${{inputs.projects.split(',')}}
+
             console.log(projects)
-            console.log(projectsArray)
+
             for await (const project of projectsArray){
               console.log(project)
             }

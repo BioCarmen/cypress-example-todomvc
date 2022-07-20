@@ -21,19 +21,6 @@ jobs:
             const projectsArray = inputs.projects.split(',')
             console.log(projects)
             console.log(projectsArray)
-            for await (let project of projectsArray){
+            for await (const project of projectsArray){
               console.log(project)
             }
-            # github.rest.repos.createDeployment({
-            #   owner: context.repo.owner,
-            #   repo: context.repo.repo,
-            #   ref: '${{github.sha}}',
-            #   required_contexts: [],
-            #   environment: '${{inputs.environment}}',
-            #   description: "aws",
-            #   auto_merge: false,
-            #   payload: {
-            #     deployment_agent: 'aws',
-            #     project: '${{inputs.project}}'
-            #   }
-            # })

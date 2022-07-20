@@ -17,10 +17,10 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const projects = String(${{inputs.projects}})
+            const projects =String(${{inputs.projects}}).join()
 
-            console.log(projects)
+
 
             for await (const project of projectsArray){
-              console.log(project)
+              console.log(String(project))
             }

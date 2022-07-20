@@ -13,6 +13,27 @@ jobs:
     name: Build and push bio-web-app to s3 (Staging)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: echo sha
-        run: echo ${GITHUB_SHA}
+      - name: create deployment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const projects = inputs.projects
+            const projectsArray = inputs.projects.split(',')
+            console.log(projects)
+            console.log(projectsArray)
+            for await (let project of projectsArray){
+              console.log(project)
+            }
+            # github.rest.repos.createDeployment({
+            #   owner: context.repo.owner,
+            #   repo: context.repo.repo,
+            #   ref: '${{github.sha}}',
+            #   required_contexts: [],
+            #   environment: '${{inputs.environment}}',
+            #   description: "aws",
+            #   auto_merge: false,
+            #   payload: {
+            #     deployment_agent: 'aws',
+            #     project: '${{inputs.project}}'
+            #   }
+            # })

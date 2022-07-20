@@ -34,3 +34,4 @@ jobs:
     uses: ./.github/workflows/test-workflow-call.yml
     with:
       projects: ${{needs.check.outputs.selectedProjects}}
+      environment: "biorender-staging"

@@ -8,6 +8,9 @@ on:
       projects:
         required: true
         type: string
+      environment:
+        required: true
+        type: string
 jobs:
   build-staging:
     name: Build and push bio-web-app to s3 (Staging)
@@ -18,9 +21,18 @@ jobs:
         with:
           script: |
             const projects =`${{inputs.projects}}`.split(',')
-
-
-
             for await (const project of projects){
-              console.log(project)
+               github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: '${{github.sha}}',
+              required_contexts: [],
+              environment: `${{inputs.environment}}-${project}`,
+              description: "aws",
+              auto_merge: false,
+              payload: {
+                deployment_agent: 'aws',
+                project: project
+              }
+            })
             }

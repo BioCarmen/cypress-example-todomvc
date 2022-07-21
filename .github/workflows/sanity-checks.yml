@@ -25,6 +25,7 @@ jobs:
             deployment_id: `${ deploymentId }`,
             })
             const sha = deployment.data.sha
+            console.log(sha)
             const selectedProjects = deployment.data.payload.selectedProjects
 
             const deployments = await github.rest.repos.listDeployments({

@@ -17,6 +17,10 @@ jobs:
             const deploymentUrl = "https://api.github.com/repos/BioCarmen/cypress-example-todomvc/deployments/609085975"
             const deploymentId = deploymentUrl.split('/').pop()
             console.log(deploymentId)
+            const deployment = await github.rest.repos.getDeployment({
+              owner: context.repo.owner, repo: context.repo, deployment_id: deploymentId 
+            })
+            console.log(deployment)
 
   sanity-checks:
     runs-on: ubuntu-20.04

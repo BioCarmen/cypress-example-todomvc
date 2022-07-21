@@ -42,7 +42,7 @@ jobs:
               result[targetDeployment.payload.project]= targetDeployment.statuses_url
               console.log(result)
               return result
-            })
+            },{})
             console.log(targets)
 
   sanity-checks:

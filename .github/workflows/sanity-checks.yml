@@ -18,7 +18,7 @@ jobs:
 
             const deploymentId = deploymentUrl.split('/').pop()
 
-            console.log(deploymentId)
+
             const deployment = await github.rest.repos.getDeployment({
             owner: context.repo.owner,
             repo: context.repo.repo,
@@ -26,7 +26,7 @@ jobs:
             })
             const sha = deployment.data.sha
             const selectedProjects = deployment.data.payload.selectedProjects
-            console.log(deployment, selectedProjects)
+
             const deployments = await github.rest.repos.listDeployments({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -37,12 +37,16 @@ jobs:
             const sorted = targetDeployments.sort((a,b)=>{
               return new Date(a.updated_at) - new Date(b.updated_at)
             })
-            console.log('sorted',sorted)
+
             const targets = sorted.reduce((result, targetDeployment, index, array)=>{
               result[targetDeployment.payload.project]= targetDeployment.statuses_url
               return result
             },{})
             console.log(targets)
+            for await (const deploymentUrl of targets){
+              const result = await github.request(deploymentUrl)
+              console.log(result)
+            }
 
   sanity-checks:
     runs-on: ubuntu-20.04

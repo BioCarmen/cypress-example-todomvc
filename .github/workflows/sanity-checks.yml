@@ -22,7 +22,14 @@ jobs:
             repo: context.repo.repo,
             deployment_id: `${ deploymentId }`,
             })
+            const sha = deployment.data.sha
             console.log(deployment)
+            const deployments = await github.rest.repos.listDeployments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha
+            })
+            console.log(deployments)
 
   sanity-checks:
     runs-on: ubuntu-20.04

@@ -1,0 +1,126 @@
+name: Release Sanity Checks
+on:
+  workflow_dispatch:
+  deployment_status:
+  workflow_call:
+    secrets:
+      SLACK_BOT_TOKEN:
+        required: true
+      STAGING_FLAGSMITH_API_KEY:
+        required: true
+      PROD_FLAGSMITH_API_KEY:
+        required: true
+      CYPRESS_RECORD_KEY:
+        required: true
+      STRIPE_SECRET_TEST_KEY:
+        required: true
+      STAGING_MONGODB_URI:
+        required: true
+
+jobs:
+  check_all_projects_status:
+    runs-on: ubuntu-20.04
+    if: (github.event.deployment_status.state == 'success' && startsWith(github.event.deployment.environment, 'biorender-staging')
+    steps:
+      - run: echo ${{ github.event.deployment.environment }}
+
+  sanity-checks:
+    runs-on: ubuntu-20.04
+    name: Sanity Checks
+    # run this workflow only when deployment success on biorender-staging and manually trigger
+    if: (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'biorender-staging') || github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call'
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v3
+      # deployment_status does not work with actions/cache. Ref: https://github.com/actions/cache/issues/478
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        continue-on-error: true
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Install dependencies
+        run: npm ci
+      - name: Generate unique ID for cypress run
+        id: uuid
+        run: echo "::set-output name=value::sha-$GITHUB_SHA-time-$(date +"%s")"
+
+      - name: Compare feature flags on staging and production
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const compareFeatureFlags = require('./apps/tasks/src/app/non-migrated/github/feature-flags-comparison.js')
+            await compareFeatureFlags()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          STAGING_FLAGSMITH_API_KEY: ${{ secrets.STAGING_FLAGSMITH_API_KEY }}
+          PROD_FLAGSMITH_API_KEY: ${{ secrets.PROD_FLAGSMITH_API_KEY }}
+
+      - name: Cypress Dashboard - Cypress run
+        if: success()
+        run: |
+          npx env-cmd -f ./apps/bio-web-app-e2e/.env.test \
+          npx nx e2e bio-web-app-e2e --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --group sanity-checks --tag sanity-checks --ci-build-id ${{ steps.uuid.outputs.value }} --cypress-config ./apps/bio-web-app-e2e/cypress-staging.json
+
+      - name: Clean up payment test data
+        if: always()
+        run: |
+          node apps/tasks/src/app/non-migrated/cleanup-test-data.js
+        env:
+          STRIPE_SECRET_TEST_KEY: ${{ secrets.STRIPE_SECRET_TEST_KEY }}
+          STAGING_MONGODB_URI: ${{ secrets.STAGING_MONGODB_URI }}
+
+      # Do not send slack message when it is workflow_dispatch
+      - name: Post success result to a Slack channel
+        uses: slackapi/slack-github-action@v1.17.0
+        # TODO: Comment out until heroku/github issue addressed
+        # if: success() && github.event_name != 'workflow_dispatch'
+        if: success()
+        with:
+          channel-id: "team-devs-release-bot"
+          payload: |
+            {
+              "attachments": [
+                {
+                  "blocks": [
+                    {
+                      "text": {
+                        "text": "Staging sanity checks completed. Ready for <https://www.notion.so/biorender/Release-Sanity-Checklist-364ac193b4dc4af0a14250417a4f2f8a|manual sanity checks> to be completed on <https://staging.biorender.com|staging>",
+                        "type": "mrkdwn"
+                      },
+                      "type": "section"
+                    }
+                  ],
+                  "color": "#47A868"
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      - name: Post failure result to a Slack channel
+        uses: slackapi/slack-github-action@v1.17.0
+        # TODO: Comment out until heroku/github issue addressed
+        # if: failure() && github.event_name != 'workflow_dispatch'
+        if: failure()
+        with:
+          channel-id: "team-devs-release-bot"
+          payload: |
+            {
+              "attachments": [
+                {
+                  "blocks": [
+                    {
+                      "text": {
+                        "text": "Staging sanity checks failed. <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Details>",
+                        "type": "mrkdwn"
+                      },
+                      "type": "section"
+                    }
+                  ],
+                  "color": "#A30200"
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

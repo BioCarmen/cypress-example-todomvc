@@ -36,6 +36,7 @@ jobs:
             const sorted = targetDeployments.sort((a,b)=>{
               return new Date(a.updated_at) - new Date(b.updated_at)
             })
+            console.log(sorted)
             const targets = sorted.map(targetDeployment=>{
               return {
                 [targetDeployment.payload.project]: targetDeployment.statuses_url

@@ -1,7 +1,7 @@
 name: Release Sanity Checks
 on:
   deployment_status:
-  push:
+  # push:
   workflow_dispatch:
 
 jobs:
@@ -14,8 +14,9 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const deploymentUrl = "https://api.github.com/repos/BioCarmen/cypress-example-todomvc/deployments/609085975"
+            const deploymentUrl = ${{ github.event.deployment_status.deployment_url }}
             const deploymentId = deploymentUrl.split('/').pop()
+
             console.log(deploymentId)
             const deployment = await github.rest.repos.getDeployment({
             owner: context.repo.owner,
@@ -23,20 +24,25 @@ jobs:
             deployment_id: `${ deploymentId }`,
             })
             const sha = deployment.data.sha
-            console.log(deployment)
+            const selectedProjects = deployment.data.payload.selectedProjects
+            console.log(deployment, selectedProjects)
             const deployments = await github.rest.repos.listDeployments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha
             })
-            const targetDeployments = deployments.data.filter(deployment=>deployment.environment.includes('biorender-staging'))
-            const targetProjects = targetDeployments.map(targetDeployment=>{
+            const targetDeployments = deployments.data.filter(deployment=>deployment.environment.includes('biorender-staging') && selectedProjects.includes(deployment.payload.project) )
+            console.log(targetDeployments)
+            const sorted = targetDeployments.sort((a,b)=>{
+              return new Date(a.updated_at) - new Date(b.updated_at)
+            })
+            const targets = sorted.map(targetDeployment=>{
               return {
-                project: targetDeployment.payload.project,
-                statuses_url: targetDeployment.statuses_url
+                [targetDeployment.payload.project]: targetDeployment.statuses_url
               }
             })
-            console.log(targetProjects)
+            console.log(targets)
+            const targetProjects = [...new Set(targets.keys())]
 
   sanity-checks:
     runs-on: ubuntu-20.04

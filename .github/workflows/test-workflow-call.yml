@@ -21,8 +21,9 @@ jobs:
         with:
           script: |
             const projects =`${{inputs.projects}}`.split(',')
+            const targetDeployments = []
             for await (const project of projects){
-               github.rest.repos.createDeployment({
+              const deployment = await github.rest.repos.createDeployment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: '${{github.sha}}',
@@ -32,7 +33,8 @@ jobs:
               auto_merge: false,
               payload: {
                 deployment_agent: 'aws',
-                project: project
+                project: project,
+                selectedProjects: projects
               }
             })
             }

@@ -8,7 +8,7 @@ jobs:
     if: github.event.deployment_status.state == 'success' || startsWith(github.event.deployment.environment, 'biorender-staging')
     steps:
       - run: |
-          echo ${{ fromJSON(github.event.deployment_status) }}
+          echo ${{ toJSON(github.event.deployment_status) }}
           echo ${{ startsWith(github.event.deployment.environment, 'biorender-staging')}}
 
   sanity-checks:

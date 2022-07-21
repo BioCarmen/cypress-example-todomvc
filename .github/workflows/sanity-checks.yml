@@ -18,7 +18,9 @@ jobs:
             const deploymentId = deploymentUrl.split('/').pop()
             console.log(deploymentId)
             const deployment = await github.rest.repos.getDeployment({
-              owner: context.repo.owner, repo: context.repo, deployment_id: deploymentId 
+              owner: context.repo.owner,
+              repo: context.repo,
+              deployment_id: deploymentId 
             })
             console.log(deployment)
 

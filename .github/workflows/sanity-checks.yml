@@ -8,26 +8,15 @@ jobs:
   check_all_projects_status:
     runs-on: ubuntu-20.04
     # if: github.event.deployment_status.state == 'success' || startsWith(github.event.deployment.environment, 'biorender-staging')
+    # const deploymentUrl = ${{ github.event.deployment_status.deployment_url }}
     steps:
       - name: check deployment status for all projects
         uses: actions/github-script@v5
         with:
           script: |
-            # const deploymentUrl = ${{ github.event.deployment_status.deployment_url }}
             const deploymentUrl = "https://api.github.com/repos/BioCarmen/cypress-example-todomvc/deployments/609085975"
             const deploymentId = deploymentUrl.split('/').pop()
             console.log(deploymentId)
-            const deployment = await github.rest.repos.getDeployment({
-              owner: context.repo.owner, repo: context.repo, deployment_id: deploymentId 
-            })
-            console.log(deployment)
-            console.log(deployment.sha)
-            const sha = deployment.sha
-            const deployments = await github.rest.repos.listDeployments({
-             owner: context.repo.owner, repo: context.repo
-            })
-            const matchDeployments = deployments.filter(deployment=>deployment.sha === sha)
-            console.log(matchDeployments)
 
   sanity-checks:
     runs-on: ubuntu-20.04

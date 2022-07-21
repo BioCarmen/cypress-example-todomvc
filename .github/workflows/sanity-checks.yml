@@ -5,7 +5,7 @@ on:
 jobs:
   check_all_projects_status:
     runs-on: ubuntu-20.04
-    if: github.event.deployment_status.state == 'success'
+    if: github.event.deployment_status.state == 'success' || startsWith(github.event.deployment.environment, 'biorender-staging')
     steps:
       - run: |
           echo ${{ github.event.deployment.environment }}

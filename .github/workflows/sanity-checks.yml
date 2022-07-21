@@ -29,7 +29,14 @@ jobs:
               repo: context.repo.repo,
               sha
             })
-            console.log(deployments)
+            const targetDeployments = deployments.data.filter(deployment=>deployment.environment.includes('biorender-staging'))
+            const targetProjects = targetDeployments.map(targetDeployment=>{
+              return {
+                project: targetDeployment.payload.project,
+                statuses_url: targetDeployment.statuses_url
+              }
+            })
+            console.log(targetProjects)
 
   sanity-checks:
     runs-on: ubuntu-20.04

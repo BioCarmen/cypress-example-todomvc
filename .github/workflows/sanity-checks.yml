@@ -35,13 +35,12 @@ jobs:
             const targetDeployments = deployments.data.filter(deployment=>deployment.environment.includes('biorender-staging') && selectedProjects.includes(deployment.payload.project) )
             console.log(targetDeployments)
             const sorted = targetDeployments.sort((a,b)=>{
-              return new Date(a.updated_at) - new Date(b.updated_at)
+              return new Date(b.updated_at) - new Date(a.updated_at)
             })
             console.log(sorted)
-            const targets = sorted.map(targetDeployment=>{
-              return {
-                [targetDeployment.payload.project]: targetDeployment.statuses_url
-              }
+            const targets = sorted.reduce((result, targetDeployment, index, array)=>{
+              result[targetDeployment.payload.project]= targetDeployment.statuses_url
+              return result
             })
             console.log(targets)
             const targetProjects = [...new Set(targets.keys())]

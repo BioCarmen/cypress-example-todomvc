@@ -18,9 +18,9 @@ jobs:
             const deploymentId = String(deploymentUrl.split('/').pop())
             console.log(deploymentId)
             const deployment = await github.rest.repos.getDeployment({
-              owner: context.repo.owner,
-              repo: context.repo,
-              deployment_id: deploymentId 
+              owner: 'BioCarmen',
+              repo: 'cypress-example-todomvc',
+              deployment_id: '609085975' 
             })
             console.log(deployment)
 

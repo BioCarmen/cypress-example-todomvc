@@ -1,7 +1,7 @@
 name: Release Sanity Checks
 on:
   deployment_status:
-  push:
+  # push:
   workflow_dispatch:
 
 jobs:
@@ -17,8 +17,6 @@ jobs:
             const deploymentUrl = 'https://api.github.com/repos/BioCarmen/cypress-example-todomvc/deployments/609336600'
 
             const deploymentId = deploymentUrl.split('/').pop()
-
-
             const deployment = await github.rest.repos.getDeployment({
             owner: context.repo.owner,
             repo: context.repo.repo,

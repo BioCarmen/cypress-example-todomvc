@@ -1,28 +1,15 @@
 name: Release Sanity Checks
 on:
-  workflow_dispatch:
   deployment_status:
-  workflow_call:
-    secrets:
-      SLACK_BOT_TOKEN:
-        required: true
-      STAGING_FLAGSMITH_API_KEY:
-        required: true
-      PROD_FLAGSMITH_API_KEY:
-        required: true
-      CYPRESS_RECORD_KEY:
-        required: true
-      STRIPE_SECRET_TEST_KEY:
-        required: true
-      STAGING_MONGODB_URI:
-        required: true
 
 jobs:
   check_all_projects_status:
     runs-on: ubuntu-20.04
-    if: (github.event.deployment_status.state == 'success' && startsWith(github.event.deployment.environment, 'biorender-staging')
+    if: github.event.deployment_status.state == 'success'
     steps:
-      - run: echo ${{ github.event.deployment.environment }}
+      - run: |
+          echo ${{ github.event.deployment.environment }}
+          echo ${{ startsWith(github.event.deployment.environment, 'biorender-staging')}}
 
   sanity-checks:
     runs-on: ubuntu-20.04

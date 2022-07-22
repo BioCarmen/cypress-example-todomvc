@@ -7,15 +7,14 @@ on:
 jobs:
   check_all_projects_status:
     runs-on: ubuntu-20.04
-    # if: github.event.deployment_status.state == 'success' || startsWith(github.event.deployment.environment, 'biorender-staging')
+    if: github.event.deployment_status.state == 'success' || startsWith(github.event.deployment.environment, 'biorender-staging')
     # const deploymentUrl = ${{ github.event.deployment_status.deployment_url }}
     steps:
       - name: check deployment status for all projects
         uses: actions/github-script@v6
         with:
           script: |
-            const deploymentUrl = 'https://api.github.com/repos/BioCarmen/cypress-example-todomvc/deployments/609336600'
-
+            const deploymentUrl = ${{ github.event.deployment_status.deployment_url }}
             const deploymentId = deploymentUrl.split('/').pop()
             const deployment = await github.rest.repos.getDeployment({
             owner: context.repo.owner,

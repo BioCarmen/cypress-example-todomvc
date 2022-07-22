@@ -14,7 +14,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const deploymentUrl = 'https://api.github.com/repos/BioCarmen/cypress-example-todomvc/deployments/609814379'
+            const deploymentUrl = ${{ github.event.deployment_status.deployment_url }};
             const response = await github.request(deploymentUrl);
             const deployments = await github.rest.repos.listDeployments({
               owner: context.repo.owner,
@@ -24,7 +24,6 @@ jobs:
             const targetDeployments = deployments.data.filter((deployment) =>
               deployment.environment.includes("biorender-staging")
             );
-            # comments
             const targets = targetDeployments.reduce(
               (result, targetDeployment, index, array) => {
                 result[targetDeployment.payload.project] = targetDeployment.statuses_url;

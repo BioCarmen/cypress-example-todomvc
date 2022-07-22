@@ -15,13 +15,8 @@ jobs:
         with:
           script: |
             const deploymentUrl = 'https://api.github.com/repos/BioCarmen/cypress-example-todomvc/deployments/609766066'
-            const deploymentId = deploymentUrl.split("/").pop();
-            const deployment = await github.rest.repos.getDeployment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              deployment_id: `${deploymentId}`,
-            });
-            const sha = deployment.data.sha;
+            const response = await github.request(deploymentUrl)
+            const sha = response.sha
             console.log(sha);
             const selectedProjects = deployment.data.payload.selectedProjects;
             const deployments = await github.rest.repos.listDeployments({
@@ -31,13 +26,9 @@ jobs:
             });
             const targetDeployments = deployments.data.filter(
               (deployment) =>
-                deployment.environment.includes("biorender-staging") &&
-                selectedProjects.includes(deployment.payload.project)
+                deployment.environment.includes("biorender-staging")
             );
             console.log(targetDeployments);
-            const sorted = targetDeployments.sort((a, b) => {
-              return new Date(a.updated_at) - new Date(b.updated_at);
-            });
 
             const targets = sorted.reduce(
               (result, targetDeployment, index, array) => {

@@ -23,18 +23,31 @@ jobs:
             const projects =`${{inputs.projects}}`.split(',')
             const targetDeployments = []
             for await (const project of projects){
-              const deployment = await github.rest.repos.createDeployment({
+              const existedDeployments = await github.rest.repos.listDeployments({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: '${{github.sha}}',
-              required_contexts: [],
-              environment: `${{inputs.environment}}-${project}`,
-              description: "aws",
-              auto_merge: false,
-              payload: {
-                deployment_agent: 'aws',
-                project: project,
-                selectedProjects: projects
-              }
-            })
+              sha: ${{github.sha}},
+              });
+              const !existedDeploymentForProject = existedDeployments.data.filter(
+                (deployment) =>
+                  deployment.environment.includes("biorender-staging") &&
+                  selectedProjects.includes(deployment.payload.project)
+              );
+              console.log(existedDeploymentForProject)
+              if (!existedDeploymentForProject){
+                const deployment = await github.rest.repos.createDeployment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: '${{github.sha}}',
+                  required_contexts: [],
+                  environment: `${{inputs.environment}}-${project}`,
+                  description: "aws",
+                  auto_merge: false,
+                  payload: {
+                    deployment_agent: 'aws',
+                    project: project,
+                    selectedProjects: projects
+                  }
+                })
+              }            
             }

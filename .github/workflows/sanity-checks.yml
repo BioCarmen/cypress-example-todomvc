@@ -14,7 +14,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const deploymentUrl = ${{ github.event.deployment_status.deployment_url }};
+            const deploymentUrl = `${{ github.event.deployment_status.deployment_url }}`;
             const response = await github.request(deploymentUrl);
             const deployments = await github.rest.repos.listDeployments({
               owner: context.repo.owner,

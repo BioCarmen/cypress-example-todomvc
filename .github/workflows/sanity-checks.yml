@@ -16,7 +16,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            console.log(${{github.event_name}}, `${{github.event_name}}` == 'workflow_dispatch')
+            console.log(github.event_name, `${{github.event_name}}` == 'workflow_dispatch')
             if (`${{github.event_name}}` == 'workflow_dispatch') {
               core.exportVariable('readyToRunSanityCheck', true);
               return;

@@ -13,15 +13,14 @@ jobs:
         with:
           script: |
             const deploymentUrl = ${{ github.event.deployment_status.deployment_url }};
-            const response = await github.request(deploymentUrl);            
+            const response = await github.request(deploymentUrl);
             const deployments = await github.rest.repos.listDeployments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: `${response.data.sha}`,
             });
-            const targetDeployments = deployments.data.filter(
-              (deployment) =>
-                deployment.environment.includes("biorender-staging")
+            const targetDeployments = deployments.data.filter((deployment) =>
+              deployment.environment.includes("biorender-staging")
             );
             const targets = targetDeployments.reduce(
               (result, targetDeployment, index, array) => {
@@ -34,7 +33,7 @@ jobs:
             let readyToRunSanityCheck = true;
             for await (const deploymentUrl of Object.values(targets)) {
               const result = await github.request(deploymentUrl);
-              console.log(result)
+              console.log(result);
               if (result.data[0].state != "success") {
                 readyToRunSanityCheck = false;
               }

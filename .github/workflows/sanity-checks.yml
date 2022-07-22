@@ -23,7 +23,6 @@ jobs:
               (deployment) =>
                 deployment.environment.includes("biorender-staging")
             );
-            # Turn array of objects into objects
             const targets = targetDeployments.reduce(
               (result, targetDeployment, index, array) => {
                 result[targetDeployment.payload.project] =

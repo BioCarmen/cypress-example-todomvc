@@ -7,29 +7,24 @@ on:
 jobs:
   check_all_projects_status:
     runs-on: ubuntu-20.04
-    # if: github.event.deployment_status.state == 'success' || startsWith(github.event.deployment.environment, 'biorender-staging')
-    # const deploymentUrl = ${{ github.event.deployment_status.deployment_url }}
+    if: github.event.deployment_status.state == 'success' || startsWith(github.event.deployment.environment, 'biorender-staging')
     steps:
       - name: check deployment status for all projects
         uses: actions/github-script@v6
         with:
           script: |
-            const deploymentUrl = 'https://api.github.com/repos/BioCarmen/cypress-example-todomvc/deployments/609766066'
-            const response = await github.request(deploymentUrl)
-            console.log(response)
-            const sha = response.data.sha
-            console.log(sha)
+            const deploymentUrl = ${{ github.event.deployment_status.deployment_url }};
+            const response = await github.request(deploymentUrl);            
             const deployments = await github.rest.repos.listDeployments({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              sha,
+              sha: response.data.sha,
             });
             const targetDeployments = deployments.data.filter(
               (deployment) =>
                 deployment.environment.includes("biorender-staging")
             );
-            console.log(targetDeployments);
-
+            # Turn array of objects into objects
             const targets = targetDeployments.reduce(
               (result, targetDeployment, index, array) => {
                 result[targetDeployment.payload.project] =
@@ -38,7 +33,6 @@ jobs:
               },
               {}
             );
-            console.log(targets);
             let readyToRunSanityCheck = true;
             for await (const deploymentUrl of Object.values(targets)) {
               const result = await github.request(deploymentUrl);

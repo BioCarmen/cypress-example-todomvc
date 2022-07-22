@@ -2,17 +2,20 @@ name: Release Sanity Checks
 on:
   deployment_status:
   workflow_dispatch:
+  push:
 
 jobs:
   check_all_projects_status:
+    name: Check if all projects are deployed successfully
     runs-on: ubuntu-20.04
-    if: github.event.deployment_status.state == 'success' || startsWith(github.event.deployment.environment, 'biorender-staging')
+    # if: github.event.deployment_status.state == 'success' || startsWith(github.event.deployment.environment, 'biorender-staging')
+    # const deploymentUrl = ${{ github.event.deployment_status.deployment_url }};
     steps:
       - name: check deployment status for all projects
         uses: actions/github-script@v6
         with:
           script: |
-            const deploymentUrl = ${{ github.event.deployment_status.deployment_url }};
+            const deploymentUrl = 'https://api.github.com/repos/BioCarmen/cypress-example-todomvc/deployments/609814379'
             const response = await github.request(deploymentUrl);
             const deployments = await github.rest.repos.listDeployments({
               owner: context.repo.owner,
@@ -29,15 +32,7 @@ jobs:
               },
               {}
             );
-            let readyToRunSanityCheck = true;
-            for await (const deploymentUrl of Object.values(targets)) {
-              const result = await github.request(deploymentUrl);
-              console.log(result);
-              if (result.data[0].state != "success") {
-                readyToRunSanityCheck = false;
-              }
-            }
-            console.log(readyToRunSanityCheck);
+            console.log(targets)
 
   sanity-checks:
     runs-on: ubuntu-20.04

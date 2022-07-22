@@ -16,9 +16,9 @@ jobs:
           script: |
             const deploymentUrl = 'https://api.github.com/repos/BioCarmen/cypress-example-todomvc/deployments/609766066'
             const response = await github.request(deploymentUrl)
-            const sha = response.sha
-            console.log(sha);
-            const selectedProjects = deployment.data.payload.selectedProjects;
+            console.log(response)
+            const sha = response.data.sha
+            console.log(sha)
             const deployments = await github.rest.repos.listDeployments({
               owner: context.repo.owner,
               repo: context.repo.repo,

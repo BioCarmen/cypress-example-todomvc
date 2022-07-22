@@ -24,8 +24,7 @@ jobs:
             );
             const targets = targetDeployments.reduce(
               (result, targetDeployment, index, array) => {
-                result[targetDeployment.payload.project] =
-                  targetDeployment.statuses_url;
+                result[targetDeployment.payload.project] = targetDeployment.statuses_url;
                 return result;
               },
               {}

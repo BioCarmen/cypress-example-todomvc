@@ -1,7 +1,6 @@
 name: Release Sanity Checks
 on:
   deployment_status:
-  push:
   workflow_dispatch:
 
 jobs:

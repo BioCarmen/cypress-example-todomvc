@@ -34,20 +34,5 @@ jobs:
                   selectedProjects.includes(deployment.payload.project)
               );
               console.log(existedDeploymentForProject)
-              if (!existedDeploymentForProject){
-                const deployment = await github.rest.repos.createDeployment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  ref: '${{github.sha}}',
-                  required_contexts: [],
-                  environment: `${{inputs.environment}}-${project}`,
-                  description: "aws",
-                  auto_merge: false,
-                  payload: {
-                    deployment_agent: 'aws',
-                    project: project,
-                    selectedProjects: projects
-                  }
-                })
-              }            
+                   
             }

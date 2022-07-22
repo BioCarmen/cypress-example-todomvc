@@ -51,6 +51,7 @@ jobs:
             let readyToRunSanityCheck = false;
             for await (const deploymentUrl of Object.values(targets)) {
               const result = await github.request(deploymentUrl);
+              console.log(result)
               if (result.state && result.state == "success") {
                 readyToRunSanityCheck = true;
               }

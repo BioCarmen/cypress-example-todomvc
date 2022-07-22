@@ -2,13 +2,12 @@ name: Release Sanity Checks
 on:
   deployment_status:
   workflow_dispatch:
-  push:
 
 jobs:
   check_all_projects_status:
     name: Check if all projects are deployed successfully
     runs-on: ubuntu-20.04
-    # if: github.event.deployment_status.state == 'success' || startsWith(github.event.deployment.environment, 'biorender-staging')
+    if: github.event.deployment_status.state == 'success' || startsWith(github.event.deployment.environment, 'biorender-staging')
     # const deploymentUrl = ${{ github.event.deployment_status.deployment_url }};
     steps:
       - name: check deployment status for all projects
@@ -25,6 +24,7 @@ jobs:
             const targetDeployments = deployments.data.filter((deployment) =>
               deployment.environment.includes("biorender-staging")
             );
+            # comments
             const targets = targetDeployments.reduce(
               (result, targetDeployment, index, array) => {
                 result[targetDeployment.payload.project] = targetDeployment.statuses_url;

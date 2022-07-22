@@ -24,9 +24,9 @@ jobs:
             const targetDeployments = []
             for await (const project of projects){
               const existedDeployments = await github.rest.repos.listDeployments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: ${{github.sha}},
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                sha: '${{github.sha}}'',
               });
               const !existedDeploymentForProject = existedDeployments.data.filter(
                 (deployment) =>

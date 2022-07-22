@@ -30,7 +30,7 @@ jobs:
             );
             console.log(targetDeployments);
 
-            const targets = sorted.reduce(
+            const targets = targetDeployments.reduce(
               (result, targetDeployment, index, array) => {
                 result[targetDeployment.payload.project] =
                   targetDeployment.statuses_url;

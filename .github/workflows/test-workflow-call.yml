@@ -28,13 +28,13 @@ jobs:
                 repo: context.repo.repo,
                 sha: `${{github.sha}}`,
               });
-              const existedDeploymentForProject = existedDeployments.data.filter(
+              const existedDeploymentOfProject = existedDeployments.data.filter(
                 (deployment) =>
                   deployment.environment.includes("biorender-staging") &&
-                  selectedProjects.includes(deployment.payload.project)
+                  (deployment.payload.project == project)
               );
-              console.log(existedDeploymentForProject)
-              if (existedDeploymentForProject){
+              console.log(existedDeploymentOfProject)
+              if (existedDeploymentOfProject.length == 0){
                 const deployment = await github.rest.repos.createDeployment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
@@ -45,8 +45,7 @@ jobs:
                   auto_merge: false,
                   payload: {
                     deployment_agent: 'aws',
-                    project: project,
-                    selectedProjects: projects
+                    project,
                   }
                 })
               }     

@@ -4,6 +4,12 @@ on:
     branches: [develop, release]
 
 jobs:
+  test-release:
+    name: run test
+    uses: "./.github/workflows/release.yml"
+    with:
+      project: "bio-pusher-service"
+
   get-latest-tag:
     name: run test
     runs-on: ubuntu-latest

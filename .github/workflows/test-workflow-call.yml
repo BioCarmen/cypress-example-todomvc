@@ -16,6 +16,7 @@ jobs:
     name: Build and push bio-web-app to s3 (Staging)
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: create deployment
         uses: actions/github-script@v6
         with:
@@ -29,7 +30,6 @@ jobs:
               description: "aws",
               auto_merge: false,
               payload: {
-                deployment_agent: 'aws',
-                project,
+                deployment_agent: 'aws'
               }
             })

@@ -1,0 +1,60 @@
+# This workflow publish the draft release with release notes for the project that was passed as an input.
+#
+# This GHA should be triggered when the release is live.
+# For AWS releases, the after-allow-traffic hook will trigger this workflow by making an API call.
+#
+
+name: Release Notes Publish
+
+on:
+  repository_dispatch:
+    types: [release-notes-publish]
+  workflow_call:
+    inputs:
+      project:
+        required: true
+        type: string
+    secrets:
+      SHARED_GITHUB_ACCOUNT_PAT:
+        required: true
+  workflow_dispatch:
+
+jobs:
+  release-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+
+      - name: npm install
+        run: npm ci --ignore-scripts
+
+      - name: Run script to publish draft release
+        uses: actions/github-script@v6
+        env:
+          project: ${{ github.event.client_payload.project || inputs.project }}
+        with:
+          script: |
+            console.log('test')
+
+  move-tickets-from-changelog:
+    runs-on: ubuntu-latest
+    needs: [release-publish]
+    if: success()
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+      - name: npm install
+        run: npm ci --ignore-scripts
+      - name: Move jira tickets
+        run: npx nx serve tasks --args="transition-jira-tickets-to-deployed" --prod
+        env:
+          project: ${{ github.event.client_payload.project || inputs.project }}

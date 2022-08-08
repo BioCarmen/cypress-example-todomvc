@@ -13,3 +13,4 @@ jobs:
       - name: deploy actual
         run: |
           echo ${{github.sha}}
+          exit(1)

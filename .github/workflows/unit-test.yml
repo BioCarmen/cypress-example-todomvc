@@ -1,0 +1,15 @@
+name: Unit tests
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  unit-test:
+    name: Unit tests
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: deploy actual
+        run: |
+          echo ${{github.sha}}
